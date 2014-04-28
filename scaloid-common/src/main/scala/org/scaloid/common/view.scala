@@ -45,6 +45,44 @@ import scala.language.implicitConversions
 import ViewImplicits._
 
 
+trait PressAndHoldable[V <: View] {
+  def basis: V
+
+  class PressAndHoldListener(interval: Int, onPressed: () => Unit) extends View.OnTouchListener with View.OnLongClickListener {
+    var autoIncrementing: Boolean = false
+    private val repeatUpdateHandler = new android.os.Handler()
+
+    override def onTouch(v: View, event: MotionEvent): Boolean = {
+      if (event.getAction == MotionEvent.ACTION_UP && autoIncrementing) {
+        autoIncrementing = false
+      }
+      false
+    }
+
+    override def onLongClick(p1: View): Boolean = {
+      autoIncrementing = true
+      repeatUpdateHandler.post(new RptUpdater)
+      false
+    }
+
+    class RptUpdater extends Runnable {
+      override def run() {
+        if (autoIncrementing) {
+          onPressed()
+          repeatUpdateHandler.postDelayed(this, interval)
+        }
+      }
+    }
+  }
+
+  def onPressAndHold(interval: Int, onPressed: => Unit): V = {
+    val listener = new PressAndHoldListener(interval, () => onPressed)
+    basis.onTouchListener(listener)
+    basis.onLongClickListener(listener)
+  }
+}
+
+
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/view/View.html android.view.View]]`.
  */
@@ -53,7 +91,7 @@ class RichView[V <: android.view.View](val basis: V) extends TraitView[V]
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/view/View.html android.view.View]]`. This contains several property accessors.
  */
-trait TraitView[V <: android.view.View] extends ConstantsSupport {
+trait TraitView[V <: android.view.View] extends ConstantsSupport with PressAndHoldable[V] {
 
   def basis: V
 
@@ -1045,42 +1083,42 @@ trait TraitView[V <: android.view.View] extends ConstantsSupport {
   @inline def windowVisibility = basis.getWindowVisibility
 
 
-  @inline def onClick(f: android.view.View => Unit): V = {
+  @inline def onClick[U](f: android.view.View => U): V = {
     basis.setOnClickListener(new android.view.View.OnClickListener {
       def onClick(p: android.view.View): Unit = { f(p) }
     })
     basis
   }
 
-  @inline def onClick(f: => Unit): V = {
+  @inline def onClick[U](f:  => U): V = {
     basis.setOnClickListener(new android.view.View.OnClickListener {
       def onClick(p: android.view.View): Unit = { f }
     })
     basis
   }
 
-  @inline def onCreateContextMenu(f: (android.view.ContextMenu, android.view.View, android.view.ContextMenu.ContextMenuInfo) => Unit): V = {
+  @inline def onCreateContextMenu[U](f: (android.view.ContextMenu, android.view.View, android.view.ContextMenu.ContextMenuInfo) => U): V = {
     basis.setOnCreateContextMenuListener(new android.view.View.OnCreateContextMenuListener {
       def onCreateContextMenu(p1: android.view.ContextMenu, p2: android.view.View, p3: android.view.ContextMenu.ContextMenuInfo): Unit = { f(p1, p2, p3) }
     })
     basis
   }
 
-  @inline def onCreateContextMenu(f: => Unit): V = {
+  @inline def onCreateContextMenu[U](f:  => U): V = {
     basis.setOnCreateContextMenuListener(new android.view.View.OnCreateContextMenuListener {
       def onCreateContextMenu(p1: android.view.ContextMenu, p2: android.view.View, p3: android.view.ContextMenu.ContextMenuInfo): Unit = { f }
     })
     basis
   }
 
-  @inline def onFocusChange(f: (android.view.View, Boolean) => Unit): V = {
+  @inline def onFocusChange[U](f: (android.view.View, Boolean) => U): V = {
     basis.setOnFocusChangeListener(new android.view.View.OnFocusChangeListener {
       def onFocusChange(p1: android.view.View, p2: Boolean): Unit = { f(p1, p2) }
     })
     basis
   }
 
-  @inline def onFocusChange(f: => Unit): V = {
+  @inline def onFocusChange[U](f:  => U): V = {
     basis.setOnFocusChangeListener(new android.view.View.OnFocusChangeListener {
       def onFocusChange(p1: android.view.View, p2: Boolean): Unit = { f }
     })
@@ -1094,7 +1132,7 @@ trait TraitView[V <: android.view.View] extends ConstantsSupport {
     basis
   }
 
-  @inline def onKey(f: => Boolean): V = {
+  @inline def onKey(f:  => Boolean): V = {
     basis.setOnKeyListener(new android.view.View.OnKeyListener {
       def onKey(p1: android.view.View, p2: Int, p3: android.view.KeyEvent): Boolean = { f }
     })
@@ -1108,7 +1146,7 @@ trait TraitView[V <: android.view.View] extends ConstantsSupport {
     basis
   }
 
-  @inline def onLongClick(f: => Boolean): V = {
+  @inline def onLongClick(f:  => Boolean): V = {
     basis.setOnLongClickListener(new android.view.View.OnLongClickListener {
       def onLongClick(p: android.view.View): Boolean = { f }
     })
@@ -1122,7 +1160,7 @@ trait TraitView[V <: android.view.View] extends ConstantsSupport {
     basis
   }
 
-  @inline def onTouch(f: => Boolean): V = {
+  @inline def onTouch(f:  => Boolean): V = {
     basis.setOnTouchListener(new android.view.View.OnTouchListener {
       def onTouch(p1: android.view.View, p2: android.view.MotionEvent): Boolean = { f }
     })
@@ -1352,7 +1390,7 @@ trait TraitViewGroup[V <: android.view.ViewGroup] extends TraitView[V] {
   @inline def persistentDrawingCache_=(p: Int) = { basis.setPersistentDrawingCache(p); basis }
 
 
-  @inline def onAnimationEnd(f: android.view.animation.Animation => Unit): V = {
+  @inline def onAnimationEnd[U](f: android.view.animation.Animation => U): V = {
     basis.setLayoutAnimationListener(new android.view.animation.Animation.AnimationListener {
       def onAnimationEnd(p: android.view.animation.Animation): Unit = { f(p) }
       def onAnimationRepeat(p: android.view.animation.Animation): Unit = {  }
@@ -1361,7 +1399,7 @@ trait TraitViewGroup[V <: android.view.ViewGroup] extends TraitView[V] {
     basis
   }
 
-  @inline def onAnimationEnd(f: => Unit): V = {
+  @inline def onAnimationEnd[U](f:  => U): V = {
     basis.setLayoutAnimationListener(new android.view.animation.Animation.AnimationListener {
       def onAnimationEnd(p: android.view.animation.Animation): Unit = { f }
       def onAnimationRepeat(p: android.view.animation.Animation): Unit = {  }
@@ -1370,7 +1408,7 @@ trait TraitViewGroup[V <: android.view.ViewGroup] extends TraitView[V] {
     basis
   }
 
-  @inline def onAnimationRepeat(f: android.view.animation.Animation => Unit): V = {
+  @inline def onAnimationRepeat[U](f: android.view.animation.Animation => U): V = {
     basis.setLayoutAnimationListener(new android.view.animation.Animation.AnimationListener {
       def onAnimationEnd(p: android.view.animation.Animation): Unit = {  }
       def onAnimationRepeat(p: android.view.animation.Animation): Unit = { f(p) }
@@ -1379,7 +1417,7 @@ trait TraitViewGroup[V <: android.view.ViewGroup] extends TraitView[V] {
     basis
   }
 
-  @inline def onAnimationRepeat(f: => Unit): V = {
+  @inline def onAnimationRepeat[U](f:  => U): V = {
     basis.setLayoutAnimationListener(new android.view.animation.Animation.AnimationListener {
       def onAnimationEnd(p: android.view.animation.Animation): Unit = {  }
       def onAnimationRepeat(p: android.view.animation.Animation): Unit = { f }
@@ -1388,7 +1426,7 @@ trait TraitViewGroup[V <: android.view.ViewGroup] extends TraitView[V] {
     basis
   }
 
-  @inline def onAnimationStart(f: android.view.animation.Animation => Unit): V = {
+  @inline def onAnimationStart[U](f: android.view.animation.Animation => U): V = {
     basis.setLayoutAnimationListener(new android.view.animation.Animation.AnimationListener {
       def onAnimationEnd(p: android.view.animation.Animation): Unit = {  }
       def onAnimationRepeat(p: android.view.animation.Animation): Unit = {  }
@@ -1397,7 +1435,7 @@ trait TraitViewGroup[V <: android.view.ViewGroup] extends TraitView[V] {
     basis
   }
 
-  @inline def onAnimationStart(f: => Unit): V = {
+  @inline def onAnimationStart[U](f:  => U): V = {
     basis.setLayoutAnimationListener(new android.view.animation.Animation.AnimationListener {
       def onAnimationEnd(p: android.view.animation.Animation): Unit = {  }
       def onAnimationRepeat(p: android.view.animation.Animation): Unit = {  }
@@ -1406,7 +1444,7 @@ trait TraitViewGroup[V <: android.view.ViewGroup] extends TraitView[V] {
     basis
   }
 
-  @inline def onChildViewAdded(f: (android.view.View, android.view.View) => Unit): V = {
+  @inline def onChildViewAdded[U](f: (android.view.View, android.view.View) => U): V = {
     basis.setOnHierarchyChangeListener(new android.view.ViewGroup.OnHierarchyChangeListener {
       def onChildViewAdded(p1: android.view.View, p2: android.view.View): Unit = { f(p1, p2) }
       def onChildViewRemoved(p1: android.view.View, p2: android.view.View): Unit = {  }
@@ -1414,7 +1452,7 @@ trait TraitViewGroup[V <: android.view.ViewGroup] extends TraitView[V] {
     basis
   }
 
-  @inline def onChildViewAdded(f: => Unit): V = {
+  @inline def onChildViewAdded[U](f:  => U): V = {
     basis.setOnHierarchyChangeListener(new android.view.ViewGroup.OnHierarchyChangeListener {
       def onChildViewAdded(p1: android.view.View, p2: android.view.View): Unit = { f }
       def onChildViewRemoved(p1: android.view.View, p2: android.view.View): Unit = {  }
@@ -1422,7 +1460,7 @@ trait TraitViewGroup[V <: android.view.ViewGroup] extends TraitView[V] {
     basis
   }
 
-  @inline def onChildViewRemoved(f: (android.view.View, android.view.View) => Unit): V = {
+  @inline def onChildViewRemoved[U](f: (android.view.View, android.view.View) => U): V = {
     basis.setOnHierarchyChangeListener(new android.view.ViewGroup.OnHierarchyChangeListener {
       def onChildViewAdded(p1: android.view.View, p2: android.view.View): Unit = {  }
       def onChildViewRemoved(p1: android.view.View, p2: android.view.View): Unit = { f(p1, p2) }
@@ -1430,7 +1468,7 @@ trait TraitViewGroup[V <: android.view.ViewGroup] extends TraitView[V] {
     basis
   }
 
-  @inline def onChildViewRemoved(f: => Unit): V = {
+  @inline def onChildViewRemoved[U](f:  => U): V = {
     basis.setOnHierarchyChangeListener(new android.view.ViewGroup.OnHierarchyChangeListener {
       def onChildViewAdded(p1: android.view.View, p2: android.view.View): Unit = {  }
       def onChildViewRemoved(p1: android.view.View, p2: android.view.View): Unit = { f }
@@ -1739,14 +1777,14 @@ trait TraitViewStub[V <: android.view.ViewStub] extends TraitView[V] {
   @inline def onInflateListener_=(p: android.view.ViewStub.OnInflateListener) = { basis.setOnInflateListener(p); basis }
 
 
-  @inline def onInflate(f: (android.view.ViewStub, android.view.View) => Unit): V = {
+  @inline def onInflate[U](f: (android.view.ViewStub, android.view.View) => U): V = {
     basis.setOnInflateListener(new android.view.ViewStub.OnInflateListener {
       def onInflate(p1: android.view.ViewStub, p2: android.view.View): Unit = { f(p1, p2) }
     })
     basis
   }
 
-  @inline def onInflate(f: => Unit): V = {
+  @inline def onInflate[U](f:  => U): V = {
     basis.setOnInflateListener(new android.view.ViewStub.OnInflateListener {
       def onInflate(p1: android.view.ViewStub, p2: android.view.View): Unit = { f }
     })
