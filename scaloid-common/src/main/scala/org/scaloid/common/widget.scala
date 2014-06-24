@@ -109,8 +109,8 @@ trait TraitPopupWindow[V <: android.widget.PopupWindow] {
    */
   @inline def clippingEnabled_=(p: Boolean) = { basis.setClippingEnabled(p); basis }
 
-  @inline def  enableClipping               = { basis.setClippingEnabled(true ); basis }
-  @inline def disableClipping               = { basis.setClippingEnabled(false); basis }
+  @inline def  enableClipping()             = { basis.setClippingEnabled(true ); basis }
+  @inline def disableClipping()             = { basis.setClippingEnabled(false); basis }
 
 
   /**
@@ -400,8 +400,6 @@ object SArrayAdapter {
 
   def apply[T <: AnyRef](textViewResourceId: Int, items: Array[T])(implicit context: Context): SArrayAdapter[TextView, T] = new SArrayAdapter[TextView, T](items, textViewResourceId)
 
-
-
 }
 
 
@@ -486,7 +484,6 @@ class SImageButton()(implicit context: android.content.Context, parentVGroup: Tr
     extends android.widget.ImageButton(context) with TraitImageButton[SImageButton] {
 
   def basis = this
-  override val parentViewGroup = parentVGroup
   def this(imageResource: android.graphics.drawable.Drawable)(implicit context: Context) = {
     this()
     this.imageDrawable = imageResource
@@ -503,7 +500,7 @@ class SImageButton()(implicit context: android.content.Context, parentVGroup: Tr
     this.imageDrawable = imageResource
     this.setOnClickListener(onClickListener)
   }
-
+  override val parentViewGroup = parentVGroup
 
 }
 
@@ -535,6 +532,7 @@ object SImageButton {
     v.<<.parent.+=(v)
     v
   }
+
 
 
 }
@@ -655,8 +653,8 @@ trait TraitListView[V <: android.widget.ListView] extends TraitAbsListView[V] {
    */
   @inline def footerDividersEnabled_=(p: Boolean) = { basis.setFooterDividersEnabled(p); basis }
 
-  @inline def  enableFooterDividers               = { basis.setFooterDividersEnabled(true ); basis }
-  @inline def disableFooterDividers               = { basis.setFooterDividersEnabled(false); basis }
+  @inline def  enableFooterDividers()             = { basis.setFooterDividersEnabled(true ); basis }
+  @inline def disableFooterDividers()             = { basis.setFooterDividersEnabled(false); basis }
 
 
   /**
@@ -677,8 +675,8 @@ trait TraitListView[V <: android.widget.ListView] extends TraitAbsListView[V] {
    */
   @inline def headerDividersEnabled_=(p: Boolean) = { basis.setHeaderDividersEnabled(p); basis }
 
-  @inline def  enableHeaderDividers               = { basis.setHeaderDividersEnabled(true ); basis }
-  @inline def disableHeaderDividers               = { basis.setHeaderDividersEnabled(false); basis }
+  @inline def  enableHeaderDividers()             = { basis.setHeaderDividersEnabled(true ); basis }
+  @inline def disableHeaderDividers()             = { basis.setHeaderDividersEnabled(false); basis }
 
 
   /**
@@ -707,6 +705,38 @@ trait TraitListView[V <: android.widget.ListView] extends TraitAbsListView[V] {
    * Shortcut for `[[https://developer.android.com/reference/android/widget/ListView.html#getMaxScrollAmount() getMaxScrollAmount()]]`
    */
   @inline def maxScrollAmount = basis.getMaxScrollAmount
+
+
+  /**
+   * Shortcut for `[[https://developer.android.com/reference/android/widget/ListView.html#getOverscrollFooter() getOverscrollFooter()]]`
+   */
+  @inline def overscrollFooter = basis.getOverscrollFooter
+
+  /**
+   * Shortcut for `[[https://developer.android.com/reference/android/widget/ListView.html#setOverscrollFooter(android.graphics.drawable.Drawable) setOverscrollFooter(android.graphics.drawable.Drawable)]]`
+   */
+  @inline def overscrollFooter  (p: android.graphics.drawable.Drawable) =            overscrollFooter_=(p)
+
+  /**
+   * Shortcut for `[[https://developer.android.com/reference/android/widget/ListView.html#setOverscrollFooter(android.graphics.drawable.Drawable) setOverscrollFooter(android.graphics.drawable.Drawable)]]`
+   */
+  @inline def overscrollFooter_=(p: android.graphics.drawable.Drawable) = { basis.setOverscrollFooter(p); basis }
+
+
+  /**
+   * Shortcut for `[[https://developer.android.com/reference/android/widget/ListView.html#getOverscrollHeader() getOverscrollHeader()]]`
+   */
+  @inline def overscrollHeader = basis.getOverscrollHeader
+
+  /**
+   * Shortcut for `[[https://developer.android.com/reference/android/widget/ListView.html#setOverscrollHeader(android.graphics.drawable.Drawable) setOverscrollHeader(android.graphics.drawable.Drawable)]]`
+   */
+  @inline def overscrollHeader  (p: android.graphics.drawable.Drawable) =            overscrollHeader_=(p)
+
+  /**
+   * Shortcut for `[[https://developer.android.com/reference/android/widget/ListView.html#setOverscrollHeader(android.graphics.drawable.Drawable) setOverscrollHeader(android.graphics.drawable.Drawable)]]`
+   */
+  @inline def overscrollHeader_=(p: android.graphics.drawable.Drawable) = { basis.setOverscrollHeader(p); basis }
 
 
 }
@@ -775,7 +805,6 @@ class SEditText()(implicit context: android.content.Context, parentVGroup: Trait
     extends android.widget.EditText(context) with TraitEditText[SEditText] {
 
   def basis = this
-  override val parentViewGroup = parentVGroup
   def this(text: CharSequence)(implicit context: Context) = {
     this()
     this.text = text
@@ -792,7 +821,7 @@ class SEditText()(implicit context: android.content.Context, parentVGroup: Trait
     this.text = text
     this.setOnClickListener(onClickListener)
   }
-
+  override val parentViewGroup = parentVGroup
 
 }
 
@@ -824,6 +853,9 @@ object SEditText {
     v.<<.parent.+=(v)
     v
   }
+
+
+
 
 }
 
@@ -1031,7 +1063,6 @@ class SImageView()(implicit context: android.content.Context, parentVGroup: Trai
     extends android.widget.ImageView(context) with TraitImageView[SImageView] {
 
   def basis = this
-  override val parentViewGroup = parentVGroup
   def this(imageResource: android.graphics.drawable.Drawable)(implicit context: Context) = {
     this()
     this.imageDrawable = imageResource
@@ -1048,7 +1079,7 @@ class SImageView()(implicit context: android.content.Context, parentVGroup: Trai
     this.imageDrawable = imageResource
     this.setOnClickListener(onClickListener)
   }
-
+  override val parentViewGroup = parentVGroup
 
 }
 
@@ -1080,6 +1111,7 @@ object SImageView {
     v.<<.parent.+=(v)
     v
   }
+
 
 
 }
@@ -1160,7 +1192,6 @@ class SMultiAutoCompleteTextView()(implicit context: android.content.Context, pa
     extends android.widget.MultiAutoCompleteTextView(context) with TraitMultiAutoCompleteTextView[SMultiAutoCompleteTextView] {
 
   def basis = this
-  override val parentViewGroup = parentVGroup
   def this(text: CharSequence)(implicit context: Context) = {
     this()
     this.text = text
@@ -1177,7 +1208,7 @@ class SMultiAutoCompleteTextView()(implicit context: android.content.Context, pa
     this.text = text
     this.setOnClickListener(onClickListener)
   }
-
+  override val parentViewGroup = parentVGroup
 
 }
 
@@ -1209,6 +1240,9 @@ object SMultiAutoCompleteTextView {
     v.<<.parent.+=(v)
     v
   }
+
+
+
 
 }
 
@@ -2433,7 +2467,6 @@ class SChronometer()(implicit context: android.content.Context, parentVGroup: Tr
     extends android.widget.Chronometer(context) with TraitChronometer[SChronometer] {
 
   def basis = this
-  override val parentViewGroup = parentVGroup
   def this(text: CharSequence)(implicit context: Context) = {
     this()
     this.text = text
@@ -2450,7 +2483,7 @@ class SChronometer()(implicit context: android.content.Context, parentVGroup: Tr
     this.text = text
     this.setOnClickListener(onClickListener)
   }
-
+  override val parentViewGroup = parentVGroup
 
 }
 
@@ -2482,6 +2515,9 @@ object SChronometer {
     v.<<.parent.+=(v)
     v
   }
+
+
+
 
 }
 
@@ -2575,7 +2611,6 @@ class SCheckedTextView()(implicit context: android.content.Context, parentVGroup
     extends android.widget.CheckedTextView(context) with TraitCheckedTextView[SCheckedTextView] {
 
   def basis = this
-  override val parentViewGroup = parentVGroup
   def this(text: CharSequence)(implicit context: Context) = {
     this()
     this.text = text
@@ -2592,7 +2627,7 @@ class SCheckedTextView()(implicit context: android.content.Context, parentVGroup
     this.text = text
     this.setOnClickListener(onClickListener)
   }
-
+  override val parentViewGroup = parentVGroup
 
 }
 
@@ -2624,6 +2659,9 @@ object SCheckedTextView {
     v.<<.parent.+=(v)
     v
   }
+
+
+
 
 }
 
@@ -3227,8 +3265,8 @@ trait TraitAbsListView[V <: android.widget.AbsListView] extends TraitAdapterView
    */
   @inline def fastScrollEnabled_=(p: Boolean) = { basis.setFastScrollEnabled(p); basis }
 
-  @inline def  enableFastScroll               = { basis.setFastScrollEnabled(true ); basis }
-  @inline def disableFastScroll               = { basis.setFastScrollEnabled(false); basis }
+  @inline def  enableFastScroll()             = { basis.setFastScrollEnabled(true ); basis }
+  @inline def disableFastScroll()             = { basis.setFastScrollEnabled(false); basis }
 
 
   @inline def filterText(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'filterText'")
@@ -3309,8 +3347,8 @@ trait TraitAbsListView[V <: android.widget.AbsListView] extends TraitAdapterView
    */
   @inline def scrollingCacheEnabled_=(p: Boolean) = { basis.setScrollingCacheEnabled(p); basis }
 
-  @inline def  enableScrollingCache               = { basis.setScrollingCacheEnabled(true ); basis }
-  @inline def disableScrollingCache               = { basis.setScrollingCacheEnabled(false); basis }
+  @inline def  enableScrollingCache()             = { basis.setScrollingCacheEnabled(true ); basis }
+  @inline def disableScrollingCache()             = { basis.setScrollingCacheEnabled(false); basis }
 
 
   /**
@@ -3355,8 +3393,8 @@ trait TraitAbsListView[V <: android.widget.AbsListView] extends TraitAdapterView
    */
   @inline def smoothScrollbarEnabled_=(p: Boolean) = { basis.setSmoothScrollbarEnabled(p); basis }
 
-  @inline def  enableSmoothScrollbar               = { basis.setSmoothScrollbarEnabled(true ); basis }
-  @inline def disableSmoothScrollbar               = { basis.setSmoothScrollbarEnabled(false); basis }
+  @inline def  enableSmoothScrollbar()             = { basis.setSmoothScrollbarEnabled(true ); basis }
+  @inline def disableSmoothScrollbar()             = { basis.setSmoothScrollbarEnabled(false); basis }
 
 
   /**
@@ -3396,8 +3434,8 @@ trait TraitAbsListView[V <: android.widget.AbsListView] extends TraitAdapterView
    */
   @inline def textFilterEnabled_=(p: Boolean) = { basis.setTextFilterEnabled(p); basis }
 
-  @inline def  enableTextFilter               = { basis.setTextFilterEnabled(true ); basis }
-  @inline def disableTextFilter               = { basis.setTextFilterEnabled(false); basis }
+  @inline def  enableTextFilter()             = { basis.setTextFilterEnabled(true ); basis }
+  @inline def disableTextFilter()             = { basis.setTextFilterEnabled(false); basis }
 
 
   /**
@@ -3842,8 +3880,8 @@ trait TraitZoomButtonsController[V <: android.widget.ZoomButtonsController] {
    */
   @inline def zoomInEnabled_=(p: Boolean) = { basis.setZoomInEnabled(p); basis }
 
-  @inline def  enableZoomIn               = { basis.setZoomInEnabled(true ); basis }
-  @inline def disableZoomIn               = { basis.setZoomInEnabled(false); basis }
+  @inline def  enableZoomIn()             = { basis.setZoomInEnabled(true ); basis }
+  @inline def disableZoomIn()             = { basis.setZoomInEnabled(false); basis }
 
 
   @inline def zoomOutEnabled(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'zoomOutEnabled'")
@@ -3858,8 +3896,8 @@ trait TraitZoomButtonsController[V <: android.widget.ZoomButtonsController] {
    */
   @inline def zoomOutEnabled_=(p: Boolean) = { basis.setZoomOutEnabled(p); basis }
 
-  @inline def  enableZoomOut               = { basis.setZoomOutEnabled(true ); basis }
-  @inline def disableZoomOut               = { basis.setZoomOutEnabled(false); basis }
+  @inline def  enableZoomOut()             = { basis.setZoomOutEnabled(true ); basis }
+  @inline def disableZoomOut()             = { basis.setZoomOutEnabled(false); basis }
 
 
   @inline def zoomSpeed(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'zoomSpeed'")
@@ -4419,8 +4457,8 @@ trait TraitZoomControls[V <: android.widget.ZoomControls] extends TraitLinearLay
    */
   @inline def isZoomInEnabled_=(p: Boolean) = { basis.setIsZoomInEnabled(p); basis }
 
-  @inline def  enableIsZoomIn               = { basis.setIsZoomInEnabled(true ); basis }
-  @inline def disableIsZoomIn               = { basis.setIsZoomInEnabled(false); basis }
+  @inline def  enableIsZoomIn()             = { basis.setIsZoomInEnabled(true ); basis }
+  @inline def disableIsZoomIn()             = { basis.setIsZoomInEnabled(false); basis }
 
 
   @inline def isZoomOutEnabled(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'isZoomOutEnabled'")
@@ -4435,8 +4473,8 @@ trait TraitZoomControls[V <: android.widget.ZoomControls] extends TraitLinearLay
    */
   @inline def isZoomOutEnabled_=(p: Boolean) = { basis.setIsZoomOutEnabled(p); basis }
 
-  @inline def  enableIsZoomOut               = { basis.setIsZoomOutEnabled(true ); basis }
-  @inline def disableIsZoomOut               = { basis.setIsZoomOutEnabled(false); basis }
+  @inline def  enableIsZoomOut()             = { basis.setIsZoomOutEnabled(true ); basis }
+  @inline def disableIsZoomOut()             = { basis.setIsZoomOutEnabled(false); basis }
 
 
   @inline def onZoomInClickListener(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'onZoomInClickListener'")
@@ -4663,7 +4701,6 @@ class SRadioButton()(implicit context: android.content.Context, parentVGroup: Tr
     extends android.widget.RadioButton(context) with TraitRadioButton[SRadioButton] {
 
   def basis = this
-  override val parentViewGroup = parentVGroup
   def this(text: CharSequence)(implicit context: Context) = {
     this()
     this.text = text
@@ -4680,7 +4717,7 @@ class SRadioButton()(implicit context: android.content.Context, parentVGroup: Tr
     this.text = text
     this.setOnClickListener(onClickListener)
   }
-
+  override val parentViewGroup = parentVGroup
 
 }
 
@@ -4712,6 +4749,9 @@ object SRadioButton {
     v.<<.parent.+=(v)
     v
   }
+
+
+
 
 }
 
@@ -4766,7 +4806,6 @@ class SQuickContactBadge()(implicit context: android.content.Context, parentVGro
     extends android.widget.QuickContactBadge(context) with TraitQuickContactBadge[SQuickContactBadge] {
 
   def basis = this
-  override val parentViewGroup = parentVGroup
   def this(imageResource: android.graphics.drawable.Drawable)(implicit context: Context) = {
     this()
     this.imageDrawable = imageResource
@@ -4783,7 +4822,7 @@ class SQuickContactBadge()(implicit context: android.content.Context, parentVGro
     this.imageDrawable = imageResource
     this.setOnClickListener(onClickListener)
   }
-
+  override val parentViewGroup = parentVGroup
 
 }
 
@@ -4817,6 +4856,7 @@ object SQuickContactBadge {
   }
 
 
+
 }
 
 
@@ -4844,7 +4884,6 @@ class SDigitalClock()(implicit context: android.content.Context, parentVGroup: T
     extends android.widget.DigitalClock(context) with TraitDigitalClock[SDigitalClock] {
 
   def basis = this
-  override val parentViewGroup = parentVGroup
   def this(text: CharSequence)(implicit context: Context) = {
     this()
     this.text = text
@@ -4861,7 +4900,7 @@ class SDigitalClock()(implicit context: android.content.Context, parentVGroup: T
     this.text = text
     this.setOnClickListener(onClickListener)
   }
-
+  override val parentViewGroup = parentVGroup
 
 }
 
@@ -4893,6 +4932,9 @@ object SDigitalClock {
     v.<<.parent.+=(v)
     v
   }
+
+
+
 
 }
 
@@ -4953,7 +4995,6 @@ class SToggleButton()(implicit context: android.content.Context, parentVGroup: T
     extends android.widget.ToggleButton(context) with TraitToggleButton[SToggleButton] {
 
   def basis = this
-  override val parentViewGroup = parentVGroup
   def this(text: CharSequence)(implicit context: Context) = {
     this()
     this.text = text
@@ -4970,7 +5011,7 @@ class SToggleButton()(implicit context: android.content.Context, parentVGroup: T
     this.text = text
     this.setOnClickListener(onClickListener)
   }
-
+  override val parentViewGroup = parentVGroup
 
 }
 
@@ -5003,6 +5044,9 @@ object SToggleButton {
     v
   }
 
+
+
+
 }
 
 
@@ -5030,7 +5074,6 @@ class SButton()(implicit context: android.content.Context, parentVGroup: TraitVi
     extends android.widget.Button(context) with TraitButton[SButton] {
 
   def basis = this
-  override val parentViewGroup = parentVGroup
   def this(text: CharSequence)(implicit context: Context) = {
     this()
     this.text = text
@@ -5047,7 +5090,7 @@ class SButton()(implicit context: android.content.Context, parentVGroup: TraitVi
     this.text = text
     this.setOnClickListener(onClickListener)
   }
-
+  override val parentViewGroup = parentVGroup
 
 }
 
@@ -5080,6 +5123,9 @@ object SButton {
     v
   }
 
+
+
+
 }
 
 
@@ -5107,7 +5153,6 @@ class SCheckBox()(implicit context: android.content.Context, parentVGroup: Trait
     extends android.widget.CheckBox(context) with TraitCheckBox[SCheckBox] {
 
   def basis = this
-  override val parentViewGroup = parentVGroup
   def this(text: CharSequence)(implicit context: Context) = {
     this()
     this.text = text
@@ -5124,7 +5169,7 @@ class SCheckBox()(implicit context: android.content.Context, parentVGroup: Trait
     this.text = text
     this.setOnClickListener(onClickListener)
   }
-
+  override val parentViewGroup = parentVGroup
 
 }
 
@@ -5156,6 +5201,9 @@ object SCheckBox {
     v.<<.parent.+=(v)
     v
   }
+
+
+
 
 }
 
@@ -5393,8 +5441,8 @@ trait TraitTabWidget[V <: android.widget.TabWidget] extends TraitLinearLayout[V]
    */
   @inline def stripEnabled_=(p: Boolean) = { basis.setStripEnabled(p); basis }
 
-  @inline def  enableStrip               = { basis.setStripEnabled(true ); basis }
-  @inline def disableStrip               = { basis.setStripEnabled(false); basis }
+  @inline def  enableStrip()             = { basis.setStripEnabled(true ); basis }
+  @inline def disableStrip()             = { basis.setStripEnabled(false); basis }
 
 
   /**
@@ -5890,8 +5938,8 @@ trait TraitHorizontalScrollView[V <: android.widget.HorizontalScrollView] extend
    */
   @inline def smoothScrollingEnabled_=(p: Boolean) = { basis.setSmoothScrollingEnabled(p); basis }
 
-  @inline def  enableSmoothScrolling               = { basis.setSmoothScrollingEnabled(true ); basis }
-  @inline def disableSmoothScrolling               = { basis.setSmoothScrollingEnabled(false); basis }
+  @inline def  enableSmoothScrolling()             = { basis.setSmoothScrollingEnabled(true ); basis }
+  @inline def disableSmoothScrolling()             = { basis.setSmoothScrollingEnabled(false); basis }
 
 
 }
@@ -6119,8 +6167,8 @@ trait TraitScrollView[V <: android.widget.ScrollView] extends TraitFrameLayout[V
    */
   @inline def smoothScrollingEnabled_=(p: Boolean) = { basis.setSmoothScrollingEnabled(p); basis }
 
-  @inline def  enableSmoothScrolling               = { basis.setSmoothScrollingEnabled(true ); basis }
-  @inline def disableSmoothScrolling               = { basis.setSmoothScrollingEnabled(false); basis }
+  @inline def  enableSmoothScrolling()             = { basis.setSmoothScrollingEnabled(true ); basis }
+  @inline def disableSmoothScrolling()             = { basis.setSmoothScrollingEnabled(false); basis }
 
 
 }
@@ -6402,7 +6450,6 @@ class SZoomButton()(implicit context: android.content.Context, parentVGroup: Tra
     extends android.widget.ZoomButton(context) with TraitZoomButton[SZoomButton] {
 
   def basis = this
-  override val parentViewGroup = parentVGroup
   def this(imageResource: android.graphics.drawable.Drawable)(implicit context: Context) = {
     this()
     this.imageDrawable = imageResource
@@ -6419,7 +6466,7 @@ class SZoomButton()(implicit context: android.content.Context, parentVGroup: Tra
     this.imageDrawable = imageResource
     this.setOnClickListener(onClickListener)
   }
-
+  override val parentViewGroup = parentVGroup
 
 }
 
@@ -6451,6 +6498,7 @@ object SZoomButton {
     v.<<.parent.+=(v)
     v
   }
+
 
 
 }
@@ -7871,7 +7919,6 @@ class STextView()(implicit context: android.content.Context, parentVGroup: Trait
     extends android.widget.TextView(context) with TraitTextView[STextView] {
 
   def basis = this
-  override val parentViewGroup = parentVGroup
   def this(text: CharSequence)(implicit context: Context) = {
     this()
     this.text = text
@@ -7888,7 +7935,7 @@ class STextView()(implicit context: android.content.Context, parentVGroup: Trait
     this.text = text
     this.setOnClickListener(onClickListener)
   }
-
+  override val parentViewGroup = parentVGroup
 
 }
 
@@ -7918,6 +7965,82 @@ object STextView {
     v.text = text
     v.setOnClickListener(onClickListener)
     v.<<.parent.+=(v)
+    v
+  }
+
+
+
+
+}
+
+
+
+
+/**
+ * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/OverScroller.html android.widget.OverScroller]]`.
+ */
+class RichOverScroller[V <: android.widget.OverScroller](val basis: V) extends TraitOverScroller[V]
+
+/**
+ * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/OverScroller.html android.widget.OverScroller]]`. This contains several property accessors.
+ */
+trait TraitOverScroller[V <: android.widget.OverScroller] {
+
+  def basis: V
+
+
+
+  /**
+   * Shortcut for `[[https://developer.android.com/reference/android/widget/OverScroller.html#getCurrX() getCurrX()]]`
+   */
+  @inline def currX = basis.getCurrX
+
+
+  /**
+   * Shortcut for `[[https://developer.android.com/reference/android/widget/OverScroller.html#getCurrY() getCurrY()]]`
+   */
+  @inline def currY = basis.getCurrY
+
+
+  /**
+   * Shortcut for `[[https://developer.android.com/reference/android/widget/OverScroller.html#getFinalX() getFinalX()]]`
+   */
+  @inline def finalX = basis.getFinalX
+
+
+  /**
+   * Shortcut for `[[https://developer.android.com/reference/android/widget/OverScroller.html#getFinalY() getFinalY()]]`
+   */
+  @inline def finalY = basis.getFinalY
+
+
+  /**
+   * Shortcut for `[[https://developer.android.com/reference/android/widget/OverScroller.html#getStartX() getStartX()]]`
+   */
+  @inline def startX = basis.getStartX
+
+
+  /**
+   * Shortcut for `[[https://developer.android.com/reference/android/widget/OverScroller.html#getStartY() getStartY()]]`
+   */
+  @inline def startY = basis.getStartY
+
+
+}
+
+/**
+ * Automatically generated concrete helper class of `[[https://developer.android.com/reference/android/widget/OverScroller.html android.widget.OverScroller]]`.
+ */
+class SOverScroller()(implicit context: android.content.Context)
+    extends android.widget.OverScroller(context) with TraitOverScroller[SOverScroller] {
+
+  def basis = this
+
+}
+
+object SOverScroller {
+  def apply()(implicit context: android.content.Context): SOverScroller = {
+    val v = new SOverScroller
     v
   }
 
@@ -8445,7 +8568,6 @@ class SAutoCompleteTextView()(implicit context: android.content.Context, parentV
     extends android.widget.AutoCompleteTextView(context) with TraitAutoCompleteTextView[SAutoCompleteTextView] {
 
   def basis = this
-  override val parentViewGroup = parentVGroup
   def this(text: CharSequence)(implicit context: Context) = {
     this()
     this.text = text
@@ -8462,7 +8584,7 @@ class SAutoCompleteTextView()(implicit context: android.content.Context, parentV
     this.text = text
     this.setOnClickListener(onClickListener)
   }
-
+  override val parentViewGroup = parentVGroup
 
 }
 
@@ -8494,6 +8616,9 @@ object SAutoCompleteTextView {
     v.<<.parent.+=(v)
     v
   }
+
+
+
 
 }
 
@@ -8597,7 +8722,6 @@ class SExtractEditText()(implicit context: android.content.Context, parentVGroup
     extends android.inputmethodservice.ExtractEditText(context) with TraitExtractEditText[SExtractEditText] {
 
   def basis = this
-  override val parentViewGroup = parentVGroup
   def this(text: CharSequence)(implicit context: Context) = {
     this()
     this.text = text
@@ -8614,7 +8738,7 @@ class SExtractEditText()(implicit context: android.content.Context, parentVGroup
     this.text = text
     this.setOnClickListener(onClickListener)
   }
-
+  override val parentViewGroup = parentVGroup
 
 }
 
@@ -8646,6 +8770,9 @@ object SExtractEditText {
     v.<<.parent.+=(v)
     v
   }
+
+
+
 
 }
 
@@ -8720,8 +8847,8 @@ trait TraitKeyboardView[V <: android.inputmethodservice.KeyboardView] extends Tr
    */
   @inline def previewEnabled_=(p: Boolean) = { basis.setPreviewEnabled(p); basis }
 
-  @inline def  enablePreview               = { basis.setPreviewEnabled(true ); basis }
-  @inline def disablePreview               = { basis.setPreviewEnabled(false); basis }
+  @inline def  enablePreview()             = { basis.setPreviewEnabled(true ); basis }
+  @inline def disablePreview()             = { basis.setPreviewEnabled(false); basis }
 
 
   /**
@@ -8739,8 +8866,8 @@ trait TraitKeyboardView[V <: android.inputmethodservice.KeyboardView] extends Tr
    */
   @inline def proximityCorrectionEnabled_=(p: Boolean) = { basis.setProximityCorrectionEnabled(p); basis }
 
-  @inline def  enableProximityCorrection               = { basis.setProximityCorrectionEnabled(true ); basis }
-  @inline def disableProximityCorrection               = { basis.setProximityCorrectionEnabled(false); basis }
+  @inline def  enableProximityCorrection()             = { basis.setProximityCorrectionEnabled(true ); basis }
+  @inline def disableProximityCorrection()             = { basis.setProximityCorrectionEnabled(false); basis }
 
 
   /**
@@ -9187,8 +9314,8 @@ trait TraitGestureOverlayView[V <: android.gesture.GestureOverlayView] extends T
    */
   @inline def eventsInterceptionEnabled_=(p: Boolean) = { basis.setEventsInterceptionEnabled(p); basis }
 
-  @inline def  enableEventsInterception               = { basis.setEventsInterceptionEnabled(true ); basis }
-  @inline def disableEventsInterception               = { basis.setEventsInterceptionEnabled(false); basis }
+  @inline def  enableEventsInterception()             = { basis.setEventsInterceptionEnabled(true ); basis }
+  @inline def disableEventsInterception()             = { basis.setEventsInterceptionEnabled(false); basis }
 
 
   /**
@@ -9206,8 +9333,8 @@ trait TraitGestureOverlayView[V <: android.gesture.GestureOverlayView] extends T
    */
   @inline def fadeEnabled_=(p: Boolean) = { basis.setFadeEnabled(p); basis }
 
-  @inline def  enableFade               = { basis.setFadeEnabled(true ); basis }
-  @inline def disableFade               = { basis.setFadeEnabled(false); basis }
+  @inline def  enableFade()             = { basis.setFadeEnabled(true ); basis }
+  @inline def disableFade()             = { basis.setFadeEnabled(false); basis }
 
 
   /**
@@ -10297,8 +10424,6 @@ object SPaint {
 
 
 
-
-
 }
 
 
@@ -10381,6 +10506,7 @@ trait WidgetImplicits {
   @inline implicit def frameLayout2RichFrameLayout[V <: android.widget.FrameLayout](frameLayout: V) = new RichFrameLayout[V](frameLayout)
   @inline implicit def adapter2RichAdapter[V <: android.widget.Adapter](adapter: V) = new RichAdapter[V](adapter)
   @inline implicit def textView2RichTextView[V <: android.widget.TextView](textView: V) = new RichTextView[V](textView)
+  @inline implicit def overScroller2RichOverScroller[V <: android.widget.OverScroller](overScroller: V) = new RichOverScroller[V](overScroller)
   @inline implicit def viewFlipper2RichViewFlipper[V <: android.widget.ViewFlipper](viewFlipper: V) = new RichViewFlipper[V](viewFlipper)
   @inline implicit def scroller2RichScroller[V <: android.widget.Scroller](scroller: V) = new RichScroller[V](scroller)
   @inline implicit def simpleAdapter2RichSimpleAdapter[V <: android.widget.SimpleAdapter](simpleAdapter: V) = new RichSimpleAdapter[V](simpleAdapter)
