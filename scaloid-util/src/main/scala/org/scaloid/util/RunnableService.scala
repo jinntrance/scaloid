@@ -4,6 +4,7 @@ package org.scaloid.util
 /**
  * A service that can be start and stop.
  */
+@deprecated("Use PlayableConnecter instead.", "3.6")
 trait RunnableService {
   var running: Boolean = false
   var startTime = 0L
@@ -23,14 +24,10 @@ trait RunnableService {
 import org.scaloid.common._
 import java.util.{TimerTask, Timer}
 
-object UpdateEvent extends Enumeration {
-  type UpdateEvent = Value
-  val OTHERS, ON_CONNECTED, ON_HEARTBEAT, ON_STOPPED, ON_STARTED = Value
-}
 
 import UpdateEvent._
 
-
+@deprecated("Use PlayableConnecter instead.", "3.6")
 abstract class RunnableServiceConnector(activity: SActivity) {
   def runnableService: RunnableService
 
@@ -61,12 +58,14 @@ abstract class RunnableServiceConnector(activity: SActivity) {
   def updateUI(event: UpdateEvent)
 
   def start() {
+    if (runnableService.running) return
     runnableService.start()
     runOnUiThread(updateUI(ON_STARTED))
     startTimer()
   }
 
   def stop() {
+    if (!runnableService.running) return
     runnableService.stop()
     runOnUiThread(updateUI(ON_STOPPED))
     timer.cancel()
