@@ -27,7 +27,7 @@ object Configuration {
 
   @inline def landscape(implicit context: Context): Boolean = orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
 
-  @inline def square(implicit context: Context): Boolean = orientation == android.content.res.Configuration.ORIENTATION_SQUARE
+  @deprecated("", "") @inline def square(implicit context: Context): Boolean = orientation == android.content.res.Configuration.ORIENTATION_SQUARE
 
   @inline def long(implicit context: Context): Boolean = (conf.screenLayout & android.content.res.Configuration.SCREENLAYOUT_LONG_YES) != 0
 
@@ -47,7 +47,11 @@ object Configuration {
 
   val HDPI = DisplayMetrics.DENSITY_HIGH
 
-  val XHDPI = 320 // DisplayMetrics.DENSITY_XHIGH  // heigher than API level 9
+  val TVDPI = 213 // DisplayMetrics.DENSITY_TV // added in API level 13
 
-  val XXHDPI = 480 // DisplayMetrics.DENSITY_XHIGH  // heigher than API level 16
+  val XHDPI = DisplayMetrics.DENSITY_XHIGH
+
+  val XXHDPI = 480 // DisplayMetrics.DENSITY_XXHIGH // added in API level 16
+
+  val XXXHDPI = 640 // DisplayMetrics.DENSITY_XXXHIGH // added in API level 18
 }

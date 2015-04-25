@@ -9,7 +9,9 @@ import android.net._
 import android.preference._
 import android.widget._
 import android.view._
+import scala.concurrent.Future
 import scala.reflect._
+import scala.util.DynamicVariable
 
 trait AppHelpers {
 
@@ -49,6 +51,7 @@ trait AppHelpers {
   @inline def pendingActivity[T](implicit context: Context, ct: ClassTag[T]) =
     PendingIntent.getActivity(context, 0, SIntent[T], 0)
 
+  private[scaloid] val createBundle = new DynamicVariable[Option[android.os.Bundle]](None)
 
 }
 
@@ -76,6 +79,31 @@ trait ContentHelpers {
         onReceiveBody(context, intent)
       }
     }
+    reg.onRegister(ctx.registerReceiver(receiver, filter))
+    reg.onUnregister(ctx.unregisterReceiver(receiver))
+  }
+  /**
+   * When you register BroadcastReceiver with Context.registerReceiver() you have to unregister it to prevent memory leak.
+   * Trait UnregisterReceiver handles these chores for you.
+   * All you need to do is append the trait to your class.
+     {{{
+   class MyService extends SService with UnregisterReceiver {
+     def func() {
+       // ...
+       registerReceiver(receiver, intentFilter)
+       // Done! automatically unregistered at UnregisterReceiverService.onDestroy()
+     }
+   }
+     }}}
+   */
+  def broadcastReceiver(filterString: String)(onReceiveBody: => Any)(implicit ctx: Context, reg: Registerable) {
+    val receiver = new BroadcastReceiver {
+      def onReceive(context: Context, intent: Intent) {
+        onReceiveBody
+      }
+    }
+    val filter = new IntentFilter()
+    filter.addAction(filterString)
     reg.onRegister(ctx.registerReceiver(receiver, filter))
     reg.onUnregister(ctx.unregisterReceiver(receiver))
   }
@@ -153,8 +181,8 @@ trait WidgetHelpers {
    * Displays a dialog with spinner icon.
    * This method can be called from any threads.
    */
-  @inline def spinnerDialog(title: String, message: String)(implicit context: Context): ProgressDialog =
-    runOnUiThread(ProgressDialog.show(context, title, message, true))
+  @inline def spinnerDialog(title: CharSequence, message: CharSequence)(implicit context: Context): Future[ProgressDialog] =
+    evalOnUiThread(ProgressDialog.show(context, title, message, true))
 
 }
 

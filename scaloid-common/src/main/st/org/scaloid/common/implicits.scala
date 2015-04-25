@@ -8,6 +8,7 @@ import android.graphics.Movie
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view._
+import org.scaloid.common.RichIntent
 import language.implicitConversions
 
 private[scaloid] class UnitConversion(val ext: Double)(implicit context: Context) {
@@ -65,6 +66,7 @@ trait InterfaceImplicits {
       }
     }
 
+  @deprecated("Can cause confusion when this conversion is used for block of code", "3.6")
   implicit def lazy2ViewOnClickListener[F](f: => F): View.OnClickListener =
     new View.OnClickListener() {
       def onClick(view: View) {
@@ -93,12 +95,15 @@ trait InterfaceImplicits {
       }
     }
 
+  @deprecated("Can cause confusion when this conversion is used for block of code", "3.6")
   implicit def lazy2runnable[F](f: => F): Runnable =
     new Runnable() {
       def run() {
         f
       }
     }
+
+  implicit def intent2RichIntent(i: Intent) = new RichIntent(i)
 }
 object InterfaceImplicits extends InterfaceImplicits
 

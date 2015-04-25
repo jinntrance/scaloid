@@ -1,6 +1,6 @@
-/* 
+/*
  *
- * 
+ *
  *
  *
  * Less painful Android development with Scala
@@ -37,14 +37,15 @@ package org.scaloid.common
 
 import android.app._
 import android.content._
-import android.graphics.drawable.{Drawable, StateListDrawable}
+import android.graphics.drawable.{ Drawable, StateListDrawable }
 import android.os._
 import android.view._
 import android.view.WindowManager.LayoutParams._
 import scala.collection.mutable.ArrayBuffer
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 import Implicits._
 import scala.deprecated
-
 
 trait TraitActivity[V <: Activity] {
 
@@ -63,8 +64,8 @@ trait TraitActivity[V <: Activity] {
 
   def find[V <: View](id: Int): V = basis.findViewById(id).asInstanceOf[V]
 
-  def runOnUiThread (f: => Unit)  {
-    if(uiThread == Thread.currentThread) {
+  def runOnUiThread(f: => Unit) {
+    if (uiThread == Thread.currentThread) {
       f
     } else {
       handler.post(new Runnable() {
@@ -104,6 +105,18 @@ trait TraitActivity[V <: Activity] {
  *   onCreate(doSomething())
  * }}}
  *
+ * If the `Bundle` is needed in the `onCreate` call to restore saved state, a function can be supplied which accepts
+ * `Option[Bundle]`:
+ *
+ * {{{
+ *   onCreate { ob: Option[Bundle] =>
+ *     // do something for onCreate
+ *     ob.foreach { b =>
+ *       // do things if bundle was defined at onCreate time
+ *     }
+ *   }
+ * }}}
+ *
  * In contrast of method overriding, this shortcut can be called multiple times from different places of your code.
  *
  */
@@ -127,67 +140,76 @@ trait SActivity extends Activity with SContext with TraitActivity[SActivity] wit
 
   protected override def onCreate(b: Bundle) {
     super.onCreate(b)
-    onCreateBodies.foreach(_ ())
+    AppHelpers.createBundle.withValue(Option(b)) {
+      onCreateBodies.foreach(_())
+    }
+  }
+
+  def onCreate(body: Option[Bundle] => Any) = {
+    val el = { () =>
+      body(AppHelpers.createBundle.value)
+    }
+    onCreateBodies += el
+    el
   }
 
   override def onStart {
     super.onStart()
-    onStartBodies.foreach(_ ())
+    onStartBodies.foreach(_())
   }
 
   protected val onStartBodies = new ArrayBuffer[() => Any]
 
   def onStart(body: => Any) = {
-    val el = (() => body)
+    val el = body _
     onStartBodies += el
     el
   }
 
   override def onResume {
     super.onResume()
-    onResumeBodies.foreach(_ ())
+    onResumeBodies.foreach(_())
   }
 
   protected val onResumeBodies = new ArrayBuffer[() => Any]
 
   def onResume(body: => Any) = {
-    val el = (() => body)
+    val el = body _
     onResumeBodies += el
     el
   }
 
   override def onPause {
-    onPauseBodies.foreach(_ ())
+    onPauseBodies.foreach(_())
     super.onPause()
   }
 
   protected val onPauseBodies = new ArrayBuffer[() => Any]
 
   def onPause(body: => Any) = {
-    val el = (() => body)
+    val el = body _
     onPauseBodies += el
     el
   }
 
   override def onStop {
-    onStopBodies.foreach(_ ())
+    onStopBodies.foreach(_())
     super.onStop()
   }
 
   protected val onStopBodies = new ArrayBuffer[() => Any]
 
   def onStop(body: => Any) = {
-    val el = (() => body)
+    val el = body _
     onStopBodies += el
     el
   }
 
   override def onDestroy {
-    onDestroyBodies.foreach(_ ())
+    onDestroyBodies.foreach(_())
     super.onDestroy()
   }
 }
-
 
 /**
  * Enriched trait of the class android.app.Service. To enable Scaloid support for subclasses of android.app.Service, extend this trait.
@@ -201,11 +223,11 @@ trait SService extends Service with SContext with Destroyable with Creatable wit
 
   override def onCreate() {
     super.onCreate()
-    onCreateBodies.foreach(_ ())
+    onCreateBodies.foreach(_())
   }
 
   override def onDestroy() {
-    onDestroyBodies.foreach(_ ())
+    onDestroyBodies.foreach(_())
     super.onDestroy()
   }
 }
@@ -249,7 +271,6 @@ trait LocalService extends SService {
 class AlertDialogBuilder(_title: CharSequence = null, _message: CharSequence = null)(implicit context: Context) extends AlertDialog.Builder(context) {
   if (_title != null) setTitle(_title)
   if (_message != null) setMessage(_message)
-
 
   @inline def positiveButton(name: CharSequence = android.R.string.yes, onClick: => Unit = {}): AlertDialogBuilder =
     positiveButton(name, (_, _) => {
@@ -304,8 +325,9 @@ class AlertDialogBuilder(_title: CharSequence = null, _message: CharSequence = n
   /**
    * Shows the dialog that is currently building.
    * Because this method runs runOnUiThread internally, you can call this method from any thread.
+   * This method blocks until the dialog has been built in the UI thread.
    */
-  override def show():AlertDialog = runOnUiThread(super.show())
+  override def show(): AlertDialog = Await.result(evalOnUiThread(super.show()), Duration.Inf)
 }
 
 /**

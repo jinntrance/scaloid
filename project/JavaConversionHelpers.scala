@@ -30,6 +30,7 @@ trait JavaConversionHelpers {
         ).nonEmpty
       case None => false
     }
+  def isDeprecated(e: AnnotatedElement) = e.isAnnotationPresent(classOf[java.lang.Deprecated])
 
   def methodSignature(m: Method): String = List(
     m.getName,
@@ -57,20 +58,20 @@ trait JavaConversionHelpers {
         tpe match {
           case null => throw new Error("Property cannot be null")
           case ga: GenericArrayType =>
-            ScalaType("Array", Seq(step(ga.getGenericComponentType, nextLevel)))
+            ScalaType("Array", List(step(ga.getGenericComponentType, nextLevel)))
           case p: ParameterizedType =>
             ScalaType(
               step(p.getRawType, nextLevel).name,
-              p.getActualTypeArguments.map(step(_, nextLevel)).toSeq
+              p.getActualTypeArguments.map(step(_, nextLevel)).toList
             )
           case t: TypeVariable[_] =>
-            ScalaType(t.getName, Nil, bounds = t.getBounds.map(step(_, nextLevel)).toSeq, isVar = true)
+            ScalaType(t.getName, Nil, bounds = t.getBounds.map(step(_, nextLevel)).toList, isVar = true)
           case w: WildcardType =>
-            val bs = w.getUpperBounds.map(step(_, nextLevel)).toSeq.filter(_.name != "Any")
+            val bs = w.getUpperBounds.map(step(_, nextLevel)).toList.filter(_.name != "Any")
             ScalaType("_", Nil, bounds = bs)
           case c: Class[_] => {
             if (c.isArray) {
-              ScalaType("Array", Seq(step(c.getComponentType, nextLevel)))
+              ScalaType("Array", List(step(c.getComponentType, nextLevel)))
             } else if (c.isPrimitive) {
               ScalaType(c.getName match {
                 case "void" => "Unit"
@@ -80,8 +81,8 @@ trait JavaConversionHelpers {
               ScalaType("Any")
             } else {
               ScalaType(
-                c.getName.replace("$", innerClassDelim(c)),
-                c.getTypeParameters.map(step(_, nextLevel)).toSeq
+                name = c.getName.replace("$", innerClassDelim(c)),
+                params = c.getTypeParameters.map(step(_, nextLevel)).toList
               )
             }
           }

@@ -9,6 +9,8 @@ import android.os._
 import android.view._
 import android.view.WindowManager.LayoutParams._
 import scala.collection.mutable.ArrayBuffer
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 import Implicits._
 import scala.deprecated
 
@@ -22,7 +24,7 @@ trait TraitActivity[V <: Activity] {
 
   @inline def contentView(p: View) = contentView_=(p)
 
-  $noGetter("contentView")$
+  @inline def contentView(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'contentView'")
 
   def intent = Some[Intent](basis.getIntent)
 
@@ -71,6 +73,18 @@ trait TraitActivity[V <: Activity] {
  *   onCreate(doSomething())
  * }}}
  *
+ * If the `Bundle` is needed in the `onCreate` call to restore saved state, a function can be supplied which accepts
+ * `Option[Bundle]`:
+ *
+ * {{{
+ *   onCreate { ob: Option[Bundle] =>
+ *     // do something for onCreate
+ *     ob.foreach { b =>
+ *       // do things if bundle was defined at onCreate time
+ *     }
+ *   }
+ * }}}
+ *
  * In contrast of method overriding, this shortcut can be called multiple times from different places of your code.
  *
  */
@@ -94,7 +108,17 @@ trait SActivity extends Activity with SContext with TraitActivity[SActivity] wit
 
   protected override def onCreate(b: Bundle) {
     super.onCreate(b)
-    onCreateBodies.foreach(_ ())
+    AppHelpers.createBundle.withValue(Option(b)) {
+      onCreateBodies.foreach(_ ())
+    }
+  }
+
+  def onCreate(body: Option[Bundle] => Any) = {
+    val el = { () =>
+      body(AppHelpers.createBundle.value)
+    }
+    onCreateBodies += el
+    el
   }
 
   override def onStart {
@@ -105,7 +129,7 @@ trait SActivity extends Activity with SContext with TraitActivity[SActivity] wit
   protected val onStartBodies = new ArrayBuffer[() => Any]
 
   def onStart(body: => Any) = {
-    val el = (() => body)
+    val el = body _
     onStartBodies += el
     el
   }
@@ -118,7 +142,7 @@ trait SActivity extends Activity with SContext with TraitActivity[SActivity] wit
   protected val onResumeBodies = new ArrayBuffer[() => Any]
 
   def onResume(body: => Any) = {
-    val el = (() => body)
+    val el = body _
     onResumeBodies += el
     el
   }
@@ -131,7 +155,7 @@ trait SActivity extends Activity with SContext with TraitActivity[SActivity] wit
   protected val onPauseBodies = new ArrayBuffer[() => Any]
 
   def onPause(body: => Any) = {
-    val el = (() => body)
+    val el = body _
     onPauseBodies += el
     el
   }
@@ -144,7 +168,7 @@ trait SActivity extends Activity with SContext with TraitActivity[SActivity] wit
   protected val onStopBodies = new ArrayBuffer[() => Any]
 
   def onStop(body: => Any) = {
-    val el = (() => body)
+    val el = body _
     onStopBodies += el
     el
   }
@@ -271,8 +295,9 @@ class AlertDialogBuilder(_title: CharSequence = null, _message: CharSequence = n
   /**
    * Shows the dialog that is currently building.
    * Because this method runs runOnUiThread internally, you can call this method from any thread.
+   * This method blocks until the dialog has been built in the UI thread.
    */
-  override def show():AlertDialog = runOnUiThread(super.show())
+  override def show(): AlertDialog = Await.result(evalOnUiThread(super.show()), Duration.Inf)
 }
 
 /**
