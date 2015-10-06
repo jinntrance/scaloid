@@ -4,16 +4,13 @@ import Keys._
 object Dependencies {
   val android = "com.google.android" % "android" % "4.1.1.4" % "provided"
   val android_support_v4 = "com.google.android" % "support-v4" % "r7" % "provided"
-  val scaloidVersion = "4.0-SNAPSHOT"
+  val scaloidVersion = "4.1-SNAPSHOT"
   val scaloid = "org.scaloid" %% "scaloid" % scaloidVersion
 
   val robolectric = "org.robolectric" % "robolectric" % "2.4" % "test"
-  val scalaTest = "org.scalatest" %% "scalatest" % "2.2.1" % "test"
+  val scalaTest = "org.scalatest" %% "scalatest" % "2.2.5" % "test"
   val junit = "junit" % "junit" % "4.12" % "test"
   val junitInterface = "com.novocode" % "junit-interface" % "0.11" % "test"
-
-  //Robolectric supports only API Level 16, 17, and 18
-  val android16 = "com.google.android" % "android" % "4.1.1.4" % "test"
 }
 
 object ScaloidBuild extends Build {
@@ -26,8 +23,8 @@ object ScaloidBuild extends Build {
     organizationHomepage := Some(new URL("http://blog.scaloid.org")),
     description := "Less Painful Android Development with Scala",
     startYear := Some(2012),
-    scalaVersion := "2.11.6",
-    crossScalaVersions := Seq("2.11.6"), // only 2.11.x for now
+    scalaVersion := "2.11.7",
+    crossScalaVersions := Seq("2.11.7"), // only 2.11.x for now
     version := scaloidVersion,
     publishMavenStyle := true,
     publishTo <<= version {
@@ -90,7 +87,7 @@ object ScaloidBuild extends Build {
     .settings(name := "scaloid", exportJars := true)
     .settings(basicSettings: _*)
     .settings(scaloidSettings: _*)
-    .settings(libraryDependencies ++= Seq(robolectric, scalaTest, junit, junitInterface, android16),
+    .settings(libraryDependencies ++= Seq(robolectric, scalaTest, junit, junitInterface, android),
       libraryDependencies <+= (scalaVersion)("org.scala-lang" % "scala-reflect" % _))
     //RobolectricTestRunner requires "fork" to reflect test code changes without sbt restart.
     .settings(fork in Test := true)

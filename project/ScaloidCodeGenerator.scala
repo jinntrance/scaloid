@@ -19,12 +19,12 @@ class ScaloidCodeGenerator(cls: AndroidClass, companionTemplate: CompanionTempla
 
   def richClassDef =
     s"""$richClassScalaDoc
-       |${deprecated}class Rich${cls.name}[V <: ${genType(cls.tpe, erased = true)}](val basis: V) extends $helperTraitName[V]
+       |${deprecated}class Rich${cls.name}[This <: ${genType(cls.tpe, erased = true)}](val basis: This) extends $helperTraitName[This]
        |
        |$helperTraitScalaDoc
-       |${deprecated}trait $helperTraitName[V <: ${genType(cls.tpe, erased = true)}]$extendClause {
+       |${deprecated}trait $helperTraitName[This <: ${genType(cls.tpe, erased = true)}]$extendClause {
        |
-       |  ${if (cls.parentType.isEmpty) "def basis: V" else ""}
+       |  ${if (cls.parentType.isEmpty) "def basis: This" else ""}
        |
        |  ${ companionTemplate.safeRender(cls.name + "_traitBody") }
        |
@@ -39,7 +39,7 @@ class ScaloidCodeGenerator(cls: AndroidClass, companionTemplate: CompanionTempla
   def helperTraitName(name: String): String = "Trait"+ StringUtils.simpleName(name)
 
   def extendClause = {
-    val parent = cls.parentType.map(p => helperTraitName(p.name) + "[V]")
+    val parent = cls.parentType.map(p => helperTraitName(p.name) + "[This]")
     val mixin = companionTemplate.get(cls.name + "_mixin")
     (parent :: mixin :: Nil).flatten match {
       case Nil => ""
@@ -49,7 +49,7 @@ class ScaloidCodeGenerator(cls: AndroidClass, companionTemplate: CompanionTempla
 
   def prefixedClassDef = {
     val name = cls.name
-    if (cls.hasBlankConstructor || CustomClassBodies.toMap.isDefinedAt(name) || FullConstructors.toMap.isDefinedAt(name))
+    if (cls.hasBlankConstructor || CustomClassBodies.toMap.isDefinedAt(name) || companionObjectBodies.toMap.isDefinedAt(name))
       s"""$prefixedClassScalaDoc
          |${deprecated}class S$name$customClassGenerics($customClassExplicitArgs)$classImplicitArgs
          |    extends $baseClassInstance with $helperTraitName[S$name$customSimpleClassGenerics] {
@@ -70,7 +70,7 @@ class ScaloidCodeGenerator(cls: AndroidClass, companionTemplate: CompanionTempla
       if (! cls.hasBlankConstructor) ""
       else new ConstructorGenerator(cls.constructors.head).constructor
 
-    s"""${deprecated}object $sClassName {
+    s"""${deprecated}object $sClassName$customCompanionSuperclass {
        |  $con
        |
        |  $customFullConstructors
@@ -81,11 +81,11 @@ class ScaloidCodeGenerator(cls: AndroidClass, companionTemplate: CompanionTempla
 
   // Constructors
 
-  def customConstTypeParams = predefinedMapping(ConstTypeParams)
+  def customConstTypeParams = predefinedMapping(constTypeParams)
 
-  def customClassGenerics = predefinedMapping(GenericArgs)
+  def customClassGenerics = predefinedMapping(genericArgs)
 
-  def customSimpleClassGenerics = predefinedMapping(SimpleGenericArgs)
+  def customSimpleClassGenerics = predefinedMapping(simpleGenericArgs)
 
   def customClassExplicitArgs = predefinedMapping(ClassExplicitArgs)
 
@@ -99,7 +99,9 @@ class ScaloidCodeGenerator(cls: AndroidClass, companionTemplate: CompanionTempla
 
   def customConstImplicitBodies = predefinedMapping(ConstImplicitBodies, separator = "\n")
 
-  def customFullConstructors = predefinedMapping(FullConstructors, separator = "\n")
+  def customFullConstructors = predefinedMapping(companionObjectBodies, separator = "\n")
+
+  def customCompanionSuperclass = predefinedMapping(companionObjectExtends, separator = "\n")
 
   private def predefinedMapping(mappings: PredefinedCodeMappings, separator: String = ", ") =
     mappings.collect {
@@ -199,8 +201,8 @@ class ScaloidCodeGenerator(cls: AndroidClass, companionTemplate: CompanionTempla
   def commonListener(l: AndroidListener, args: String = "") = {
     val dp = if (l.isDeprecated) deprecatedDecl else ""
     dp + "@inline def " + l.name + (
-      if (l.retType.name == "Unit") s"[U](f: $args => U): V = {"
-      else s"(f: $args => ${genType(l.retType)}): V = {"
+      if (l.retType.name == "Unit") s"[U](f: $args => U): This = {"
+      else s"(f: $args => ${genType(l.retType)}): This = {"
     ) + s"\n  basis.${l.setter}(new ${l.callbackClassName} {"
   }
 
@@ -366,23 +368,23 @@ object ScaloidCodeGenerator {
   type PredefinedCodeMapping = (String, (AndroidClass => String))
   type PredefinedCodeMappings = Seq[PredefinedCodeMapping]
 
-  val ConstTypeParams: PredefinedCodeMappings = List(
+  val constTypeParams: PredefinedCodeMappings = List(
     "View" -> { cls =>
       val sClassName = "S"+ cls.name
       s"LP <: ViewGroupLayoutParams[_, $sClassName]"
     }
   )
 
-  val GenericArgs: PredefinedCodeMappings = List(
+  val genericArgs: PredefinedCodeMappings = List(
     "ArrayAdapter" -> { _ => "[V <: android.view.View, T <: AnyRef]" }
   )
 
-  val SimpleGenericArgs: PredefinedCodeMappings = List(
+  val simpleGenericArgs: PredefinedCodeMappings = List(
     "ArrayAdapter" -> { _ => "[V, T]" }
   )
 
   val ClassExplicitArgs: PredefinedCodeMappings = List(
-    "ArrayAdapter" -> { _ => "items: Array[T], textViewResourceId: Int = android.R.layout.simple_spinner_item" }
+    "ArrayAdapter" -> { _ => "items: java.util.List[T], textViewResourceId: Int = android.R.layout.simple_spinner_item" }
   )
 
   val BaseClassArgs: PredefinedCodeMappings = List(
@@ -401,17 +403,17 @@ object ScaloidCodeGenerator {
           |  this.text = text
           |}
           |
-          |def this(text: CharSequence, onClickListener: View => Unit)(implicit context: Context) = {
+          |def this(text: CharSequence, ignore: Nothing)(implicit context: Context) = this() // Just for implicit conversion of ViewOnClickListener
+          |
+          |def this(text: CharSequence, onClickListener: ViewOnClickListener, interval: Int)(implicit context: Context) = {
           |  this()
           |  this.text = text
-          |  this.setOnClickListener(onClickListener)
+          |  this.setOnClickListener(onClickListener.onClickListener)
+          |  if(interval >= 0) onPressAndHold(interval, onClickListener.func(this))
           |}
           |
-          |def this(text: CharSequence, onClickListener: OnClickListener)(implicit context: Context) = {
-          |  this()
-          |  this.text = text
-          |  this.setOnClickListener(onClickListener)
-          |}
+          |def this(text: CharSequence, onClickListener: ViewOnClickListener)(implicit context: Context) = this(text, onClickListener, -1)
+          |
       """.stripMargin
     },
     "ImageView" -> { _ =>
@@ -420,17 +422,17 @@ object ScaloidCodeGenerator {
           |  this.imageDrawable = imageResource
           |}
           |
-          |def this(imageResource: android.graphics.drawable.Drawable, onClickListener: View => Unit)(implicit context: Context) = {
+          |def this(imageResource: android.graphics.drawable.Drawable, ignore: Nothing)(implicit context: Context) = this() // Just for implicit conversion of ViewOnClickListener
+          |
+          |def this(imageResource: android.graphics.drawable.Drawable, onClickListener: ViewOnClickListener, interval: Int)(implicit context: Context) = {
           |  this()
           |  this.imageDrawable = imageResource
-          |  this.setOnClickListener(onClickListener)
+          |  this.setOnClickListener(onClickListener.onClickListener)
+          |  if(interval >= 0) onPressAndHold(interval, onClickListener.func(this))
           |}
           |
-          |def this(imageResource: android.graphics.drawable.Drawable, onClickListener: OnClickListener)(implicit context: Context) = {
-          |  this()
-          |  this.imageDrawable = imageResource
-          |  this.setOnClickListener(onClickListener)
-          |}
+          |def this(imageResource: android.graphics.drawable.Drawable, onClickListener: ViewOnClickListener)(implicit context: Context) = this(imageResource, onClickListener, -1)
+          |
           |""".stripMargin
     }
   )
@@ -443,57 +445,22 @@ object ScaloidCodeGenerator {
     "View" -> { _ => "v.<<.parent.+=(v)" }
   )
 
-  val FullConstructors: PredefinedCodeMappings = List(
+  val companionObjectExtends: PredefinedCodeMappings = List(
+  "TextView" -> { cls =>
+    val sClassName = "S"+ cls.name
+    s" extends TextViewCompanion[$sClassName]"},
+  "ImageView" -> { cls =>
+    val sClassName = "S"+ cls.name
+    s" extends ImageViewCompanion[$sClassName]"}
+  )
+
+  val companionObjectBodies: PredefinedCodeMappings = List(
     "TextView" -> { cls =>
       val sClassName = "S"+ cls.name
-      s"""|def apply[LP <: ViewGroupLayoutParams[_, $sClassName]](txt: CharSequence)
-          |                                                       (implicit context: Context, defaultLayoutParam: ($sClassName) => LP): $sClassName =  {
-          |  val v = new $sClassName
-          |  v text txt
-          |  v.<<.parent.+=(v)
-          |  v
-          |}
-          |
-          |def apply[LP <: ViewGroupLayoutParams[_, $sClassName]](text: CharSequence, onClickListener: (View) => Unit)
-          |    (implicit context: Context, defaultLayoutParam: ($sClassName) => LP): $sClassName = {
-          |  apply(text, func2ViewOnClickListener(onClickListener))
-          |}
-          |
-          |def apply[LP <: ViewGroupLayoutParams[_, $sClassName]](text: CharSequence, onClickListener: OnClickListener)
-          |    (implicit context: Context, defaultLayoutParam: ($sClassName) => LP): $sClassName = {
-          |  val v = new $sClassName
-          |  v.text = text
-          |  v.setOnClickListener(onClickListener)
-          |  v.<<.parent.+=(v)
-          |  v
-          |}
-          |""".stripMargin
-    },
+      s"def create[LP <: ViewGroupLayoutParams[_, $sClassName]]()(implicit context: Context, defaultLayoutParam: $sClassName => LP) = new $sClassName()"},
     "ImageView" -> { cls =>
       val sClassName = "S"+ cls.name
-      s"""def apply[LP <: ViewGroupLayoutParams[_, $sClassName]](imageResource: android.graphics.drawable.Drawable)
-          |    (implicit context: Context, defaultLayoutParam: ($sClassName) => LP): $sClassName = {
-          |  val v = new $sClassName
-          |  v.imageDrawable = imageResource
-          |  v.<<.parent.+=(v)
-          |  v
-          |}
-          |
-          |def apply[LP <: ViewGroupLayoutParams[_, $sClassName]](imageResource: android.graphics.drawable.Drawable, onClickListener: (View) => Unit)
-          |    (implicit context: Context, defaultLayoutParam: ($sClassName) => LP): $sClassName = {
-          |  apply(imageResource, func2ViewOnClickListener(onClickListener))
-          |}
-          |
-          |def apply[LP <: ViewGroupLayoutParams[_, $sClassName]](imageResource: android.graphics.drawable.Drawable, onClickListener: OnClickListener)
-          |    (implicit context: Context, defaultLayoutParam: ($sClassName) => LP): $sClassName = {
-          |  val v = new $sClassName
-          |  v.imageDrawable = imageResource
-          |  v.setOnClickListener(onClickListener)
-          |  v.<<.parent.+=(v)
-          |  v
-          |}
-       """.stripMargin
-    },
+      s"def create[LP <: ViewGroupLayoutParams[_, $sClassName]]()(implicit context: Context, defaultLayoutParam: $sClassName => LP) = new $sClassName()"},
     "Paint" -> { cls =>
       val sClassName = "S" + cls.name
       s"""|def apply(color: Int): $sClassName = {
@@ -505,13 +472,15 @@ object ScaloidCodeGenerator {
     },
     "ArrayAdapter" -> { cls =>
       val sClassName = "S" + cls.name
-      s"""|def apply[T <: AnyRef : Manifest](items: T*)(implicit context: Context): $sClassName[TextView, T] = new $sClassName[TextView, T](items.toArray)
+      s"""|def apply[T <: AnyRef : Manifest](items: T*)(implicit context: Context): $sClassName[TextView, T] = new $sClassName[TextView, T](java.util.Arrays.asList[T](items:_*))
           |
-          |def apply[T <: AnyRef : Manifest](textViewResourceId: Int, items: T*)(implicit context: Context): $sClassName[TextView, T] = new $sClassName[TextView, T](items.toArray, textViewResourceId)
+          |def apply[T <: AnyRef : Manifest](textViewResourceId: Int, items: T*)(implicit context: Context): $sClassName[TextView, T] = new $sClassName[TextView, T](java.util.Arrays.asList(items:_*), textViewResourceId)
           |
-          |def apply[T <: AnyRef](items: Array[T])(implicit context: Context): $sClassName[TextView, T] = new $sClassName[TextView, T](items)
+          |def apply[T <: AnyRef](items: Array[T])(implicit context: Context): $sClassName[TextView, T] = new $sClassName[TextView, T](java.util.Arrays.asList(items:_*))
           |
-          |def apply[T <: AnyRef](textViewResourceId: Int, items: Array[T])(implicit context: Context): $sClassName[TextView, T] = new $sClassName[TextView, T](items, textViewResourceId)
+          |def apply[T <: AnyRef](items: java.util.List[T])(implicit context: Context): $sClassName[TextView, T] = new $sClassName[TextView, T](items)
+          |
+          |def apply[T <: AnyRef](textViewResourceId: Int, items: Array[T])(implicit context: Context): $sClassName[TextView, T] = new $sClassName[TextView, T](java.util.Arrays.asList(items:_*), textViewResourceId)
           |""".stripMargin
     }
   )
@@ -523,7 +492,7 @@ object ScaloidCodeGenerator {
       | *
       | *
       | *
-      | * Less painful Android development with Scala
+      | * Scaloid: Simpler Android
       | *
       | * http://scaloid.org
       | *
@@ -532,9 +501,9 @@ object ScaloidCodeGenerator {
       | *
       | *
       | *
-      | * Copyright 2013 Sung-Ho Lee and Scaloid team
+      | * Copyright 2013 Sung-Ho Lee and Scaloid contributors
       | *
-      | * Sung-Ho Lee and Scaloid team licenses this file to you under the Apache License,
+      | * Sung-Ho Lee and Scaloid contributors licenses this file to you under the Apache License,
       | * version 2.0 (the "License"); you may not use this file except in compliance
       | * with the License. You may obtain a copy of the License at:
       | *

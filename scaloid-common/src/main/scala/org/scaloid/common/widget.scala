@@ -3,7 +3,7 @@
  *
  *
  *
- * Less painful Android development with Scala
+ * Scaloid: Simpler Android
  *
  * http://scaloid.org
  *
@@ -12,9 +12,9 @@
  *
  *
  *
- * Copyright 2013 Sung-Ho Lee and Scaloid team
+ * Copyright 2013 Sung-Ho Lee and Scaloid contributors
  *
- * Sung-Ho Lee and Scaloid team licenses this file to you under the Apache License,
+ * Sung-Ho Lee and Scaloid contributors licenses this file to you under the Apache License,
  * version 2.0 (the "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at:
  *
@@ -48,14 +48,14 @@ import WidgetImplicits._
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/PopupWindow.html android.widget.PopupWindow]]`.
  */
-class RichPopupWindow[V <: android.widget.PopupWindow](val basis: V) extends TraitPopupWindow[V]
+class RichPopupWindow[This <: android.widget.PopupWindow](val basis: This) extends TraitPopupWindow[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/PopupWindow.html android.widget.PopupWindow]]`. This contains several property accessors.
  */
-trait TraitPopupWindow[V <: android.widget.PopupWindow] {
+trait TraitPopupWindow[This <: android.widget.PopupWindow] {
 
-  def basis: V
+  def basis: This
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/PopupWindow.html#getAnimationStyle() getAnimationStyle()]]`
@@ -269,7 +269,7 @@ trait TraitPopupWindow[V <: android.widget.PopupWindow] {
    */
   @inline def width_=(p: Int) = { basis.setWidth(p); basis }
 
-  @inline def onDismiss[U](f: => U): V = {
+  @inline def onDismiss[U](f: => U): This = {
     basis.setOnDismissListener(new android.widget.PopupWindow.OnDismissListener {
       def onDismiss(): Unit = { f }
     })
@@ -300,12 +300,12 @@ object SPopupWindow {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ArrayAdapter.html android.widget.ArrayAdapter[_]]]`.
  */
-class RichArrayAdapter[V <: android.widget.ArrayAdapter[_]](val basis: V) extends TraitArrayAdapter[V]
+class RichArrayAdapter[This <: android.widget.ArrayAdapter[_]](val basis: This) extends TraitArrayAdapter[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ArrayAdapter.html android.widget.ArrayAdapter[_]]]`. This contains several property accessors.
  */
-trait TraitArrayAdapter[V <: android.widget.ArrayAdapter[_]] extends TraitBaseAdapter[V] {
+trait TraitArrayAdapter[This <: android.widget.ArrayAdapter[_]] extends TraitBaseAdapter[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/ArrayAdapter.html#getContext() getContext()]]`
@@ -346,7 +346,7 @@ trait TraitArrayAdapter[V <: android.widget.ArrayAdapter[_]] extends TraitBaseAd
 /**
  * Automatically generated concrete helper class of `[[https://developer.android.com/reference/android/widget/ArrayAdapter.html android.widget.ArrayAdapter[_]]]`.
  */
-class SArrayAdapter[V <: android.view.View, T <: AnyRef](items: Array[T], textViewResourceId: Int = android.R.layout.simple_spinner_item)(implicit context: android.content.Context)
+class SArrayAdapter[V <: android.view.View, T <: AnyRef](items: java.util.List[T], textViewResourceId: Int = android.R.layout.simple_spinner_item)(implicit context: android.content.Context)
     extends android.widget.ArrayAdapter[T](context, textViewResourceId, items) with TraitArrayAdapter[SArrayAdapter[V, T]] {
 
   def basis = this
@@ -386,25 +386,27 @@ class SArrayAdapter[V <: android.view.View, T <: AnyRef](items: Array[T], textVi
 
 object SArrayAdapter {
 
-  def apply[T <: AnyRef: Manifest](items: T*)(implicit context: Context): SArrayAdapter[TextView, T] = new SArrayAdapter[TextView, T](items.toArray)
+  def apply[T <: AnyRef: Manifest](items: T*)(implicit context: Context): SArrayAdapter[TextView, T] = new SArrayAdapter[TextView, T](java.util.Arrays.asList[T](items: _*))
 
-  def apply[T <: AnyRef: Manifest](textViewResourceId: Int, items: T*)(implicit context: Context): SArrayAdapter[TextView, T] = new SArrayAdapter[TextView, T](items.toArray, textViewResourceId)
+  def apply[T <: AnyRef: Manifest](textViewResourceId: Int, items: T*)(implicit context: Context): SArrayAdapter[TextView, T] = new SArrayAdapter[TextView, T](java.util.Arrays.asList(items: _*), textViewResourceId)
 
-  def apply[T <: AnyRef](items: Array[T])(implicit context: Context): SArrayAdapter[TextView, T] = new SArrayAdapter[TextView, T](items)
+  def apply[T <: AnyRef](items: Array[T])(implicit context: Context): SArrayAdapter[TextView, T] = new SArrayAdapter[TextView, T](java.util.Arrays.asList(items: _*))
 
-  def apply[T <: AnyRef](textViewResourceId: Int, items: Array[T])(implicit context: Context): SArrayAdapter[TextView, T] = new SArrayAdapter[TextView, T](items, textViewResourceId)
+  def apply[T <: AnyRef](items: java.util.List[T])(implicit context: Context): SArrayAdapter[TextView, T] = new SArrayAdapter[TextView, T](items)
+
+  def apply[T <: AnyRef](textViewResourceId: Int, items: Array[T])(implicit context: Context): SArrayAdapter[TextView, T] = new SArrayAdapter[TextView, T](java.util.Arrays.asList(items: _*), textViewResourceId)
 
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/AbsoluteLayout.html android.widget.AbsoluteLayout]]`.
  */
-@deprecated("", "") class RichAbsoluteLayout[V <: android.widget.AbsoluteLayout](val basis: V) extends TraitAbsoluteLayout[V]
+@deprecated("", "") class RichAbsoluteLayout[This <: android.widget.AbsoluteLayout](val basis: This) extends TraitAbsoluteLayout[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/AbsoluteLayout.html android.widget.AbsoluteLayout]]`. This contains several property accessors.
  */
-@deprecated("", "") trait TraitAbsoluteLayout[V <: android.widget.AbsoluteLayout] extends TraitViewGroup[V] {
+@deprecated("", "") trait TraitAbsoluteLayout[This <: android.widget.AbsoluteLayout] extends TraitViewGroup[This] {
 
 }
 
@@ -431,26 +433,26 @@ object SArrayAdapter {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/SpinnerAdapter.html android.widget.SpinnerAdapter]]`.
  */
-class RichSpinnerAdapter[V <: android.widget.SpinnerAdapter](val basis: V) extends TraitSpinnerAdapter[V]
+class RichSpinnerAdapter[This <: android.widget.SpinnerAdapter](val basis: This) extends TraitSpinnerAdapter[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/SpinnerAdapter.html android.widget.SpinnerAdapter]]`. This contains several property accessors.
  */
-trait TraitSpinnerAdapter[V <: android.widget.SpinnerAdapter] {
+trait TraitSpinnerAdapter[This <: android.widget.SpinnerAdapter] {
 
-  def basis: V
+  def basis: This
 
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ImageButton.html android.widget.ImageButton]]`.
  */
-class RichImageButton[V <: android.widget.ImageButton](val basis: V) extends TraitImageButton[V]
+class RichImageButton[This <: android.widget.ImageButton](val basis: This) extends TraitImageButton[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ImageButton.html android.widget.ImageButton]]`. This contains several property accessors.
  */
-trait TraitImageButton[V <: android.widget.ImageButton] extends TraitImageView[V] {
+trait TraitImageButton[This <: android.widget.ImageButton] extends TraitImageView[This] {
 
 }
 
@@ -468,57 +470,38 @@ class SImageButton()(implicit context: android.content.Context, parentVGroup: Tr
     this.imageDrawable = imageResource
   }
 
-  def this(imageResource: android.graphics.drawable.Drawable, onClickListener: View => Unit)(implicit context: Context) = {
+  def this(imageResource: android.graphics.drawable.Drawable, ignore: Nothing)(implicit context: Context) = this() // Just for implicit conversion of ViewOnClickListener
+
+  def this(imageResource: android.graphics.drawable.Drawable, onClickListener: ViewOnClickListener, interval: Int)(implicit context: Context) = {
     this()
     this.imageDrawable = imageResource
-    this.setOnClickListener(onClickListener)
+    this.setOnClickListener(onClickListener.onClickListener)
+    if (interval >= 0) onPressAndHold(interval, onClickListener.func(this))
   }
 
-  def this(imageResource: android.graphics.drawable.Drawable, onClickListener: OnClickListener)(implicit context: Context) = {
-    this()
-    this.imageDrawable = imageResource
-    this.setOnClickListener(onClickListener)
-  }
+  def this(imageResource: android.graphics.drawable.Drawable, onClickListener: ViewOnClickListener)(implicit context: Context) = this(imageResource, onClickListener, -1)
 
 }
 
-object SImageButton {
+object SImageButton extends ImageViewCompanion[SImageButton] {
   def apply[LP <: ViewGroupLayoutParams[_, SImageButton]]()(implicit context: android.content.Context, defaultLayoutParam: SImageButton => LP): SImageButton = {
     val v = new SImageButton
     v.<<.parent.+=(v)
     v
   }
 
-  def apply[LP <: ViewGroupLayoutParams[_, SImageButton]](imageResource: android.graphics.drawable.Drawable)(implicit context: Context, defaultLayoutParam: (SImageButton) => LP): SImageButton = {
-    val v = new SImageButton
-    v.imageDrawable = imageResource
-    v.<<.parent.+=(v)
-    v
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SImageButton]](imageResource: android.graphics.drawable.Drawable, onClickListener: (View) => Unit)(implicit context: Context, defaultLayoutParam: (SImageButton) => LP): SImageButton = {
-    apply(imageResource, func2ViewOnClickListener(onClickListener))
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SImageButton]](imageResource: android.graphics.drawable.Drawable, onClickListener: OnClickListener)(implicit context: Context, defaultLayoutParam: (SImageButton) => LP): SImageButton = {
-    val v = new SImageButton
-    v.imageDrawable = imageResource
-    v.setOnClickListener(onClickListener)
-    v.<<.parent.+=(v)
-    v
-  }
-
+  def create[LP <: ViewGroupLayoutParams[_, SImageButton]]()(implicit context: Context, defaultLayoutParam: SImageButton => LP) = new SImageButton()
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ListView.html android.widget.ListView]]`.
  */
-class RichListView[V <: android.widget.ListView](val basis: V) extends TraitListView[V]
+class RichListView[This <: android.widget.ListView](val basis: This) extends TraitListView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ListView.html android.widget.ListView]]`. This contains several property accessors.
  */
-trait TraitListView[V <: android.widget.ListView] extends TraitAbsListView[V] {
+trait TraitListView[This <: android.widget.ListView] extends TraitAbsListView[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/ListView.html#setAdapter(android.widget.ListAdapter) setAdapter(android.widget.ListAdapter)]]`
@@ -687,12 +670,12 @@ object SListView {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/EditText.html android.widget.EditText]]`.
  */
-class RichEditText[V <: android.widget.EditText](val basis: V) extends TraitEditText[V]
+class RichEditText[This <: android.widget.EditText](val basis: This) extends TraitEditText[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/EditText.html android.widget.EditText]]`. This contains several property accessors.
  */
-trait TraitEditText[V <: android.widget.EditText] extends TraitTextView[V] {
+trait TraitEditText[This <: android.widget.EditText] extends TraitTextView[This] {
 
   @inline def selection(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'selection'")
 
@@ -727,57 +710,38 @@ class SEditText()(implicit context: android.content.Context, parentVGroup: Trait
     this.text = text
   }
 
-  def this(text: CharSequence, onClickListener: View => Unit)(implicit context: Context) = {
+  def this(text: CharSequence, ignore: Nothing)(implicit context: Context) = this() // Just for implicit conversion of ViewOnClickListener
+
+  def this(text: CharSequence, onClickListener: ViewOnClickListener, interval: Int)(implicit context: Context) = {
     this()
     this.text = text
-    this.setOnClickListener(onClickListener)
+    this.setOnClickListener(onClickListener.onClickListener)
+    if (interval >= 0) onPressAndHold(interval, onClickListener.func(this))
   }
 
-  def this(text: CharSequence, onClickListener: OnClickListener)(implicit context: Context) = {
-    this()
-    this.text = text
-    this.setOnClickListener(onClickListener)
-  }
+  def this(text: CharSequence, onClickListener: ViewOnClickListener)(implicit context: Context) = this(text, onClickListener, -1)
 
 }
 
-object SEditText {
+object SEditText extends TextViewCompanion[SEditText] {
   def apply[LP <: ViewGroupLayoutParams[_, SEditText]]()(implicit context: android.content.Context, defaultLayoutParam: SEditText => LP): SEditText = {
     val v = new SEditText
     v.<<.parent.+=(v)
     v
   }
 
-  def apply[LP <: ViewGroupLayoutParams[_, SEditText]](txt: CharSequence)(implicit context: Context, defaultLayoutParam: (SEditText) => LP): SEditText = {
-    val v = new SEditText
-    v text txt
-    v.<<.parent.+=(v)
-    v
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SEditText]](text: CharSequence, onClickListener: (View) => Unit)(implicit context: Context, defaultLayoutParam: (SEditText) => LP): SEditText = {
-    apply(text, func2ViewOnClickListener(onClickListener))
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SEditText]](text: CharSequence, onClickListener: OnClickListener)(implicit context: Context, defaultLayoutParam: (SEditText) => LP): SEditText = {
-    val v = new SEditText
-    v.text = text
-    v.setOnClickListener(onClickListener)
-    v.<<.parent.+=(v)
-    v
-  }
-
+  def create[LP <: ViewGroupLayoutParams[_, SEditText]]()(implicit context: Context, defaultLayoutParam: SEditText => LP) = new SEditText()
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ImageView.html android.widget.ImageView]]`.
  */
-class RichImageView[V <: android.widget.ImageView](val basis: V) extends TraitImageView[V]
+class RichImageView[This <: android.widget.ImageView](val basis: This) extends TraitImageView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ImageView.html android.widget.ImageView]]`. This contains several property accessors.
  */
-trait TraitImageView[V <: android.widget.ImageView] extends TraitView[V] {
+trait TraitImageView[This <: android.widget.ImageView] extends TraitView[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/ImageView.html#getAdjustViewBounds() getAdjustViewBounds()]]`
@@ -1025,57 +989,38 @@ class SImageView()(implicit context: android.content.Context, parentVGroup: Trai
     this.imageDrawable = imageResource
   }
 
-  def this(imageResource: android.graphics.drawable.Drawable, onClickListener: View => Unit)(implicit context: Context) = {
+  def this(imageResource: android.graphics.drawable.Drawable, ignore: Nothing)(implicit context: Context) = this() // Just for implicit conversion of ViewOnClickListener
+
+  def this(imageResource: android.graphics.drawable.Drawable, onClickListener: ViewOnClickListener, interval: Int)(implicit context: Context) = {
     this()
     this.imageDrawable = imageResource
-    this.setOnClickListener(onClickListener)
+    this.setOnClickListener(onClickListener.onClickListener)
+    if (interval >= 0) onPressAndHold(interval, onClickListener.func(this))
   }
 
-  def this(imageResource: android.graphics.drawable.Drawable, onClickListener: OnClickListener)(implicit context: Context) = {
-    this()
-    this.imageDrawable = imageResource
-    this.setOnClickListener(onClickListener)
-  }
+  def this(imageResource: android.graphics.drawable.Drawable, onClickListener: ViewOnClickListener)(implicit context: Context) = this(imageResource, onClickListener, -1)
 
 }
 
-object SImageView {
+object SImageView extends ImageViewCompanion[SImageView] {
   def apply[LP <: ViewGroupLayoutParams[_, SImageView]]()(implicit context: android.content.Context, defaultLayoutParam: SImageView => LP): SImageView = {
     val v = new SImageView
     v.<<.parent.+=(v)
     v
   }
 
-  def apply[LP <: ViewGroupLayoutParams[_, SImageView]](imageResource: android.graphics.drawable.Drawable)(implicit context: Context, defaultLayoutParam: (SImageView) => LP): SImageView = {
-    val v = new SImageView
-    v.imageDrawable = imageResource
-    v.<<.parent.+=(v)
-    v
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SImageView]](imageResource: android.graphics.drawable.Drawable, onClickListener: (View) => Unit)(implicit context: Context, defaultLayoutParam: (SImageView) => LP): SImageView = {
-    apply(imageResource, func2ViewOnClickListener(onClickListener))
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SImageView]](imageResource: android.graphics.drawable.Drawable, onClickListener: OnClickListener)(implicit context: Context, defaultLayoutParam: (SImageView) => LP): SImageView = {
-    val v = new SImageView
-    v.imageDrawable = imageResource
-    v.setOnClickListener(onClickListener)
-    v.<<.parent.+=(v)
-    v
-  }
-
+  def create[LP <: ViewGroupLayoutParams[_, SImageView]]()(implicit context: Context, defaultLayoutParam: SImageView => LP) = new SImageView()
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/AnalogClock.html android.widget.AnalogClock]]`.
  */
-class RichAnalogClock[V <: android.widget.AnalogClock](val basis: V) extends TraitAnalogClock[V]
+class RichAnalogClock[This <: android.widget.AnalogClock](val basis: This) extends TraitAnalogClock[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/AnalogClock.html android.widget.AnalogClock]]`. This contains several property accessors.
  */
-trait TraitAnalogClock[V <: android.widget.AnalogClock] extends TraitView[V] {
+trait TraitAnalogClock[This <: android.widget.AnalogClock] extends TraitView[This] {
 
 }
 
@@ -1102,12 +1047,12 @@ object SAnalogClock {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/MultiAutoCompleteTextView.html android.widget.MultiAutoCompleteTextView]]`.
  */
-class RichMultiAutoCompleteTextView[V <: android.widget.MultiAutoCompleteTextView](val basis: V) extends TraitMultiAutoCompleteTextView[V]
+class RichMultiAutoCompleteTextView[This <: android.widget.MultiAutoCompleteTextView](val basis: This) extends TraitMultiAutoCompleteTextView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/MultiAutoCompleteTextView.html android.widget.MultiAutoCompleteTextView]]`. This contains several property accessors.
  */
-trait TraitMultiAutoCompleteTextView[V <: android.widget.MultiAutoCompleteTextView] extends TraitAutoCompleteTextView[V] {
+trait TraitMultiAutoCompleteTextView[This <: android.widget.MultiAutoCompleteTextView] extends TraitAutoCompleteTextView[This] {
 
   @inline def tokenizer(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'tokenizer'")
 
@@ -1137,57 +1082,38 @@ class SMultiAutoCompleteTextView()(implicit context: android.content.Context, pa
     this.text = text
   }
 
-  def this(text: CharSequence, onClickListener: View => Unit)(implicit context: Context) = {
+  def this(text: CharSequence, ignore: Nothing)(implicit context: Context) = this() // Just for implicit conversion of ViewOnClickListener
+
+  def this(text: CharSequence, onClickListener: ViewOnClickListener, interval: Int)(implicit context: Context) = {
     this()
     this.text = text
-    this.setOnClickListener(onClickListener)
+    this.setOnClickListener(onClickListener.onClickListener)
+    if (interval >= 0) onPressAndHold(interval, onClickListener.func(this))
   }
 
-  def this(text: CharSequence, onClickListener: OnClickListener)(implicit context: Context) = {
-    this()
-    this.text = text
-    this.setOnClickListener(onClickListener)
-  }
+  def this(text: CharSequence, onClickListener: ViewOnClickListener)(implicit context: Context) = this(text, onClickListener, -1)
 
 }
 
-object SMultiAutoCompleteTextView {
+object SMultiAutoCompleteTextView extends TextViewCompanion[SMultiAutoCompleteTextView] {
   def apply[LP <: ViewGroupLayoutParams[_, SMultiAutoCompleteTextView]]()(implicit context: android.content.Context, defaultLayoutParam: SMultiAutoCompleteTextView => LP): SMultiAutoCompleteTextView = {
     val v = new SMultiAutoCompleteTextView
     v.<<.parent.+=(v)
     v
   }
 
-  def apply[LP <: ViewGroupLayoutParams[_, SMultiAutoCompleteTextView]](txt: CharSequence)(implicit context: Context, defaultLayoutParam: (SMultiAutoCompleteTextView) => LP): SMultiAutoCompleteTextView = {
-    val v = new SMultiAutoCompleteTextView
-    v text txt
-    v.<<.parent.+=(v)
-    v
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SMultiAutoCompleteTextView]](text: CharSequence, onClickListener: (View) => Unit)(implicit context: Context, defaultLayoutParam: (SMultiAutoCompleteTextView) => LP): SMultiAutoCompleteTextView = {
-    apply(text, func2ViewOnClickListener(onClickListener))
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SMultiAutoCompleteTextView]](text: CharSequence, onClickListener: OnClickListener)(implicit context: Context, defaultLayoutParam: (SMultiAutoCompleteTextView) => LP): SMultiAutoCompleteTextView = {
-    val v = new SMultiAutoCompleteTextView
-    v.text = text
-    v.setOnClickListener(onClickListener)
-    v.<<.parent.+=(v)
-    v
-  }
-
+  def create[LP <: ViewGroupLayoutParams[_, SMultiAutoCompleteTextView]]()(implicit context: Context, defaultLayoutParam: SMultiAutoCompleteTextView => LP) = new SMultiAutoCompleteTextView()
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/DatePicker.html android.widget.DatePicker]]`.
  */
-class RichDatePicker[V <: android.widget.DatePicker](val basis: V) extends TraitDatePicker[V]
+class RichDatePicker[This <: android.widget.DatePicker](val basis: This) extends TraitDatePicker[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/DatePicker.html android.widget.DatePicker]]`. This contains several property accessors.
  */
-trait TraitDatePicker[V <: android.widget.DatePicker] extends TraitFrameLayout[V] {
+trait TraitDatePicker[This <: android.widget.DatePicker] extends TraitFrameLayout[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/DatePicker.html#getCalendarView() getCalendarView()]]`
@@ -1294,12 +1220,12 @@ object SDatePicker {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/AbsSeekBar.html android.widget.AbsSeekBar]]`.
  */
-class RichAbsSeekBar[V <: android.widget.AbsSeekBar](val basis: V) extends TraitAbsSeekBar[V]
+class RichAbsSeekBar[This <: android.widget.AbsSeekBar](val basis: This) extends TraitAbsSeekBar[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/AbsSeekBar.html android.widget.AbsSeekBar]]`. This contains several property accessors.
  */
-trait TraitAbsSeekBar[V <: android.widget.AbsSeekBar] extends TraitProgressBar[V] {
+trait TraitAbsSeekBar[This <: android.widget.AbsSeekBar] extends TraitProgressBar[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/AbsSeekBar.html#getKeyProgressIncrement() getKeyProgressIncrement()]]`
@@ -1351,12 +1277,12 @@ trait TraitAbsSeekBar[V <: android.widget.AbsSeekBar] extends TraitProgressBar[V
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/TableLayout.html android.widget.TableLayout]]`.
  */
-class RichTableLayout[V <: android.widget.TableLayout](val basis: V) extends TraitTableLayout[V]
+class RichTableLayout[This <: android.widget.TableLayout](val basis: This) extends TraitTableLayout[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/TableLayout.html android.widget.TableLayout]]`. This contains several property accessors.
  */
-trait TraitTableLayout[V <: android.widget.TableLayout] extends TraitLinearLayout[V] {
+trait TraitTableLayout[This <: android.widget.TableLayout] extends TraitLinearLayout[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/TableLayout.html#isShrinkAllColumns() isShrinkAllColumns()]]`
@@ -1426,12 +1352,12 @@ object STableLayout {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/SimpleCursorTreeAdapter.html android.widget.SimpleCursorTreeAdapter]]`.
  */
-class RichSimpleCursorTreeAdapter[V <: android.widget.SimpleCursorTreeAdapter](val basis: V) extends TraitSimpleCursorTreeAdapter[V]
+class RichSimpleCursorTreeAdapter[This <: android.widget.SimpleCursorTreeAdapter](val basis: This) extends TraitSimpleCursorTreeAdapter[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/SimpleCursorTreeAdapter.html android.widget.SimpleCursorTreeAdapter]]`. This contains several property accessors.
  */
-trait TraitSimpleCursorTreeAdapter[V <: android.widget.SimpleCursorTreeAdapter] extends TraitResourceCursorTreeAdapter[V] {
+trait TraitSimpleCursorTreeAdapter[This <: android.widget.SimpleCursorTreeAdapter] extends TraitResourceCursorTreeAdapter[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/SimpleCursorTreeAdapter.html#getViewBinder() getViewBinder()]]`
@@ -1453,12 +1379,12 @@ trait TraitSimpleCursorTreeAdapter[V <: android.widget.SimpleCursorTreeAdapter] 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/CursorAdapter.html android.widget.CursorAdapter]]`.
  */
-class RichCursorAdapter[V <: android.widget.CursorAdapter](val basis: V) extends TraitCursorAdapter[V]
+class RichCursorAdapter[This <: android.widget.CursorAdapter](val basis: This) extends TraitCursorAdapter[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/CursorAdapter.html android.widget.CursorAdapter]]`. This contains several property accessors.
  */
-trait TraitCursorAdapter[V <: android.widget.CursorAdapter] extends TraitBaseAdapter[V] {
+trait TraitCursorAdapter[This <: android.widget.CursorAdapter] extends TraitBaseAdapter[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/CursorAdapter.html#getCursor() getCursor()]]`
@@ -1490,24 +1416,24 @@ trait TraitCursorAdapter[V <: android.widget.CursorAdapter] extends TraitBaseAda
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ResourceCursorTreeAdapter.html android.widget.ResourceCursorTreeAdapter]]`.
  */
-class RichResourceCursorTreeAdapter[V <: android.widget.ResourceCursorTreeAdapter](val basis: V) extends TraitResourceCursorTreeAdapter[V]
+class RichResourceCursorTreeAdapter[This <: android.widget.ResourceCursorTreeAdapter](val basis: This) extends TraitResourceCursorTreeAdapter[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ResourceCursorTreeAdapter.html android.widget.ResourceCursorTreeAdapter]]`. This contains several property accessors.
  */
-trait TraitResourceCursorTreeAdapter[V <: android.widget.ResourceCursorTreeAdapter] extends TraitCursorTreeAdapter[V] {
+trait TraitResourceCursorTreeAdapter[This <: android.widget.ResourceCursorTreeAdapter] extends TraitCursorTreeAdapter[This] {
 
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/TabHost.html android.widget.TabHost]]`.
  */
-class RichTabHost[V <: android.widget.TabHost](val basis: V) extends TraitTabHost[V]
+class RichTabHost[This <: android.widget.TabHost](val basis: This) extends TraitTabHost[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/TabHost.html android.widget.TabHost]]`. This contains several property accessors.
  */
-trait TraitTabHost[V <: android.widget.TabHost] extends TraitFrameLayout[V] {
+trait TraitTabHost[This <: android.widget.TabHost] extends TraitFrameLayout[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/TabHost.html#getCurrentTab() getCurrentTab()]]`
@@ -1573,14 +1499,14 @@ trait TraitTabHost[V <: android.widget.TabHost] extends TraitFrameLayout[V] {
    */
   @inline def tabWidget = basis.getTabWidget
 
-  @inline def onTabChanged[U](f: java.lang.String => U): V = {
+  @inline def onTabChanged[U](f: java.lang.String => U): This = {
     basis.setOnTabChangedListener(new android.widget.TabHost.OnTabChangeListener {
       def onTabChanged(p: java.lang.String): Unit = { f(p) }
     })
     basis
   }
 
-  @inline def onTabChanged[U](f: => U): V = {
+  @inline def onTabChanged[U](f: => U): This = {
     basis.setOnTabChangedListener(new android.widget.TabHost.OnTabChangeListener {
       def onTabChanged(p: java.lang.String): Unit = { f }
     })
@@ -1612,12 +1538,12 @@ object STabHost {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/GridLayout.html android.widget.GridLayout]]`.
  */
-class RichGridLayout[V <: android.widget.GridLayout](val basis: V) extends TraitGridLayout[V]
+class RichGridLayout[This <: android.widget.GridLayout](val basis: This) extends TraitGridLayout[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/GridLayout.html android.widget.GridLayout]]`. This contains several property accessors.
  */
-trait TraitGridLayout[V <: android.widget.GridLayout] extends TraitViewGroup[V] {
+trait TraitGridLayout[This <: android.widget.GridLayout] extends TraitViewGroup[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/GridLayout.html#getAlignmentMode() getAlignmentMode()]]`
@@ -1749,14 +1675,14 @@ object SGridLayout {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/HeterogeneousExpandableList.html android.widget.HeterogeneousExpandableList]]`.
  */
-class RichHeterogeneousExpandableList[V <: android.widget.HeterogeneousExpandableList](val basis: V) extends TraitHeterogeneousExpandableList[V]
+class RichHeterogeneousExpandableList[This <: android.widget.HeterogeneousExpandableList](val basis: This) extends TraitHeterogeneousExpandableList[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/HeterogeneousExpandableList.html android.widget.HeterogeneousExpandableList]]`. This contains several property accessors.
  */
-trait TraitHeterogeneousExpandableList[V <: android.widget.HeterogeneousExpandableList] {
+trait TraitHeterogeneousExpandableList[This <: android.widget.HeterogeneousExpandableList] {
 
-  def basis: V
+  def basis: This
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/HeterogeneousExpandableList.html#getChildTypeCount() getChildTypeCount()]]`
@@ -1773,12 +1699,12 @@ trait TraitHeterogeneousExpandableList[V <: android.widget.HeterogeneousExpandab
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/RadioGroup.html android.widget.RadioGroup]]`.
  */
-class RichRadioGroup[V <: android.widget.RadioGroup](val basis: V) extends TraitRadioGroup[V]
+class RichRadioGroup[This <: android.widget.RadioGroup](val basis: This) extends TraitRadioGroup[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/RadioGroup.html android.widget.RadioGroup]]`. This contains several property accessors.
  */
-trait TraitRadioGroup[V <: android.widget.RadioGroup] extends TraitLinearLayout[V] {
+trait TraitRadioGroup[This <: android.widget.RadioGroup] extends TraitLinearLayout[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/RadioGroup.html#getCheckedRadioButtonId() getCheckedRadioButtonId()]]`
@@ -1797,14 +1723,14 @@ trait TraitRadioGroup[V <: android.widget.RadioGroup] extends TraitLinearLayout[
    */
   @inline def onCheckedChangeListener_=(p: android.widget.RadioGroup.OnCheckedChangeListener) = { basis.setOnCheckedChangeListener(p); basis }
 
-  @inline def onCheckedChanged[U](f: (android.widget.RadioGroup, Int) => U): V = {
+  @inline def onCheckedChanged[U](f: (android.widget.RadioGroup, Int) => U): This = {
     basis.setOnCheckedChangeListener(new android.widget.RadioGroup.OnCheckedChangeListener {
       def onCheckedChanged(p1: android.widget.RadioGroup, p2: Int): Unit = { f(p1, p2) }
     })
     basis
   }
 
-  @inline def onCheckedChanged[U](f: => U): V = {
+  @inline def onCheckedChanged[U](f: => U): This = {
     basis.setOnCheckedChangeListener(new android.widget.RadioGroup.OnCheckedChangeListener {
       def onCheckedChanged(p1: android.widget.RadioGroup, p2: Int): Unit = { f }
     })
@@ -1821,7 +1747,20 @@ class SRadioGroup()(implicit context: android.content.Context, parentVGroup: Tra
 
   def basis = this
   override val parentViewGroup = parentVGroup
+  implicit def defaultLayoutParams[V <: View](v: V): LayoutParams[V] = v.getLayoutParams() match {
+    case p: LayoutParams[V @unchecked] => p
+    case _ => new LayoutParams(v)
+  }
 
+  class LayoutParams[V <: View](v: V) extends LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT, 1.0f) with ViewGroupMarginLayoutParams[LayoutParams[V], V] {
+    def basis = this
+
+    v.setLayoutParams(this)
+
+    def parent = SRadioGroup.this
+
+    def >> : V = v
+  }
 }
 
 object SRadioGroup {
@@ -1836,12 +1775,12 @@ object SRadioGroup {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/RatingBar.html android.widget.RatingBar]]`.
  */
-class RichRatingBar[V <: android.widget.RatingBar](val basis: V) extends TraitRatingBar[V]
+class RichRatingBar[This <: android.widget.RatingBar](val basis: This) extends TraitRatingBar[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/RatingBar.html android.widget.RatingBar]]`. This contains several property accessors.
  */
-trait TraitRatingBar[V <: android.widget.RatingBar] extends TraitAbsSeekBar[V] {
+trait TraitRatingBar[This <: android.widget.RatingBar] extends TraitAbsSeekBar[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/RatingBar.html#setIsIndicator(boolean) setIsIndicator(boolean)]]`
@@ -1913,14 +1852,14 @@ trait TraitRatingBar[V <: android.widget.RatingBar] extends TraitAbsSeekBar[V] {
    */
   @inline def stepSize_=(p: Float) = { basis.setStepSize(p); basis }
 
-  @inline def onRatingChanged[U](f: (android.widget.RatingBar, Float, Boolean) => U): V = {
+  @inline def onRatingChanged[U](f: (android.widget.RatingBar, Float, Boolean) => U): This = {
     basis.setOnRatingBarChangeListener(new android.widget.RatingBar.OnRatingBarChangeListener {
       def onRatingChanged(p1: android.widget.RatingBar, p2: Float, p3: Boolean): Unit = { f(p1, p2, p3) }
     })
     basis
   }
 
-  @inline def onRatingChanged[U](f: => U): V = {
+  @inline def onRatingChanged[U](f: => U): This = {
     basis.setOnRatingBarChangeListener(new android.widget.RatingBar.OnRatingBarChangeListener {
       def onRatingChanged(p1: android.widget.RatingBar, p2: Float, p3: Boolean): Unit = { f }
     })
@@ -1952,26 +1891,26 @@ object SRatingBar {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/SimpleExpandableListAdapter.html android.widget.SimpleExpandableListAdapter]]`.
  */
-class RichSimpleExpandableListAdapter[V <: android.widget.SimpleExpandableListAdapter](val basis: V) extends TraitSimpleExpandableListAdapter[V]
+class RichSimpleExpandableListAdapter[This <: android.widget.SimpleExpandableListAdapter](val basis: This) extends TraitSimpleExpandableListAdapter[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/SimpleExpandableListAdapter.html android.widget.SimpleExpandableListAdapter]]`. This contains several property accessors.
  */
-trait TraitSimpleExpandableListAdapter[V <: android.widget.SimpleExpandableListAdapter] extends TraitBaseExpandableListAdapter[V] {
+trait TraitSimpleExpandableListAdapter[This <: android.widget.SimpleExpandableListAdapter] extends TraitBaseExpandableListAdapter[This] {
 
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ExpandableListAdapter.html android.widget.ExpandableListAdapter]]`.
  */
-class RichExpandableListAdapter[V <: android.widget.ExpandableListAdapter](val basis: V) extends TraitExpandableListAdapter[V]
+class RichExpandableListAdapter[This <: android.widget.ExpandableListAdapter](val basis: This) extends TraitExpandableListAdapter[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ExpandableListAdapter.html android.widget.ExpandableListAdapter]]`. This contains several property accessors.
  */
-trait TraitExpandableListAdapter[V <: android.widget.ExpandableListAdapter] {
+trait TraitExpandableListAdapter[This <: android.widget.ExpandableListAdapter] {
 
-  def basis: V
+  def basis: This
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/ExpandableListAdapter.html#getGroupCount() getGroupCount()]]`
@@ -1983,12 +1922,12 @@ trait TraitExpandableListAdapter[V <: android.widget.ExpandableListAdapter] {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/Spinner.html android.widget.Spinner]]`.
  */
-class RichSpinner[V <: android.widget.Spinner](val basis: V) extends TraitSpinner[V]
+class RichSpinner[This <: android.widget.Spinner](val basis: This) extends TraitSpinner[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/Spinner.html android.widget.Spinner]]`. This contains several property accessors.
  */
-trait TraitSpinner[V <: android.widget.Spinner] extends TraitAbsSpinner[V] {
+trait TraitSpinner[This <: android.widget.Spinner] extends TraitAbsSpinner[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/Spinner.html#getDropDownHorizontalOffset() getDropDownHorizontalOffset()]]`
@@ -2131,12 +2070,12 @@ object SSpinner {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/AlphabetIndexer.html android.widget.AlphabetIndexer]]`.
  */
-class RichAlphabetIndexer[V <: android.widget.AlphabetIndexer](val basis: V) extends TraitAlphabetIndexer[V]
+class RichAlphabetIndexer[This <: android.widget.AlphabetIndexer](val basis: This) extends TraitAlphabetIndexer[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/AlphabetIndexer.html android.widget.AlphabetIndexer]]`. This contains several property accessors.
  */
-trait TraitAlphabetIndexer[V <: android.widget.AlphabetIndexer] extends TraitDataSetObserver[V] {
+trait TraitAlphabetIndexer[This <: android.widget.AlphabetIndexer] extends TraitDataSetObserver[This] {
 
   @inline def cursor(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'cursor'")
 
@@ -2160,12 +2099,12 @@ trait TraitAlphabetIndexer[V <: android.widget.AlphabetIndexer] extends TraitDat
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/GridView.html android.widget.GridView]]`.
  */
-class RichGridView[V <: android.widget.GridView](val basis: V) extends TraitGridView[V]
+class RichGridView[This <: android.widget.GridView](val basis: This) extends TraitGridView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/GridView.html android.widget.GridView]]`. This contains several property accessors.
  */
-trait TraitGridView[V <: android.widget.GridView] extends TraitAbsListView[V] {
+trait TraitGridView[This <: android.widget.GridView] extends TraitAbsListView[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/GridView.html#getAdapter() getAdapter()]]`
@@ -2297,12 +2236,12 @@ object SGridView {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/RelativeLayout.html android.widget.RelativeLayout]]`.
  */
-class RichRelativeLayout[V <: android.widget.RelativeLayout](val basis: V) extends TraitRelativeLayout[V]
+class RichRelativeLayout[This <: android.widget.RelativeLayout](val basis: This) extends TraitRelativeLayout[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/RelativeLayout.html android.widget.RelativeLayout]]`. This contains several property accessors.
  */
-trait TraitRelativeLayout[V <: android.widget.RelativeLayout] extends TraitViewGroup[V] {
+trait TraitRelativeLayout[This <: android.widget.RelativeLayout] extends TraitViewGroup[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/RelativeLayout.html#getGravity() getGravity()]]`
@@ -2499,12 +2438,12 @@ object SRelativeLayout {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/NumberPicker.html android.widget.NumberPicker]]`.
  */
-class RichNumberPicker[V <: android.widget.NumberPicker](val basis: V) extends TraitNumberPicker[V]
+class RichNumberPicker[This <: android.widget.NumberPicker](val basis: This) extends TraitNumberPicker[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/NumberPicker.html android.widget.NumberPicker]]`. This contains several property accessors.
  */
-trait TraitNumberPicker[V <: android.widget.NumberPicker] extends TraitLinearLayout[V] {
+trait TraitNumberPicker[This <: android.widget.NumberPicker] extends TraitLinearLayout[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/NumberPicker.html#getDisplayedValues() getDisplayedValues()]]`
@@ -2629,28 +2568,28 @@ trait TraitNumberPicker[V <: android.widget.NumberPicker] extends TraitLinearLay
    */
   @inline def wrapSelectorWheel_=(p: Boolean) = { basis.setWrapSelectorWheel(p); basis }
 
-  @inline def onScrollStateChange[U](f: (android.widget.NumberPicker, Int) => U): V = {
+  @inline def onScrollStateChange[U](f: (android.widget.NumberPicker, Int) => U): This = {
     basis.setOnScrollListener(new android.widget.NumberPicker.OnScrollListener {
       def onScrollStateChange(p1: android.widget.NumberPicker, p2: Int): Unit = { f(p1, p2) }
     })
     basis
   }
 
-  @inline def onScrollStateChange[U](f: => U): V = {
+  @inline def onScrollStateChange[U](f: => U): This = {
     basis.setOnScrollListener(new android.widget.NumberPicker.OnScrollListener {
       def onScrollStateChange(p1: android.widget.NumberPicker, p2: Int): Unit = { f }
     })
     basis
   }
 
-  @inline def onValueChange[U](f: (android.widget.NumberPicker, Int, Int) => U): V = {
+  @inline def onValueChange[U](f: (android.widget.NumberPicker, Int, Int) => U): This = {
     basis.setOnValueChangedListener(new android.widget.NumberPicker.OnValueChangeListener {
       def onValueChange(p1: android.widget.NumberPicker, p2: Int, p3: Int): Unit = { f(p1, p2, p3) }
     })
     basis
   }
 
-  @inline def onValueChange[U](f: => U): V = {
+  @inline def onValueChange[U](f: => U): This = {
     basis.setOnValueChangedListener(new android.widget.NumberPicker.OnValueChangeListener {
       def onValueChange(p1: android.widget.NumberPicker, p2: Int, p3: Int): Unit = { f }
     })
@@ -2682,12 +2621,12 @@ object SNumberPicker {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/Chronometer.html android.widget.Chronometer]]`.
  */
-class RichChronometer[V <: android.widget.Chronometer](val basis: V) extends TraitChronometer[V]
+class RichChronometer[This <: android.widget.Chronometer](val basis: This) extends TraitChronometer[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/Chronometer.html android.widget.Chronometer]]`. This contains several property accessors.
  */
-trait TraitChronometer[V <: android.widget.Chronometer] extends TraitTextView[V] {
+trait TraitChronometer[This <: android.widget.Chronometer] extends TraitTextView[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/Chronometer.html#getBase() getBase()]]`
@@ -2734,14 +2673,14 @@ trait TraitChronometer[V <: android.widget.Chronometer] extends TraitTextView[V]
    */
   @inline def onChronometerTickListener_=(p: android.widget.Chronometer.OnChronometerTickListener) = { basis.setOnChronometerTickListener(p); basis }
 
-  @inline def onChronometerTick[U](f: android.widget.Chronometer => U): V = {
+  @inline def onChronometerTick[U](f: android.widget.Chronometer => U): This = {
     basis.setOnChronometerTickListener(new android.widget.Chronometer.OnChronometerTickListener {
       def onChronometerTick(p: android.widget.Chronometer): Unit = { f(p) }
     })
     basis
   }
 
-  @inline def onChronometerTick[U](f: => U): V = {
+  @inline def onChronometerTick[U](f: => U): This = {
     basis.setOnChronometerTickListener(new android.widget.Chronometer.OnChronometerTickListener {
       def onChronometerTick(p: android.widget.Chronometer): Unit = { f }
     })
@@ -2764,59 +2703,40 @@ class SChronometer()(implicit context: android.content.Context, parentVGroup: Tr
     this.text = text
   }
 
-  def this(text: CharSequence, onClickListener: View => Unit)(implicit context: Context) = {
+  def this(text: CharSequence, ignore: Nothing)(implicit context: Context) = this() // Just for implicit conversion of ViewOnClickListener
+
+  def this(text: CharSequence, onClickListener: ViewOnClickListener, interval: Int)(implicit context: Context) = {
     this()
     this.text = text
-    this.setOnClickListener(onClickListener)
+    this.setOnClickListener(onClickListener.onClickListener)
+    if (interval >= 0) onPressAndHold(interval, onClickListener.func(this))
   }
 
-  def this(text: CharSequence, onClickListener: OnClickListener)(implicit context: Context) = {
-    this()
-    this.text = text
-    this.setOnClickListener(onClickListener)
-  }
+  def this(text: CharSequence, onClickListener: ViewOnClickListener)(implicit context: Context) = this(text, onClickListener, -1)
 
 }
 
-object SChronometer {
+object SChronometer extends TextViewCompanion[SChronometer] {
   def apply[LP <: ViewGroupLayoutParams[_, SChronometer]]()(implicit context: android.content.Context, defaultLayoutParam: SChronometer => LP): SChronometer = {
     val v = new SChronometer
     v.<<.parent.+=(v)
     v
   }
 
-  def apply[LP <: ViewGroupLayoutParams[_, SChronometer]](txt: CharSequence)(implicit context: Context, defaultLayoutParam: (SChronometer) => LP): SChronometer = {
-    val v = new SChronometer
-    v text txt
-    v.<<.parent.+=(v)
-    v
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SChronometer]](text: CharSequence, onClickListener: (View) => Unit)(implicit context: Context, defaultLayoutParam: (SChronometer) => LP): SChronometer = {
-    apply(text, func2ViewOnClickListener(onClickListener))
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SChronometer]](text: CharSequence, onClickListener: OnClickListener)(implicit context: Context, defaultLayoutParam: (SChronometer) => LP): SChronometer = {
-    val v = new SChronometer
-    v.text = text
-    v.setOnClickListener(onClickListener)
-    v.<<.parent.+=(v)
-    v
-  }
-
+  def create[LP <: ViewGroupLayoutParams[_, SChronometer]]()(implicit context: Context, defaultLayoutParam: SChronometer => LP) = new SChronometer()
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/Filterable.html android.widget.Filterable]]`.
  */
-class RichFilterable[V <: android.widget.Filterable](val basis: V) extends TraitFilterable[V]
+class RichFilterable[This <: android.widget.Filterable](val basis: This) extends TraitFilterable[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/Filterable.html android.widget.Filterable]]`. This contains several property accessors.
  */
-trait TraitFilterable[V <: android.widget.Filterable] {
+trait TraitFilterable[This <: android.widget.Filterable] {
 
-  def basis: V
+  def basis: This
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/Filterable.html#getFilter() getFilter()]]`
@@ -2828,12 +2748,12 @@ trait TraitFilterable[V <: android.widget.Filterable] {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/CheckedTextView.html android.widget.CheckedTextView]]`.
  */
-class RichCheckedTextView[V <: android.widget.CheckedTextView](val basis: V) extends TraitCheckedTextView[V]
+class RichCheckedTextView[This <: android.widget.CheckedTextView](val basis: This) extends TraitCheckedTextView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/CheckedTextView.html android.widget.CheckedTextView]]`. This contains several property accessors.
  */
-trait TraitCheckedTextView[V <: android.widget.CheckedTextView] extends TraitTextView[V] {
+trait TraitCheckedTextView[This <: android.widget.CheckedTextView] extends TraitTextView[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/CheckedTextView.html#getCheckMarkDrawable() getCheckMarkDrawable()]]`
@@ -2891,59 +2811,40 @@ class SCheckedTextView()(implicit context: android.content.Context, parentVGroup
     this.text = text
   }
 
-  def this(text: CharSequence, onClickListener: View => Unit)(implicit context: Context) = {
+  def this(text: CharSequence, ignore: Nothing)(implicit context: Context) = this() // Just for implicit conversion of ViewOnClickListener
+
+  def this(text: CharSequence, onClickListener: ViewOnClickListener, interval: Int)(implicit context: Context) = {
     this()
     this.text = text
-    this.setOnClickListener(onClickListener)
+    this.setOnClickListener(onClickListener.onClickListener)
+    if (interval >= 0) onPressAndHold(interval, onClickListener.func(this))
   }
 
-  def this(text: CharSequence, onClickListener: OnClickListener)(implicit context: Context) = {
-    this()
-    this.text = text
-    this.setOnClickListener(onClickListener)
-  }
+  def this(text: CharSequence, onClickListener: ViewOnClickListener)(implicit context: Context) = this(text, onClickListener, -1)
 
 }
 
-object SCheckedTextView {
+object SCheckedTextView extends TextViewCompanion[SCheckedTextView] {
   def apply[LP <: ViewGroupLayoutParams[_, SCheckedTextView]]()(implicit context: android.content.Context, defaultLayoutParam: SCheckedTextView => LP): SCheckedTextView = {
     val v = new SCheckedTextView
     v.<<.parent.+=(v)
     v
   }
 
-  def apply[LP <: ViewGroupLayoutParams[_, SCheckedTextView]](txt: CharSequence)(implicit context: Context, defaultLayoutParam: (SCheckedTextView) => LP): SCheckedTextView = {
-    val v = new SCheckedTextView
-    v text txt
-    v.<<.parent.+=(v)
-    v
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SCheckedTextView]](text: CharSequence, onClickListener: (View) => Unit)(implicit context: Context, defaultLayoutParam: (SCheckedTextView) => LP): SCheckedTextView = {
-    apply(text, func2ViewOnClickListener(onClickListener))
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SCheckedTextView]](text: CharSequence, onClickListener: OnClickListener)(implicit context: Context, defaultLayoutParam: (SCheckedTextView) => LP): SCheckedTextView = {
-    val v = new SCheckedTextView
-    v.text = text
-    v.setOnClickListener(onClickListener)
-    v.<<.parent.+=(v)
-    v
-  }
-
+  def create[LP <: ViewGroupLayoutParams[_, SCheckedTextView]]()(implicit context: Context, defaultLayoutParam: SCheckedTextView => LP) = new SCheckedTextView()
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/SectionIndexer.html android.widget.SectionIndexer]]`.
  */
-class RichSectionIndexer[V <: android.widget.SectionIndexer](val basis: V) extends TraitSectionIndexer[V]
+class RichSectionIndexer[This <: android.widget.SectionIndexer](val basis: This) extends TraitSectionIndexer[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/SectionIndexer.html android.widget.SectionIndexer]]`. This contains several property accessors.
  */
-trait TraitSectionIndexer[V <: android.widget.SectionIndexer] {
+trait TraitSectionIndexer[This <: android.widget.SectionIndexer] {
 
-  def basis: V
+  def basis: This
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/SectionIndexer.html#getSections() getSections()]]`
@@ -2955,12 +2856,12 @@ trait TraitSectionIndexer[V <: android.widget.SectionIndexer] {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/TwoLineListItem.html android.widget.TwoLineListItem]]`.
  */
-class RichTwoLineListItem[V <: android.widget.TwoLineListItem](val basis: V) extends TraitTwoLineListItem[V]
+class RichTwoLineListItem[This <: android.widget.TwoLineListItem](val basis: This) extends TraitTwoLineListItem[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/TwoLineListItem.html android.widget.TwoLineListItem]]`. This contains several property accessors.
  */
-trait TraitTwoLineListItem[V <: android.widget.TwoLineListItem] extends TraitRelativeLayout[V] {
+trait TraitTwoLineListItem[This <: android.widget.TwoLineListItem] extends TraitRelativeLayout[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/TwoLineListItem.html#getText1() getText1()]]`
@@ -2997,14 +2898,14 @@ object STwoLineListItem {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/HeaderViewListAdapter.html android.widget.HeaderViewListAdapter]]`.
  */
-class RichHeaderViewListAdapter[V <: android.widget.HeaderViewListAdapter](val basis: V) extends TraitHeaderViewListAdapter[V]
+class RichHeaderViewListAdapter[This <: android.widget.HeaderViewListAdapter](val basis: This) extends TraitHeaderViewListAdapter[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/HeaderViewListAdapter.html android.widget.HeaderViewListAdapter]]`. This contains several property accessors.
  */
-trait TraitHeaderViewListAdapter[V <: android.widget.HeaderViewListAdapter] {
+trait TraitHeaderViewListAdapter[This <: android.widget.HeaderViewListAdapter] {
 
-  def basis: V
+  def basis: This
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/HeaderViewListAdapter.html#getCount() getCount()]]`
@@ -3041,12 +2942,12 @@ trait TraitHeaderViewListAdapter[V <: android.widget.HeaderViewListAdapter] {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ShareActionProvider.html android.widget.ShareActionProvider]]`.
  */
-class RichShareActionProvider[V <: android.widget.ShareActionProvider](val basis: V) extends TraitShareActionProvider[V]
+class RichShareActionProvider[This <: android.widget.ShareActionProvider](val basis: This) extends TraitShareActionProvider[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ShareActionProvider.html android.widget.ShareActionProvider]]`. This contains several property accessors.
  */
-trait TraitShareActionProvider[V <: android.widget.ShareActionProvider] extends TraitActionProvider[V] {
+trait TraitShareActionProvider[This <: android.widget.ShareActionProvider] extends TraitActionProvider[This] {
 
   @inline def onShareTargetSelectedListener(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'onShareTargetSelectedListener'")
 
@@ -3084,14 +2985,14 @@ trait TraitShareActionProvider[V <: android.widget.ShareActionProvider] extends 
    */
   @inline def shareIntent_=(p: android.content.Intent) = { basis.setShareIntent(p); basis }
 
-  @inline def onShareTargetSelected(f: (android.widget.ShareActionProvider, android.content.Intent) => Boolean): V = {
+  @inline def onShareTargetSelected(f: (android.widget.ShareActionProvider, android.content.Intent) => Boolean): This = {
     basis.setOnShareTargetSelectedListener(new android.widget.ShareActionProvider.OnShareTargetSelectedListener {
       def onShareTargetSelected(p1: android.widget.ShareActionProvider, p2: android.content.Intent): Boolean = { f(p1, p2) }
     })
     basis
   }
 
-  @inline def onShareTargetSelected(f: => Boolean): V = {
+  @inline def onShareTargetSelected(f: => Boolean): This = {
     basis.setOnShareTargetSelectedListener(new android.widget.ShareActionProvider.OnShareTargetSelectedListener {
       def onShareTargetSelected(p1: android.widget.ShareActionProvider, p2: android.content.Intent): Boolean = { f }
     })
@@ -3122,12 +3023,12 @@ object SShareActionProvider {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ImageSwitcher.html android.widget.ImageSwitcher]]`.
  */
-class RichImageSwitcher[V <: android.widget.ImageSwitcher](val basis: V) extends TraitImageSwitcher[V]
+class RichImageSwitcher[This <: android.widget.ImageSwitcher](val basis: This) extends TraitImageSwitcher[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ImageSwitcher.html android.widget.ImageSwitcher]]`. This contains several property accessors.
  */
-trait TraitImageSwitcher[V <: android.widget.ImageSwitcher] extends TraitViewSwitcher[V] {
+trait TraitImageSwitcher[This <: android.widget.ImageSwitcher] extends TraitViewSwitcher[This] {
 
   @inline def imageDrawable(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'imageDrawable'")
 
@@ -3190,12 +3091,12 @@ object SImageSwitcher {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/TimePicker.html android.widget.TimePicker]]`.
  */
-class RichTimePicker[V <: android.widget.TimePicker](val basis: V) extends TraitTimePicker[V]
+class RichTimePicker[This <: android.widget.TimePicker](val basis: This) extends TraitTimePicker[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/TimePicker.html android.widget.TimePicker]]`. This contains several property accessors.
  */
-trait TraitTimePicker[V <: android.widget.TimePicker] extends TraitFrameLayout[V] {
+trait TraitTimePicker[This <: android.widget.TimePicker] extends TraitFrameLayout[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/TimePicker.html#getCurrentHour() getCurrentHour()]]`
@@ -3249,14 +3150,14 @@ trait TraitTimePicker[V <: android.widget.TimePicker] extends TraitFrameLayout[V
    */
   @inline def onTimeChangedListener_=(p: android.widget.TimePicker.OnTimeChangedListener) = { basis.setOnTimeChangedListener(p); basis }
 
-  @inline def onTimeChanged[U](f: (android.widget.TimePicker, Int, Int) => U): V = {
+  @inline def onTimeChanged[U](f: (android.widget.TimePicker, Int, Int) => U): This = {
     basis.setOnTimeChangedListener(new android.widget.TimePicker.OnTimeChangedListener {
       def onTimeChanged(p1: android.widget.TimePicker, p2: Int, p3: Int): Unit = { f(p1, p2, p3) }
     })
     basis
   }
 
-  @inline def onTimeChanged[U](f: => U): V = {
+  @inline def onTimeChanged[U](f: => U): This = {
     basis.setOnTimeChangedListener(new android.widget.TimePicker.OnTimeChangedListener {
       def onTimeChanged(p1: android.widget.TimePicker, p2: Int, p3: Int): Unit = { f }
     })
@@ -3288,12 +3189,12 @@ object STimePicker {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ExpandableListView.html android.widget.ExpandableListView]]`.
  */
-class RichExpandableListView[V <: android.widget.ExpandableListView](val basis: V) extends TraitExpandableListView[V]
+class RichExpandableListView[This <: android.widget.ExpandableListView](val basis: This) extends TraitExpandableListView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ExpandableListView.html android.widget.ExpandableListView]]`. This contains several property accessors.
  */
-trait TraitExpandableListView[V <: android.widget.ExpandableListView] extends TraitListView[V] {
+trait TraitExpandableListView[This <: android.widget.ExpandableListView] extends TraitListView[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/ExpandableListView.html#setAdapter(android.widget.ExpandableListAdapter) setAdapter(android.widget.ExpandableListAdapter)]]`
@@ -3416,56 +3317,56 @@ trait TraitExpandableListView[V <: android.widget.ExpandableListView] extends Tr
    */
   @inline def selectedPosition = basis.getSelectedPosition
 
-  @inline def onChildClick(f: (android.widget.ExpandableListView, android.view.View, Int, Int, Long) => Boolean): V = {
+  @inline def onChildClick(f: (android.widget.ExpandableListView, android.view.View, Int, Int, Long) => Boolean): This = {
     basis.setOnChildClickListener(new android.widget.ExpandableListView.OnChildClickListener {
       def onChildClick(p1: android.widget.ExpandableListView, p2: android.view.View, p3: Int, p4: Int, p5: Long): Boolean = { f(p1, p2, p3, p4, p5) }
     })
     basis
   }
 
-  @inline def onChildClick(f: => Boolean): V = {
+  @inline def onChildClick(f: => Boolean): This = {
     basis.setOnChildClickListener(new android.widget.ExpandableListView.OnChildClickListener {
       def onChildClick(p1: android.widget.ExpandableListView, p2: android.view.View, p3: Int, p4: Int, p5: Long): Boolean = { f }
     })
     basis
   }
 
-  @inline def onGroupClick(f: (android.widget.ExpandableListView, android.view.View, Int, Long) => Boolean): V = {
+  @inline def onGroupClick(f: (android.widget.ExpandableListView, android.view.View, Int, Long) => Boolean): This = {
     basis.setOnGroupClickListener(new android.widget.ExpandableListView.OnGroupClickListener {
       def onGroupClick(p1: android.widget.ExpandableListView, p2: android.view.View, p3: Int, p4: Long): Boolean = { f(p1, p2, p3, p4) }
     })
     basis
   }
 
-  @inline def onGroupClick(f: => Boolean): V = {
+  @inline def onGroupClick(f: => Boolean): This = {
     basis.setOnGroupClickListener(new android.widget.ExpandableListView.OnGroupClickListener {
       def onGroupClick(p1: android.widget.ExpandableListView, p2: android.view.View, p3: Int, p4: Long): Boolean = { f }
     })
     basis
   }
 
-  @inline def onGroupCollapse[U](f: Int => U): V = {
+  @inline def onGroupCollapse[U](f: Int => U): This = {
     basis.setOnGroupCollapseListener(new android.widget.ExpandableListView.OnGroupCollapseListener {
       def onGroupCollapse(p: Int): Unit = { f(p) }
     })
     basis
   }
 
-  @inline def onGroupCollapse[U](f: => U): V = {
+  @inline def onGroupCollapse[U](f: => U): This = {
     basis.setOnGroupCollapseListener(new android.widget.ExpandableListView.OnGroupCollapseListener {
       def onGroupCollapse(p: Int): Unit = { f }
     })
     basis
   }
 
-  @inline def onGroupExpand[U](f: Int => U): V = {
+  @inline def onGroupExpand[U](f: Int => U): This = {
     basis.setOnGroupExpandListener(new android.widget.ExpandableListView.OnGroupExpandListener {
       def onGroupExpand(p: Int): Unit = { f(p) }
     })
     basis
   }
 
-  @inline def onGroupExpand[U](f: => U): V = {
+  @inline def onGroupExpand[U](f: => U): This = {
     basis.setOnGroupExpandListener(new android.widget.ExpandableListView.OnGroupExpandListener {
       def onGroupExpand(p: Int): Unit = { f }
     })
@@ -3497,12 +3398,12 @@ object SExpandableListView {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/AbsListView.html android.widget.AbsListView]]`.
  */
-class RichAbsListView[V <: android.widget.AbsListView](val basis: V) extends TraitAbsListView[V]
+class RichAbsListView[This <: android.widget.AbsListView](val basis: This) extends TraitAbsListView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/AbsListView.html android.widget.AbsListView]]`. This contains several property accessors.
  */
-trait TraitAbsListView[V <: android.widget.AbsListView] extends TraitAdapterView[V] {
+trait TraitAbsListView[This <: android.widget.AbsListView] extends TraitAdapterView[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/AbsListView.html#setAdapter(android.widget.ListAdapter) setAdapter(android.widget.ListAdapter)]]`
@@ -3827,21 +3728,21 @@ trait TraitAbsListView[V <: android.widget.AbsListView] extends TraitAdapterView
    */
   @inline def velocityScale_=(p: Float) = { basis.setVelocityScale(p); basis }
 
-  @inline def onMovedToScrapHeap[U](f: android.view.View => U): V = {
+  @inline def onMovedToScrapHeap[U](f: android.view.View => U): This = {
     basis.setRecyclerListener(new android.widget.AbsListView.RecyclerListener {
       def onMovedToScrapHeap(p: android.view.View): Unit = { f(p) }
     })
     basis
   }
 
-  @inline def onMovedToScrapHeap[U](f: => U): V = {
+  @inline def onMovedToScrapHeap[U](f: => U): This = {
     basis.setRecyclerListener(new android.widget.AbsListView.RecyclerListener {
       def onMovedToScrapHeap(p: android.view.View): Unit = { f }
     })
     basis
   }
 
-  @inline def onScroll[U](f: (android.widget.AbsListView, Int, Int, Int) => U): V = {
+  @inline def onScroll[U](f: (android.widget.AbsListView, Int, Int, Int) => U): This = {
     basis.setOnScrollListener(new android.widget.AbsListView.OnScrollListener {
       def onScroll(p1: android.widget.AbsListView, p2: Int, p3: Int, p4: Int): Unit = { f(p1, p2, p3, p4) }
       def onScrollStateChanged(p1: android.widget.AbsListView, p2: Int): Unit = {}
@@ -3849,7 +3750,7 @@ trait TraitAbsListView[V <: android.widget.AbsListView] extends TraitAdapterView
     basis
   }
 
-  @inline def onScroll[U](f: => U): V = {
+  @inline def onScroll[U](f: => U): This = {
     basis.setOnScrollListener(new android.widget.AbsListView.OnScrollListener {
       def onScroll(p1: android.widget.AbsListView, p2: Int, p3: Int, p4: Int): Unit = { f }
       def onScrollStateChanged(p1: android.widget.AbsListView, p2: Int): Unit = {}
@@ -3857,7 +3758,7 @@ trait TraitAbsListView[V <: android.widget.AbsListView] extends TraitAdapterView
     basis
   }
 
-  @inline def onScrollStateChanged[U](f: (android.widget.AbsListView, Int) => U): V = {
+  @inline def onScrollStateChanged[U](f: (android.widget.AbsListView, Int) => U): This = {
     basis.setOnScrollListener(new android.widget.AbsListView.OnScrollListener {
       def onScroll(p1: android.widget.AbsListView, p2: Int, p3: Int, p4: Int): Unit = {}
       def onScrollStateChanged(p1: android.widget.AbsListView, p2: Int): Unit = { f(p1, p2) }
@@ -3865,7 +3766,7 @@ trait TraitAbsListView[V <: android.widget.AbsListView] extends TraitAdapterView
     basis
   }
 
-  @inline def onScrollStateChanged[U](f: => U): V = {
+  @inline def onScrollStateChanged[U](f: => U): This = {
     basis.setOnScrollListener(new android.widget.AbsListView.OnScrollListener {
       def onScroll(p1: android.widget.AbsListView, p2: Int, p3: Int, p4: Int): Unit = {}
       def onScrollStateChanged(p1: android.widget.AbsListView, p2: Int): Unit = { f }
@@ -3878,12 +3779,12 @@ trait TraitAbsListView[V <: android.widget.AbsListView] extends TraitAdapterView
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/AbsSpinner.html android.widget.AbsSpinner]]`.
  */
-class RichAbsSpinner[V <: android.widget.AbsSpinner](val basis: V) extends TraitAbsSpinner[V]
+class RichAbsSpinner[This <: android.widget.AbsSpinner](val basis: This) extends TraitAbsSpinner[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/AbsSpinner.html android.widget.AbsSpinner]]`. This contains several property accessors.
  */
-trait TraitAbsSpinner[V <: android.widget.AbsSpinner] extends TraitAdapterView[V] {
+trait TraitAbsSpinner[This <: android.widget.AbsSpinner] extends TraitAdapterView[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/AbsSpinner.html#getAdapter() getAdapter()]]`
@@ -3905,12 +3806,12 @@ trait TraitAbsSpinner[V <: android.widget.AbsSpinner] extends TraitAdapterView[V
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/SeekBar.html android.widget.SeekBar]]`.
  */
-class RichSeekBar[V <: android.widget.SeekBar](val basis: V) extends TraitSeekBar[V]
+class RichSeekBar[This <: android.widget.SeekBar](val basis: This) extends TraitSeekBar[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/SeekBar.html android.widget.SeekBar]]`. This contains several property accessors.
  */
-trait TraitSeekBar[V <: android.widget.SeekBar] extends TraitAbsSeekBar[V] {
+trait TraitSeekBar[This <: android.widget.SeekBar] extends TraitAbsSeekBar[This] {
 
   @inline def onSeekBarChangeListener(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'onSeekBarChangeListener'")
 
@@ -3924,7 +3825,7 @@ trait TraitSeekBar[V <: android.widget.SeekBar] extends TraitAbsSeekBar[V] {
    */
   @inline def onSeekBarChangeListener_=(p: android.widget.SeekBar.OnSeekBarChangeListener) = { basis.setOnSeekBarChangeListener(p); basis }
 
-  @inline def onProgressChanged[U](f: (android.widget.SeekBar, Int, Boolean) => U): V = {
+  @inline def onProgressChanged[U](f: (android.widget.SeekBar, Int, Boolean) => U): This = {
     basis.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener {
       def onProgressChanged(p1: android.widget.SeekBar, p2: Int, p3: Boolean): Unit = { f(p1, p2, p3) }
       def onStartTrackingTouch(p: android.widget.SeekBar): Unit = {}
@@ -3933,7 +3834,7 @@ trait TraitSeekBar[V <: android.widget.SeekBar] extends TraitAbsSeekBar[V] {
     basis
   }
 
-  @inline def onProgressChanged[U](f: => U): V = {
+  @inline def onProgressChanged[U](f: => U): This = {
     basis.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener {
       def onProgressChanged(p1: android.widget.SeekBar, p2: Int, p3: Boolean): Unit = { f }
       def onStartTrackingTouch(p: android.widget.SeekBar): Unit = {}
@@ -3942,7 +3843,7 @@ trait TraitSeekBar[V <: android.widget.SeekBar] extends TraitAbsSeekBar[V] {
     basis
   }
 
-  @inline def onStartTrackingTouch[U](f: android.widget.SeekBar => U): V = {
+  @inline def onStartTrackingTouch[U](f: android.widget.SeekBar => U): This = {
     basis.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener {
       def onProgressChanged(p1: android.widget.SeekBar, p2: Int, p3: Boolean): Unit = {}
       def onStartTrackingTouch(p: android.widget.SeekBar): Unit = { f(p) }
@@ -3951,7 +3852,7 @@ trait TraitSeekBar[V <: android.widget.SeekBar] extends TraitAbsSeekBar[V] {
     basis
   }
 
-  @inline def onStartTrackingTouch[U](f: => U): V = {
+  @inline def onStartTrackingTouch[U](f: => U): This = {
     basis.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener {
       def onProgressChanged(p1: android.widget.SeekBar, p2: Int, p3: Boolean): Unit = {}
       def onStartTrackingTouch(p: android.widget.SeekBar): Unit = { f }
@@ -3960,7 +3861,7 @@ trait TraitSeekBar[V <: android.widget.SeekBar] extends TraitAbsSeekBar[V] {
     basis
   }
 
-  @inline def onStopTrackingTouch[U](f: android.widget.SeekBar => U): V = {
+  @inline def onStopTrackingTouch[U](f: android.widget.SeekBar => U): This = {
     basis.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener {
       def onProgressChanged(p1: android.widget.SeekBar, p2: Int, p3: Boolean): Unit = {}
       def onStartTrackingTouch(p: android.widget.SeekBar): Unit = {}
@@ -3969,7 +3870,7 @@ trait TraitSeekBar[V <: android.widget.SeekBar] extends TraitAbsSeekBar[V] {
     basis
   }
 
-  @inline def onStopTrackingTouch[U](f: => U): V = {
+  @inline def onStopTrackingTouch[U](f: => U): This = {
     basis.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener {
       def onProgressChanged(p1: android.widget.SeekBar, p2: Int, p3: Boolean): Unit = {}
       def onStartTrackingTouch(p: android.widget.SeekBar): Unit = {}
@@ -4003,14 +3904,14 @@ object SSeekBar {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/Toast.html android.widget.Toast]]`.
  */
-class RichToast[V <: android.widget.Toast](val basis: V) extends TraitToast[V]
+class RichToast[This <: android.widget.Toast](val basis: This) extends TraitToast[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/Toast.html android.widget.Toast]]`. This contains several property accessors.
  */
-trait TraitToast[V <: android.widget.Toast] {
+trait TraitToast[This <: android.widget.Toast] {
 
-  def basis: V
+  def basis: This
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/Toast.html#getDuration() getDuration()]]`
@@ -4113,26 +4014,26 @@ object SToast {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ListAdapter.html android.widget.ListAdapter]]`.
  */
-class RichListAdapter[V <: android.widget.ListAdapter](val basis: V) extends TraitListAdapter[V]
+class RichListAdapter[This <: android.widget.ListAdapter](val basis: This) extends TraitListAdapter[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ListAdapter.html android.widget.ListAdapter]]`. This contains several property accessors.
  */
-trait TraitListAdapter[V <: android.widget.ListAdapter] {
+trait TraitListAdapter[This <: android.widget.ListAdapter] {
 
-  def basis: V
+  def basis: This
 
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/StackView.html android.widget.StackView]]`.
  */
-class RichStackView[V <: android.widget.StackView](val basis: V) extends TraitStackView[V]
+class RichStackView[This <: android.widget.StackView](val basis: This) extends TraitStackView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/StackView.html android.widget.StackView]]`. This contains several property accessors.
  */
-trait TraitStackView[V <: android.widget.StackView] extends TraitAdapterViewAnimator[V] {
+trait TraitStackView[This <: android.widget.StackView] extends TraitAdapterViewAnimator[This] {
 
 }
 
@@ -4159,28 +4060,28 @@ object SStackView {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/Advanceable.html android.widget.Advanceable]]`.
  */
-class RichAdvanceable[V <: android.widget.Advanceable](val basis: V) extends TraitAdvanceable[V]
+class RichAdvanceable[This <: android.widget.Advanceable](val basis: This) extends TraitAdvanceable[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/Advanceable.html android.widget.Advanceable]]`. This contains several property accessors.
  */
-trait TraitAdvanceable[V <: android.widget.Advanceable] {
+trait TraitAdvanceable[This <: android.widget.Advanceable] {
 
-  def basis: V
+  def basis: This
 
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ZoomButtonsController.html android.widget.ZoomButtonsController]]`.
  */
-class RichZoomButtonsController[V <: android.widget.ZoomButtonsController](val basis: V) extends TraitZoomButtonsController[V]
+class RichZoomButtonsController[This <: android.widget.ZoomButtonsController](val basis: This) extends TraitZoomButtonsController[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ZoomButtonsController.html android.widget.ZoomButtonsController]]`. This contains several property accessors.
  */
-trait TraitZoomButtonsController[V <: android.widget.ZoomButtonsController] {
+trait TraitZoomButtonsController[This <: android.widget.ZoomButtonsController] {
 
-  def basis: V
+  def basis: This
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/ZoomButtonsController.html#isAutoDismissed() isAutoDismissed()]]`
@@ -4288,7 +4189,7 @@ trait TraitZoomButtonsController[V <: android.widget.ZoomButtonsController] {
    */
   @inline def zoomSpeed_=(p: Long) = { basis.setZoomSpeed(p); basis }
 
-  @inline def onVisibilityChanged[U](f: Boolean => U): V = {
+  @inline def onVisibilityChanged[U](f: Boolean => U): This = {
     basis.setOnZoomListener(new android.widget.ZoomButtonsController.OnZoomListener {
       def onVisibilityChanged(p: Boolean): Unit = { f(p) }
       def onZoom(p: Boolean): Unit = {}
@@ -4296,7 +4197,7 @@ trait TraitZoomButtonsController[V <: android.widget.ZoomButtonsController] {
     basis
   }
 
-  @inline def onVisibilityChanged[U](f: => U): V = {
+  @inline def onVisibilityChanged[U](f: => U): This = {
     basis.setOnZoomListener(new android.widget.ZoomButtonsController.OnZoomListener {
       def onVisibilityChanged(p: Boolean): Unit = { f }
       def onZoom(p: Boolean): Unit = {}
@@ -4304,7 +4205,7 @@ trait TraitZoomButtonsController[V <: android.widget.ZoomButtonsController] {
     basis
   }
 
-  @inline def onZoom[U](f: Boolean => U): V = {
+  @inline def onZoom[U](f: Boolean => U): This = {
     basis.setOnZoomListener(new android.widget.ZoomButtonsController.OnZoomListener {
       def onVisibilityChanged(p: Boolean): Unit = {}
       def onZoom(p: Boolean): Unit = { f(p) }
@@ -4312,7 +4213,7 @@ trait TraitZoomButtonsController[V <: android.widget.ZoomButtonsController] {
     basis
   }
 
-  @inline def onZoom[U](f: => U): V = {
+  @inline def onZoom[U](f: => U): This = {
     basis.setOnZoomListener(new android.widget.ZoomButtonsController.OnZoomListener {
       def onVisibilityChanged(p: Boolean): Unit = {}
       def onZoom(p: Boolean): Unit = { f }
@@ -4325,12 +4226,12 @@ trait TraitZoomButtonsController[V <: android.widget.ZoomButtonsController] {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ResourceCursorAdapter.html android.widget.ResourceCursorAdapter]]`.
  */
-class RichResourceCursorAdapter[V <: android.widget.ResourceCursorAdapter](val basis: V) extends TraitResourceCursorAdapter[V]
+class RichResourceCursorAdapter[This <: android.widget.ResourceCursorAdapter](val basis: This) extends TraitResourceCursorAdapter[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ResourceCursorAdapter.html android.widget.ResourceCursorAdapter]]`. This contains several property accessors.
  */
-trait TraitResourceCursorAdapter[V <: android.widget.ResourceCursorAdapter] extends TraitCursorAdapter[V] {
+trait TraitResourceCursorAdapter[This <: android.widget.ResourceCursorAdapter] extends TraitCursorAdapter[This] {
 
   @inline def dropDownViewResource(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'dropDownViewResource'")
 
@@ -4361,12 +4262,12 @@ trait TraitResourceCursorAdapter[V <: android.widget.ResourceCursorAdapter] exte
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ViewAnimator.html android.widget.ViewAnimator]]`.
  */
-class RichViewAnimator[V <: android.widget.ViewAnimator](val basis: V) extends TraitViewAnimator[V]
+class RichViewAnimator[This <: android.widget.ViewAnimator](val basis: This) extends TraitViewAnimator[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ViewAnimator.html android.widget.ViewAnimator]]`. This contains several property accessors.
  */
-trait TraitViewAnimator[V <: android.widget.ViewAnimator] extends TraitFrameLayout[V] {
+trait TraitViewAnimator[This <: android.widget.ViewAnimator] extends TraitFrameLayout[This] {
 
   @inline def animateFirstView(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'animateFirstView'")
 
@@ -4455,12 +4356,12 @@ object SViewAnimator {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/CalendarView.html android.widget.CalendarView]]`.
  */
-class RichCalendarView[V <: android.widget.CalendarView](val basis: V) extends TraitCalendarView[V]
+class RichCalendarView[This <: android.widget.CalendarView](val basis: This) extends TraitCalendarView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/CalendarView.html android.widget.CalendarView]]`. This contains several property accessors.
  */
-trait TraitCalendarView[V <: android.widget.CalendarView] extends TraitFrameLayout[V] {
+trait TraitCalendarView[This <: android.widget.CalendarView] extends TraitFrameLayout[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/CalendarView.html#getDate() getDate()]]`
@@ -4694,14 +4595,14 @@ trait TraitCalendarView[V <: android.widget.CalendarView] extends TraitFrameLayo
    */
   @inline def weekSeparatorLineColor_=(p: Int) = { basis.setWeekSeparatorLineColor(p); basis }
 
-  @inline def onSelectedDayChange[U](f: (android.widget.CalendarView, Int, Int, Int) => U): V = {
+  @inline def onSelectedDayChange[U](f: (android.widget.CalendarView, Int, Int, Int) => U): This = {
     basis.setOnDateChangeListener(new android.widget.CalendarView.OnDateChangeListener {
       def onSelectedDayChange(p1: android.widget.CalendarView, p2: Int, p3: Int, p4: Int): Unit = { f(p1, p2, p3, p4) }
     })
     basis
   }
 
-  @inline def onSelectedDayChange[U](f: => U): V = {
+  @inline def onSelectedDayChange[U](f: => U): This = {
     basis.setOnDateChangeListener(new android.widget.CalendarView.OnDateChangeListener {
       def onSelectedDayChange(p1: android.widget.CalendarView, p2: Int, p3: Int, p4: Int): Unit = { f }
     })
@@ -4733,12 +4634,12 @@ object SCalendarView {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/SlidingDrawer.html android.widget.SlidingDrawer]]`.
  */
-class RichSlidingDrawer[V <: android.widget.SlidingDrawer](val basis: V) extends TraitSlidingDrawer[V]
+class RichSlidingDrawer[This <: android.widget.SlidingDrawer](val basis: This) extends TraitSlidingDrawer[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/SlidingDrawer.html android.widget.SlidingDrawer]]`. This contains several property accessors.
  */
-trait TraitSlidingDrawer[V <: android.widget.SlidingDrawer] extends TraitViewGroup[V] {
+trait TraitSlidingDrawer[This <: android.widget.SlidingDrawer] extends TraitViewGroup[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/SlidingDrawer.html#getContent() getContent()]]`
@@ -4786,21 +4687,21 @@ trait TraitSlidingDrawer[V <: android.widget.SlidingDrawer] extends TraitViewGro
    */
   @inline def onDrawerScrollListener_=(p: android.widget.SlidingDrawer.OnDrawerScrollListener) = { basis.setOnDrawerScrollListener(p); basis }
 
-  @inline def onDrawerClosed[U](f: => U): V = {
+  @inline def onDrawerClosed[U](f: => U): This = {
     basis.setOnDrawerCloseListener(new android.widget.SlidingDrawer.OnDrawerCloseListener {
       def onDrawerClosed(): Unit = { f }
     })
     basis
   }
 
-  @inline def onDrawerOpened[U](f: => U): V = {
+  @inline def onDrawerOpened[U](f: => U): This = {
     basis.setOnDrawerOpenListener(new android.widget.SlidingDrawer.OnDrawerOpenListener {
       def onDrawerOpened(): Unit = { f }
     })
     basis
   }
 
-  @inline def onScrollEnded[U](f: => U): V = {
+  @inline def onScrollEnded[U](f: => U): This = {
     basis.setOnDrawerScrollListener(new android.widget.SlidingDrawer.OnDrawerScrollListener {
       def onScrollEnded(): Unit = { f }
       def onScrollStarted(): Unit = {}
@@ -4808,7 +4709,7 @@ trait TraitSlidingDrawer[V <: android.widget.SlidingDrawer] extends TraitViewGro
     basis
   }
 
-  @inline def onScrollStarted[U](f: => U): V = {
+  @inline def onScrollStarted[U](f: => U): This = {
     basis.setOnDrawerScrollListener(new android.widget.SlidingDrawer.OnDrawerScrollListener {
       def onScrollEnded(): Unit = {}
       def onScrollStarted(): Unit = { f }
@@ -4821,14 +4722,14 @@ trait TraitSlidingDrawer[V <: android.widget.SlidingDrawer] extends TraitViewGro
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ListPopupWindow.html android.widget.ListPopupWindow]]`.
  */
-class RichListPopupWindow[V <: android.widget.ListPopupWindow](val basis: V) extends TraitListPopupWindow[V]
+class RichListPopupWindow[This <: android.widget.ListPopupWindow](val basis: This) extends TraitListPopupWindow[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ListPopupWindow.html android.widget.ListPopupWindow]]`. This contains several property accessors.
  */
-trait TraitListPopupWindow[V <: android.widget.ListPopupWindow] {
+trait TraitListPopupWindow[This <: android.widget.ListPopupWindow] {
 
-  def basis: V
+  def basis: This
 
   @inline def adapter(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'adapter'")
 
@@ -5118,28 +5019,28 @@ trait TraitListPopupWindow[V <: android.widget.ListPopupWindow] {
    */
   @inline def width_=(p: Int) = { basis.setWidth(p); basis }
 
-  @inline def onDismiss[U](f: => U): V = {
+  @inline def onDismiss[U](f: => U): This = {
     basis.setOnDismissListener(new android.widget.PopupWindow.OnDismissListener {
       def onDismiss(): Unit = { f }
     })
     basis
   }
 
-  @inline def onItemClick[U](f: (android.widget.AdapterView[_], android.view.View, Int, Long) => U): V = {
+  @inline def onItemClick[U](f: (android.widget.AdapterView[_], android.view.View, Int, Long) => U): This = {
     basis.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener {
       def onItemClick(p1: android.widget.AdapterView[_], p2: android.view.View, p3: Int, p4: Long): Unit = { f(p1, p2, p3, p4) }
     })
     basis
   }
 
-  @inline def onItemClick[U](f: => U): V = {
+  @inline def onItemClick[U](f: => U): This = {
     basis.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener {
       def onItemClick(p1: android.widget.AdapterView[_], p2: android.view.View, p3: Int, p4: Long): Unit = { f }
     })
     basis
   }
 
-  @inline def onItemSelected[U](f: (android.widget.AdapterView[_], android.view.View, Int, Long) => U): V = {
+  @inline def onItemSelected[U](f: (android.widget.AdapterView[_], android.view.View, Int, Long) => U): This = {
     basis.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener {
       def onItemSelected(p1: android.widget.AdapterView[_], p2: android.view.View, p3: Int, p4: Long): Unit = { f(p1, p2, p3, p4) }
       def onNothingSelected(p: android.widget.AdapterView[_]): Unit = {}
@@ -5147,7 +5048,7 @@ trait TraitListPopupWindow[V <: android.widget.ListPopupWindow] {
     basis
   }
 
-  @inline def onItemSelected[U](f: => U): V = {
+  @inline def onItemSelected[U](f: => U): This = {
     basis.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener {
       def onItemSelected(p1: android.widget.AdapterView[_], p2: android.view.View, p3: Int, p4: Long): Unit = { f }
       def onNothingSelected(p: android.widget.AdapterView[_]): Unit = {}
@@ -5155,7 +5056,7 @@ trait TraitListPopupWindow[V <: android.widget.ListPopupWindow] {
     basis
   }
 
-  @inline def onNothingSelected[U](f: android.widget.AdapterView[_] => U): V = {
+  @inline def onNothingSelected[U](f: android.widget.AdapterView[_] => U): This = {
     basis.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener {
       def onItemSelected(p1: android.widget.AdapterView[_], p2: android.view.View, p3: Int, p4: Long): Unit = {}
       def onNothingSelected(p: android.widget.AdapterView[_]): Unit = { f(p) }
@@ -5163,7 +5064,7 @@ trait TraitListPopupWindow[V <: android.widget.ListPopupWindow] {
     basis
   }
 
-  @inline def onNothingSelected[U](f: => U): V = {
+  @inline def onNothingSelected[U](f: => U): This = {
     basis.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener {
       def onItemSelected(p1: android.widget.AdapterView[_], p2: android.view.View, p3: Int, p4: Long): Unit = {}
       def onNothingSelected(p: android.widget.AdapterView[_]): Unit = { f }
@@ -5195,12 +5096,12 @@ object SListPopupWindow {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/TextSwitcher.html android.widget.TextSwitcher]]`.
  */
-class RichTextSwitcher[V <: android.widget.TextSwitcher](val basis: V) extends TraitTextSwitcher[V]
+class RichTextSwitcher[This <: android.widget.TextSwitcher](val basis: This) extends TraitTextSwitcher[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/TextSwitcher.html android.widget.TextSwitcher]]`. This contains several property accessors.
  */
-trait TraitTextSwitcher[V <: android.widget.TextSwitcher] extends TraitViewSwitcher[V] {
+trait TraitTextSwitcher[This <: android.widget.TextSwitcher] extends TraitViewSwitcher[This] {
 
   @inline def currentText(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'currentText'")
 
@@ -5251,12 +5152,12 @@ object STextSwitcher {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/LinearLayout.html android.widget.LinearLayout]]`.
  */
-class RichLinearLayout[V <: android.widget.LinearLayout](val basis: V) extends TraitLinearLayout[V]
+class RichLinearLayout[This <: android.widget.LinearLayout](val basis: This) extends TraitLinearLayout[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/LinearLayout.html android.widget.LinearLayout]]`. This contains several property accessors.
  */
-trait TraitLinearLayout[V <: android.widget.LinearLayout] extends TraitViewGroup[V] {
+trait TraitLinearLayout[This <: android.widget.LinearLayout] extends TraitViewGroup[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/LinearLayout.html#isBaselineAligned() isBaselineAligned()]]`
@@ -5470,12 +5371,12 @@ object SLinearLayout {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ZoomControls.html android.widget.ZoomControls]]`.
  */
-class RichZoomControls[V <: android.widget.ZoomControls](val basis: V) extends TraitZoomControls[V]
+class RichZoomControls[This <: android.widget.ZoomControls](val basis: This) extends TraitZoomControls[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ZoomControls.html android.widget.ZoomControls]]`. This contains several property accessors.
  */
-trait TraitZoomControls[V <: android.widget.ZoomControls] extends TraitLinearLayout[V] {
+trait TraitZoomControls[This <: android.widget.ZoomControls] extends TraitLinearLayout[This] {
 
   @inline def isZoomInEnabled(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'isZoomInEnabled'")
 
@@ -5543,28 +5444,28 @@ trait TraitZoomControls[V <: android.widget.ZoomControls] extends TraitLinearLay
    */
   @inline def zoomSpeed_=(p: Long) = { basis.setZoomSpeed(p); basis }
 
-  @inline def onZoomInClick[U](f: android.view.View => U): V = {
+  @inline def onZoomInClick[U](f: android.view.View => U): This = {
     basis.setOnZoomInClickListener(new android.view.View.OnClickListener {
       def onClick(p: android.view.View): Unit = { f(p) }
     })
     basis
   }
 
-  @inline def onZoomInClick[U](f: => U): V = {
+  @inline def onZoomInClick[U](f: => U): This = {
     basis.setOnZoomInClickListener(new android.view.View.OnClickListener {
       def onClick(p: android.view.View): Unit = { f }
     })
     basis
   }
 
-  @inline def onZoomOutClick[U](f: android.view.View => U): V = {
+  @inline def onZoomOutClick[U](f: android.view.View => U): This = {
     basis.setOnZoomOutClickListener(new android.view.View.OnClickListener {
       def onClick(p: android.view.View): Unit = { f(p) }
     })
     basis
   }
 
-  @inline def onZoomOutClick[U](f: => U): V = {
+  @inline def onZoomOutClick[U](f: => U): This = {
     basis.setOnZoomOutClickListener(new android.view.View.OnClickListener {
       def onClick(p: android.view.View): Unit = { f }
     })
@@ -5596,12 +5497,12 @@ object SZoomControls {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/DialerFilter.html android.widget.DialerFilter]]`.
  */
-class RichDialerFilter[V <: android.widget.DialerFilter](val basis: V) extends TraitDialerFilter[V]
+class RichDialerFilter[This <: android.widget.DialerFilter](val basis: This) extends TraitDialerFilter[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/DialerFilter.html android.widget.DialerFilter]]`. This contains several property accessors.
  */
-trait TraitDialerFilter[V <: android.widget.DialerFilter] extends TraitRelativeLayout[V] {
+trait TraitDialerFilter[This <: android.widget.DialerFilter] extends TraitRelativeLayout[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/DialerFilter.html#getDigits() getDigits()]]`
@@ -5694,12 +5595,12 @@ object SDialerFilter {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/RadioButton.html android.widget.RadioButton]]`.
  */
-class RichRadioButton[V <: android.widget.RadioButton](val basis: V) extends TraitRadioButton[V]
+class RichRadioButton[This <: android.widget.RadioButton](val basis: This) extends TraitRadioButton[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/RadioButton.html android.widget.RadioButton]]`. This contains several property accessors.
  */
-trait TraitRadioButton[V <: android.widget.RadioButton] extends TraitCompoundButton[V] {
+trait TraitRadioButton[This <: android.widget.RadioButton] extends TraitCompoundButton[This] {
 
 }
 
@@ -5717,57 +5618,38 @@ class SRadioButton()(implicit context: android.content.Context, parentVGroup: Tr
     this.text = text
   }
 
-  def this(text: CharSequence, onClickListener: View => Unit)(implicit context: Context) = {
+  def this(text: CharSequence, ignore: Nothing)(implicit context: Context) = this() // Just for implicit conversion of ViewOnClickListener
+
+  def this(text: CharSequence, onClickListener: ViewOnClickListener, interval: Int)(implicit context: Context) = {
     this()
     this.text = text
-    this.setOnClickListener(onClickListener)
+    this.setOnClickListener(onClickListener.onClickListener)
+    if (interval >= 0) onPressAndHold(interval, onClickListener.func(this))
   }
 
-  def this(text: CharSequence, onClickListener: OnClickListener)(implicit context: Context) = {
-    this()
-    this.text = text
-    this.setOnClickListener(onClickListener)
-  }
+  def this(text: CharSequence, onClickListener: ViewOnClickListener)(implicit context: Context) = this(text, onClickListener, -1)
 
 }
 
-object SRadioButton {
+object SRadioButton extends TextViewCompanion[SRadioButton] {
   def apply[LP <: ViewGroupLayoutParams[_, SRadioButton]]()(implicit context: android.content.Context, defaultLayoutParam: SRadioButton => LP): SRadioButton = {
     val v = new SRadioButton
     v.<<.parent.+=(v)
     v
   }
 
-  def apply[LP <: ViewGroupLayoutParams[_, SRadioButton]](txt: CharSequence)(implicit context: Context, defaultLayoutParam: (SRadioButton) => LP): SRadioButton = {
-    val v = new SRadioButton
-    v text txt
-    v.<<.parent.+=(v)
-    v
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SRadioButton]](text: CharSequence, onClickListener: (View) => Unit)(implicit context: Context, defaultLayoutParam: (SRadioButton) => LP): SRadioButton = {
-    apply(text, func2ViewOnClickListener(onClickListener))
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SRadioButton]](text: CharSequence, onClickListener: OnClickListener)(implicit context: Context, defaultLayoutParam: (SRadioButton) => LP): SRadioButton = {
-    val v = new SRadioButton
-    v.text = text
-    v.setOnClickListener(onClickListener)
-    v.<<.parent.+=(v)
-    v
-  }
-
+  def create[LP <: ViewGroupLayoutParams[_, SRadioButton]]()(implicit context: Context, defaultLayoutParam: SRadioButton => LP) = new SRadioButton()
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/QuickContactBadge.html android.widget.QuickContactBadge]]`.
  */
-class RichQuickContactBadge[V <: android.widget.QuickContactBadge](val basis: V) extends TraitQuickContactBadge[V]
+class RichQuickContactBadge[This <: android.widget.QuickContactBadge](val basis: This) extends TraitQuickContactBadge[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/QuickContactBadge.html android.widget.QuickContactBadge]]`. This contains several property accessors.
  */
-trait TraitQuickContactBadge[V <: android.widget.QuickContactBadge] extends TraitImageView[V] {
+trait TraitQuickContactBadge[This <: android.widget.QuickContactBadge] extends TraitImageView[This] {
 
   @inline def excludeMimes(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'excludeMimes'")
 
@@ -5809,69 +5691,50 @@ class SQuickContactBadge()(implicit context: android.content.Context, parentVGro
     this.imageDrawable = imageResource
   }
 
-  def this(imageResource: android.graphics.drawable.Drawable, onClickListener: View => Unit)(implicit context: Context) = {
+  def this(imageResource: android.graphics.drawable.Drawable, ignore: Nothing)(implicit context: Context) = this() // Just for implicit conversion of ViewOnClickListener
+
+  def this(imageResource: android.graphics.drawable.Drawable, onClickListener: ViewOnClickListener, interval: Int)(implicit context: Context) = {
     this()
     this.imageDrawable = imageResource
-    this.setOnClickListener(onClickListener)
+    this.setOnClickListener(onClickListener.onClickListener)
+    if (interval >= 0) onPressAndHold(interval, onClickListener.func(this))
   }
 
-  def this(imageResource: android.graphics.drawable.Drawable, onClickListener: OnClickListener)(implicit context: Context) = {
-    this()
-    this.imageDrawable = imageResource
-    this.setOnClickListener(onClickListener)
-  }
+  def this(imageResource: android.graphics.drawable.Drawable, onClickListener: ViewOnClickListener)(implicit context: Context) = this(imageResource, onClickListener, -1)
 
 }
 
-object SQuickContactBadge {
+object SQuickContactBadge extends ImageViewCompanion[SQuickContactBadge] {
   def apply[LP <: ViewGroupLayoutParams[_, SQuickContactBadge]]()(implicit context: android.content.Context, defaultLayoutParam: SQuickContactBadge => LP): SQuickContactBadge = {
     val v = new SQuickContactBadge
     v.<<.parent.+=(v)
     v
   }
 
-  def apply[LP <: ViewGroupLayoutParams[_, SQuickContactBadge]](imageResource: android.graphics.drawable.Drawable)(implicit context: Context, defaultLayoutParam: (SQuickContactBadge) => LP): SQuickContactBadge = {
-    val v = new SQuickContactBadge
-    v.imageDrawable = imageResource
-    v.<<.parent.+=(v)
-    v
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SQuickContactBadge]](imageResource: android.graphics.drawable.Drawable, onClickListener: (View) => Unit)(implicit context: Context, defaultLayoutParam: (SQuickContactBadge) => LP): SQuickContactBadge = {
-    apply(imageResource, func2ViewOnClickListener(onClickListener))
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SQuickContactBadge]](imageResource: android.graphics.drawable.Drawable, onClickListener: OnClickListener)(implicit context: Context, defaultLayoutParam: (SQuickContactBadge) => LP): SQuickContactBadge = {
-    val v = new SQuickContactBadge
-    v.imageDrawable = imageResource
-    v.setOnClickListener(onClickListener)
-    v.<<.parent.+=(v)
-    v
-  }
-
+  def create[LP <: ViewGroupLayoutParams[_, SQuickContactBadge]]()(implicit context: Context, defaultLayoutParam: SQuickContactBadge => LP) = new SQuickContactBadge()
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/Space.html android.widget.Space]]`.
  */
-class RichSpace[V <: android.widget.Space](val basis: V) extends TraitSpace[V]
+class RichSpace[This <: android.widget.Space](val basis: This) extends TraitSpace[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/Space.html android.widget.Space]]`. This contains several property accessors.
  */
-trait TraitSpace[V <: android.widget.Space] extends TraitView[V] {
+trait TraitSpace[This <: android.widget.Space] extends TraitView[This] {
 
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/SearchView.html android.widget.SearchView]]`.
  */
-class RichSearchView[V <: android.widget.SearchView](val basis: V) extends TraitSearchView[V]
+class RichSearchView[This <: android.widget.SearchView](val basis: This) extends TraitSearchView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/SearchView.html android.widget.SearchView]]`. This contains several property accessors.
  */
-trait TraitSearchView[V <: android.widget.SearchView] extends TraitLinearLayout[V] {
+trait TraitSearchView[This <: android.widget.SearchView] extends TraitLinearLayout[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/SearchView.html#isIconified() isIconified()]]`
@@ -6088,35 +5951,35 @@ trait TraitSearchView[V <: android.widget.SearchView] extends TraitLinearLayout[
    */
   @inline def suggestionsAdapter_=(p: android.widget.CursorAdapter) = { basis.setSuggestionsAdapter(p); basis }
 
-  @inline def onClose(f: => Boolean): V = {
+  @inline def onClose(f: => Boolean): This = {
     basis.setOnCloseListener(new android.widget.SearchView.OnCloseListener {
       def onClose(): Boolean = { f }
     })
     basis
   }
 
-  @inline def onQueryTextFocusChange[U](f: (android.view.View, Boolean) => U): V = {
+  @inline def onQueryTextFocusChange[U](f: (android.view.View, Boolean) => U): This = {
     basis.setOnQueryTextFocusChangeListener(new android.view.View.OnFocusChangeListener {
       def onFocusChange(p1: android.view.View, p2: Boolean): Unit = { f(p1, p2) }
     })
     basis
   }
 
-  @inline def onQueryTextFocusChange[U](f: => U): V = {
+  @inline def onQueryTextFocusChange[U](f: => U): This = {
     basis.setOnQueryTextFocusChangeListener(new android.view.View.OnFocusChangeListener {
       def onFocusChange(p1: android.view.View, p2: Boolean): Unit = { f }
     })
     basis
   }
 
-  @inline def onSearchClick[U](f: android.view.View => U): V = {
+  @inline def onSearchClick[U](f: android.view.View => U): This = {
     basis.setOnSearchClickListener(new android.view.View.OnClickListener {
       def onClick(p: android.view.View): Unit = { f(p) }
     })
     basis
   }
 
-  @inline def onSearchClick[U](f: => U): V = {
+  @inline def onSearchClick[U](f: => U): This = {
     basis.setOnSearchClickListener(new android.view.View.OnClickListener {
       def onClick(p: android.view.View): Unit = { f }
     })
@@ -6148,12 +6011,12 @@ object SSearchView {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/DigitalClock.html android.widget.DigitalClock]]`.
  */
-class RichDigitalClock[V <: android.widget.DigitalClock](val basis: V) extends TraitDigitalClock[V]
+class RichDigitalClock[This <: android.widget.DigitalClock](val basis: This) extends TraitDigitalClock[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/DigitalClock.html android.widget.DigitalClock]]`. This contains several property accessors.
  */
-trait TraitDigitalClock[V <: android.widget.DigitalClock] extends TraitTextView[V] {
+trait TraitDigitalClock[This <: android.widget.DigitalClock] extends TraitTextView[This] {
 
 }
 
@@ -6171,57 +6034,38 @@ class SDigitalClock()(implicit context: android.content.Context, parentVGroup: T
     this.text = text
   }
 
-  def this(text: CharSequence, onClickListener: View => Unit)(implicit context: Context) = {
+  def this(text: CharSequence, ignore: Nothing)(implicit context: Context) = this() // Just for implicit conversion of ViewOnClickListener
+
+  def this(text: CharSequence, onClickListener: ViewOnClickListener, interval: Int)(implicit context: Context) = {
     this()
     this.text = text
-    this.setOnClickListener(onClickListener)
+    this.setOnClickListener(onClickListener.onClickListener)
+    if (interval >= 0) onPressAndHold(interval, onClickListener.func(this))
   }
 
-  def this(text: CharSequence, onClickListener: OnClickListener)(implicit context: Context) = {
-    this()
-    this.text = text
-    this.setOnClickListener(onClickListener)
-  }
+  def this(text: CharSequence, onClickListener: ViewOnClickListener)(implicit context: Context) = this(text, onClickListener, -1)
 
 }
 
-object SDigitalClock {
+object SDigitalClock extends TextViewCompanion[SDigitalClock] {
   def apply[LP <: ViewGroupLayoutParams[_, SDigitalClock]]()(implicit context: android.content.Context, defaultLayoutParam: SDigitalClock => LP): SDigitalClock = {
     val v = new SDigitalClock
     v.<<.parent.+=(v)
     v
   }
 
-  def apply[LP <: ViewGroupLayoutParams[_, SDigitalClock]](txt: CharSequence)(implicit context: Context, defaultLayoutParam: (SDigitalClock) => LP): SDigitalClock = {
-    val v = new SDigitalClock
-    v text txt
-    v.<<.parent.+=(v)
-    v
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SDigitalClock]](text: CharSequence, onClickListener: (View) => Unit)(implicit context: Context, defaultLayoutParam: (SDigitalClock) => LP): SDigitalClock = {
-    apply(text, func2ViewOnClickListener(onClickListener))
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SDigitalClock]](text: CharSequence, onClickListener: OnClickListener)(implicit context: Context, defaultLayoutParam: (SDigitalClock) => LP): SDigitalClock = {
-    val v = new SDigitalClock
-    v.text = text
-    v.setOnClickListener(onClickListener)
-    v.<<.parent.+=(v)
-    v
-  }
-
+  def create[LP <: ViewGroupLayoutParams[_, SDigitalClock]]()(implicit context: Context, defaultLayoutParam: SDigitalClock => LP) = new SDigitalClock()
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ToggleButton.html android.widget.ToggleButton]]`.
  */
-class RichToggleButton[V <: android.widget.ToggleButton](val basis: V) extends TraitToggleButton[V]
+class RichToggleButton[This <: android.widget.ToggleButton](val basis: This) extends TraitToggleButton[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ToggleButton.html android.widget.ToggleButton]]`. This contains several property accessors.
  */
-trait TraitToggleButton[V <: android.widget.ToggleButton] extends TraitCompoundButton[V] {
+trait TraitToggleButton[This <: android.widget.ToggleButton] extends TraitCompoundButton[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/ToggleButton.html#getTextOff() getTextOff()]]`
@@ -6269,57 +6113,38 @@ class SToggleButton()(implicit context: android.content.Context, parentVGroup: T
     this.text = text
   }
 
-  def this(text: CharSequence, onClickListener: View => Unit)(implicit context: Context) = {
+  def this(text: CharSequence, ignore: Nothing)(implicit context: Context) = this() // Just for implicit conversion of ViewOnClickListener
+
+  def this(text: CharSequence, onClickListener: ViewOnClickListener, interval: Int)(implicit context: Context) = {
     this()
     this.text = text
-    this.setOnClickListener(onClickListener)
+    this.setOnClickListener(onClickListener.onClickListener)
+    if (interval >= 0) onPressAndHold(interval, onClickListener.func(this))
   }
 
-  def this(text: CharSequence, onClickListener: OnClickListener)(implicit context: Context) = {
-    this()
-    this.text = text
-    this.setOnClickListener(onClickListener)
-  }
+  def this(text: CharSequence, onClickListener: ViewOnClickListener)(implicit context: Context) = this(text, onClickListener, -1)
 
 }
 
-object SToggleButton {
+object SToggleButton extends TextViewCompanion[SToggleButton] {
   def apply[LP <: ViewGroupLayoutParams[_, SToggleButton]]()(implicit context: android.content.Context, defaultLayoutParam: SToggleButton => LP): SToggleButton = {
     val v = new SToggleButton
     v.<<.parent.+=(v)
     v
   }
 
-  def apply[LP <: ViewGroupLayoutParams[_, SToggleButton]](txt: CharSequence)(implicit context: Context, defaultLayoutParam: (SToggleButton) => LP): SToggleButton = {
-    val v = new SToggleButton
-    v text txt
-    v.<<.parent.+=(v)
-    v
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SToggleButton]](text: CharSequence, onClickListener: (View) => Unit)(implicit context: Context, defaultLayoutParam: (SToggleButton) => LP): SToggleButton = {
-    apply(text, func2ViewOnClickListener(onClickListener))
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SToggleButton]](text: CharSequence, onClickListener: OnClickListener)(implicit context: Context, defaultLayoutParam: (SToggleButton) => LP): SToggleButton = {
-    val v = new SToggleButton
-    v.text = text
-    v.setOnClickListener(onClickListener)
-    v.<<.parent.+=(v)
-    v
-  }
-
+  def create[LP <: ViewGroupLayoutParams[_, SToggleButton]]()(implicit context: Context, defaultLayoutParam: SToggleButton => LP) = new SToggleButton()
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/Button.html android.widget.Button]]`.
  */
-class RichButton[V <: android.widget.Button](val basis: V) extends TraitButton[V]
+class RichButton[This <: android.widget.Button](val basis: This) extends TraitButton[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/Button.html android.widget.Button]]`. This contains several property accessors.
  */
-trait TraitButton[V <: android.widget.Button] extends TraitTextView[V] {
+trait TraitButton[This <: android.widget.Button] extends TraitTextView[This] {
 
 }
 
@@ -6337,57 +6162,38 @@ class SButton()(implicit context: android.content.Context, parentVGroup: TraitVi
     this.text = text
   }
 
-  def this(text: CharSequence, onClickListener: View => Unit)(implicit context: Context) = {
+  def this(text: CharSequence, ignore: Nothing)(implicit context: Context) = this() // Just for implicit conversion of ViewOnClickListener
+
+  def this(text: CharSequence, onClickListener: ViewOnClickListener, interval: Int)(implicit context: Context) = {
     this()
     this.text = text
-    this.setOnClickListener(onClickListener)
+    this.setOnClickListener(onClickListener.onClickListener)
+    if (interval >= 0) onPressAndHold(interval, onClickListener.func(this))
   }
 
-  def this(text: CharSequence, onClickListener: OnClickListener)(implicit context: Context) = {
-    this()
-    this.text = text
-    this.setOnClickListener(onClickListener)
-  }
+  def this(text: CharSequence, onClickListener: ViewOnClickListener)(implicit context: Context) = this(text, onClickListener, -1)
 
 }
 
-object SButton {
+object SButton extends TextViewCompanion[SButton] {
   def apply[LP <: ViewGroupLayoutParams[_, SButton]]()(implicit context: android.content.Context, defaultLayoutParam: SButton => LP): SButton = {
     val v = new SButton
     v.<<.parent.+=(v)
     v
   }
 
-  def apply[LP <: ViewGroupLayoutParams[_, SButton]](txt: CharSequence)(implicit context: Context, defaultLayoutParam: (SButton) => LP): SButton = {
-    val v = new SButton
-    v text txt
-    v.<<.parent.+=(v)
-    v
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SButton]](text: CharSequence, onClickListener: (View) => Unit)(implicit context: Context, defaultLayoutParam: (SButton) => LP): SButton = {
-    apply(text, func2ViewOnClickListener(onClickListener))
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SButton]](text: CharSequence, onClickListener: OnClickListener)(implicit context: Context, defaultLayoutParam: (SButton) => LP): SButton = {
-    val v = new SButton
-    v.text = text
-    v.setOnClickListener(onClickListener)
-    v.<<.parent.+=(v)
-    v
-  }
-
+  def create[LP <: ViewGroupLayoutParams[_, SButton]]()(implicit context: Context, defaultLayoutParam: SButton => LP) = new SButton()
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/CheckBox.html android.widget.CheckBox]]`.
  */
-class RichCheckBox[V <: android.widget.CheckBox](val basis: V) extends TraitCheckBox[V]
+class RichCheckBox[This <: android.widget.CheckBox](val basis: This) extends TraitCheckBox[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/CheckBox.html android.widget.CheckBox]]`. This contains several property accessors.
  */
-trait TraitCheckBox[V <: android.widget.CheckBox] extends TraitCompoundButton[V] {
+trait TraitCheckBox[This <: android.widget.CheckBox] extends TraitCompoundButton[This] {
 
 }
 
@@ -6405,57 +6211,38 @@ class SCheckBox()(implicit context: android.content.Context, parentVGroup: Trait
     this.text = text
   }
 
-  def this(text: CharSequence, onClickListener: View => Unit)(implicit context: Context) = {
+  def this(text: CharSequence, ignore: Nothing)(implicit context: Context) = this() // Just for implicit conversion of ViewOnClickListener
+
+  def this(text: CharSequence, onClickListener: ViewOnClickListener, interval: Int)(implicit context: Context) = {
     this()
     this.text = text
-    this.setOnClickListener(onClickListener)
+    this.setOnClickListener(onClickListener.onClickListener)
+    if (interval >= 0) onPressAndHold(interval, onClickListener.func(this))
   }
 
-  def this(text: CharSequence, onClickListener: OnClickListener)(implicit context: Context) = {
-    this()
-    this.text = text
-    this.setOnClickListener(onClickListener)
-  }
+  def this(text: CharSequence, onClickListener: ViewOnClickListener)(implicit context: Context) = this(text, onClickListener, -1)
 
 }
 
-object SCheckBox {
+object SCheckBox extends TextViewCompanion[SCheckBox] {
   def apply[LP <: ViewGroupLayoutParams[_, SCheckBox]]()(implicit context: android.content.Context, defaultLayoutParam: SCheckBox => LP): SCheckBox = {
     val v = new SCheckBox
     v.<<.parent.+=(v)
     v
   }
 
-  def apply[LP <: ViewGroupLayoutParams[_, SCheckBox]](txt: CharSequence)(implicit context: Context, defaultLayoutParam: (SCheckBox) => LP): SCheckBox = {
-    val v = new SCheckBox
-    v text txt
-    v.<<.parent.+=(v)
-    v
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SCheckBox]](text: CharSequence, onClickListener: (View) => Unit)(implicit context: Context, defaultLayoutParam: (SCheckBox) => LP): SCheckBox = {
-    apply(text, func2ViewOnClickListener(onClickListener))
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SCheckBox]](text: CharSequence, onClickListener: OnClickListener)(implicit context: Context, defaultLayoutParam: (SCheckBox) => LP): SCheckBox = {
-    val v = new SCheckBox
-    v.text = text
-    v.setOnClickListener(onClickListener)
-    v.<<.parent.+=(v)
-    v
-  }
-
+  def create[LP <: ViewGroupLayoutParams[_, SCheckBox]]()(implicit context: Context, defaultLayoutParam: SCheckBox => LP) = new SCheckBox()
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/MediaController.html android.widget.MediaController]]`.
  */
-class RichMediaController[V <: android.widget.MediaController](val basis: V) extends TraitMediaController[V]
+class RichMediaController[This <: android.widget.MediaController](val basis: This) extends TraitMediaController[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/MediaController.html android.widget.MediaController]]`. This contains several property accessors.
  */
-trait TraitMediaController[V <: android.widget.MediaController] extends TraitFrameLayout[V] {
+trait TraitMediaController[This <: android.widget.MediaController] extends TraitFrameLayout[This] {
 
   @inline def anchorView(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'anchorView'")
 
@@ -6506,12 +6293,12 @@ object SMediaController {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/TableRow.html android.widget.TableRow]]`.
  */
-class RichTableRow[V <: android.widget.TableRow](val basis: V) extends TraitTableRow[V]
+class RichTableRow[This <: android.widget.TableRow](val basis: This) extends TraitTableRow[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/TableRow.html android.widget.TableRow]]`. This contains several property accessors.
  */
-trait TraitTableRow[V <: android.widget.TableRow] extends TraitLinearLayout[V] {
+trait TraitTableRow[This <: android.widget.TableRow] extends TraitLinearLayout[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/TableRow.html#getVirtualChildCount() getVirtualChildCount()]]`
@@ -6556,12 +6343,12 @@ object STableRow {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/TabWidget.html android.widget.TabWidget]]`.
  */
-class RichTabWidget[V <: android.widget.TabWidget](val basis: V) extends TraitTabWidget[V]
+class RichTabWidget[This <: android.widget.TabWidget](val basis: This) extends TraitTabWidget[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/TabWidget.html android.widget.TabWidget]]`. This contains several property accessors.
  */
-trait TraitTabWidget[V <: android.widget.TabWidget] extends TraitLinearLayout[V] {
+trait TraitTabWidget[This <: android.widget.TabWidget] extends TraitLinearLayout[This] {
 
   @inline def currentTab(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'currentTab'")
 
@@ -6677,12 +6464,12 @@ object STabWidget {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/VideoView.html android.widget.VideoView]]`.
  */
-class RichVideoView[V <: android.widget.VideoView](val basis: V) extends TraitVideoView[V]
+class RichVideoView[This <: android.widget.VideoView](val basis: This) extends TraitVideoView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/VideoView.html android.widget.VideoView]]`. This contains several property accessors.
  */
-trait TraitVideoView[V <: android.widget.VideoView] extends TraitSurfaceView[V] {
+trait TraitVideoView[This <: android.widget.VideoView] extends TraitSurfaceView[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/VideoView.html#getBufferPercentage() getBufferPercentage()]]`
@@ -6771,42 +6558,42 @@ trait TraitVideoView[V <: android.widget.VideoView] extends TraitSurfaceView[V] 
    */
   @inline def videoURI_=(p: android.net.Uri) = { basis.setVideoURI(p); basis }
 
-  @inline def onCompletion[U](f: android.media.MediaPlayer => U): V = {
+  @inline def onCompletion[U](f: android.media.MediaPlayer => U): This = {
     basis.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener {
       def onCompletion(p: android.media.MediaPlayer): Unit = { f(p) }
     })
     basis
   }
 
-  @inline def onCompletion[U](f: => U): V = {
+  @inline def onCompletion[U](f: => U): This = {
     basis.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener {
       def onCompletion(p: android.media.MediaPlayer): Unit = { f }
     })
     basis
   }
 
-  @inline def onError(f: (android.media.MediaPlayer, Int, Int) => Boolean): V = {
+  @inline def onError(f: (android.media.MediaPlayer, Int, Int) => Boolean): This = {
     basis.setOnErrorListener(new android.media.MediaPlayer.OnErrorListener {
       def onError(p1: android.media.MediaPlayer, p2: Int, p3: Int): Boolean = { f(p1, p2, p3) }
     })
     basis
   }
 
-  @inline def onError(f: => Boolean): V = {
+  @inline def onError(f: => Boolean): This = {
     basis.setOnErrorListener(new android.media.MediaPlayer.OnErrorListener {
       def onError(p1: android.media.MediaPlayer, p2: Int, p3: Int): Boolean = { f }
     })
     basis
   }
 
-  @inline def onPrepared[U](f: android.media.MediaPlayer => U): V = {
+  @inline def onPrepared[U](f: android.media.MediaPlayer => U): This = {
     basis.setOnPreparedListener(new android.media.MediaPlayer.OnPreparedListener {
       def onPrepared(p: android.media.MediaPlayer): Unit = { f(p) }
     })
     basis
   }
 
-  @inline def onPrepared[U](f: => U): V = {
+  @inline def onPrepared[U](f: => U): This = {
     basis.setOnPreparedListener(new android.media.MediaPlayer.OnPreparedListener {
       def onPrepared(p: android.media.MediaPlayer): Unit = { f }
     })
@@ -6838,12 +6625,12 @@ object SVideoView {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/AdapterView.html android.widget.AdapterView[_]]]`.
  */
-class RichAdapterView[V <: android.widget.AdapterView[_]](val basis: V) extends TraitAdapterView[V]
+class RichAdapterView[This <: android.widget.AdapterView[_]](val basis: This) extends TraitAdapterView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/AdapterView.html android.widget.AdapterView[_]]]`. This contains several property accessors.
  */
-trait TraitAdapterView[V <: android.widget.AdapterView[_]] extends TraitViewGroup[V] {
+trait TraitAdapterView[This <: android.widget.AdapterView[_]] extends TraitViewGroup[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/AdapterView.html#getAdapter() getAdapter()]]`
@@ -6957,35 +6744,35 @@ trait TraitAdapterView[V <: android.widget.AdapterView[_]] extends TraitViewGrou
    */
   @inline def selection_=(p: Int) = { basis.setSelection(p); basis }
 
-  @inline def onItemClick[U](f: (android.widget.AdapterView[_], android.view.View, Int, Long) => U): V = {
+  @inline def onItemClick[U](f: (android.widget.AdapterView[_], android.view.View, Int, Long) => U): This = {
     basis.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener {
       def onItemClick(p1: android.widget.AdapterView[_], p2: android.view.View, p3: Int, p4: Long): Unit = { f(p1, p2, p3, p4) }
     })
     basis
   }
 
-  @inline def onItemClick[U](f: => U): V = {
+  @inline def onItemClick[U](f: => U): This = {
     basis.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener {
       def onItemClick(p1: android.widget.AdapterView[_], p2: android.view.View, p3: Int, p4: Long): Unit = { f }
     })
     basis
   }
 
-  @inline def onItemLongClick(f: (android.widget.AdapterView[_], android.view.View, Int, Long) => Boolean): V = {
+  @inline def onItemLongClick(f: (android.widget.AdapterView[_], android.view.View, Int, Long) => Boolean): This = {
     basis.setOnItemLongClickListener(new android.widget.AdapterView.OnItemLongClickListener {
       def onItemLongClick(p1: android.widget.AdapterView[_], p2: android.view.View, p3: Int, p4: Long): Boolean = { f(p1, p2, p3, p4) }
     })
     basis
   }
 
-  @inline def onItemLongClick(f: => Boolean): V = {
+  @inline def onItemLongClick(f: => Boolean): This = {
     basis.setOnItemLongClickListener(new android.widget.AdapterView.OnItemLongClickListener {
       def onItemLongClick(p1: android.widget.AdapterView[_], p2: android.view.View, p3: Int, p4: Long): Boolean = { f }
     })
     basis
   }
 
-  @inline def onItemSelected[U](f: (android.widget.AdapterView[_], android.view.View, Int, Long) => U): V = {
+  @inline def onItemSelected[U](f: (android.widget.AdapterView[_], android.view.View, Int, Long) => U): This = {
     basis.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener {
       def onItemSelected(p1: android.widget.AdapterView[_], p2: android.view.View, p3: Int, p4: Long): Unit = { f(p1, p2, p3, p4) }
       def onNothingSelected(p: android.widget.AdapterView[_]): Unit = {}
@@ -6993,7 +6780,7 @@ trait TraitAdapterView[V <: android.widget.AdapterView[_]] extends TraitViewGrou
     basis
   }
 
-  @inline def onItemSelected[U](f: => U): V = {
+  @inline def onItemSelected[U](f: => U): This = {
     basis.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener {
       def onItemSelected(p1: android.widget.AdapterView[_], p2: android.view.View, p3: Int, p4: Long): Unit = { f }
       def onNothingSelected(p: android.widget.AdapterView[_]): Unit = {}
@@ -7001,7 +6788,7 @@ trait TraitAdapterView[V <: android.widget.AdapterView[_]] extends TraitViewGrou
     basis
   }
 
-  @inline def onNothingSelected[U](f: android.widget.AdapterView[_] => U): V = {
+  @inline def onNothingSelected[U](f: android.widget.AdapterView[_] => U): This = {
     basis.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener {
       def onItemSelected(p1: android.widget.AdapterView[_], p2: android.view.View, p3: Int, p4: Long): Unit = {}
       def onNothingSelected(p: android.widget.AdapterView[_]): Unit = { f(p) }
@@ -7009,7 +6796,7 @@ trait TraitAdapterView[V <: android.widget.AdapterView[_]] extends TraitViewGrou
     basis
   }
 
-  @inline def onNothingSelected[U](f: => U): V = {
+  @inline def onNothingSelected[U](f: => U): This = {
     basis.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener {
       def onItemSelected(p1: android.widget.AdapterView[_], p2: android.view.View, p3: Int, p4: Long): Unit = {}
       def onNothingSelected(p: android.widget.AdapterView[_]): Unit = { f }
@@ -7022,14 +6809,14 @@ trait TraitAdapterView[V <: android.widget.AdapterView[_]] extends TraitViewGrou
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/Checkable.html android.widget.Checkable]]`.
  */
-class RichCheckable[V <: android.widget.Checkable](val basis: V) extends TraitCheckable[V]
+class RichCheckable[This <: android.widget.Checkable](val basis: This) extends TraitCheckable[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/Checkable.html android.widget.Checkable]]`. This contains several property accessors.
  */
-trait TraitCheckable[V <: android.widget.Checkable] {
+trait TraitCheckable[This <: android.widget.Checkable] {
 
-  def basis: V
+  def basis: This
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/Checkable.html#isChecked() isChecked()]]`
@@ -7051,12 +6838,12 @@ trait TraitCheckable[V <: android.widget.Checkable] {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/HorizontalScrollView.html android.widget.HorizontalScrollView]]`.
  */
-class RichHorizontalScrollView[V <: android.widget.HorizontalScrollView](val basis: V) extends TraitHorizontalScrollView[V]
+class RichHorizontalScrollView[This <: android.widget.HorizontalScrollView](val basis: This) extends TraitHorizontalScrollView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/HorizontalScrollView.html android.widget.HorizontalScrollView]]`. This contains several property accessors.
  */
-trait TraitHorizontalScrollView[V <: android.widget.HorizontalScrollView] extends TraitFrameLayout[V] {
+trait TraitHorizontalScrollView[This <: android.widget.HorizontalScrollView] extends TraitFrameLayout[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/HorizontalScrollView.html#isFillViewport() isFillViewport()]]`
@@ -7121,12 +6908,12 @@ object SHorizontalScrollView {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ProgressBar.html android.widget.ProgressBar]]`.
  */
-class RichProgressBar[V <: android.widget.ProgressBar](val basis: V) extends TraitProgressBar[V]
+class RichProgressBar[This <: android.widget.ProgressBar](val basis: This) extends TraitProgressBar[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ProgressBar.html android.widget.ProgressBar]]`. This contains several property accessors.
  */
-trait TraitProgressBar[V <: android.widget.ProgressBar] extends TraitView[V] {
+trait TraitProgressBar[This <: android.widget.ProgressBar] extends TraitView[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/ProgressBar.html#isIndeterminate() isIndeterminate()]]`
@@ -7258,12 +7045,12 @@ object SProgressBar {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ScrollView.html android.widget.ScrollView]]`.
  */
-class RichScrollView[V <: android.widget.ScrollView](val basis: V) extends TraitScrollView[V]
+class RichScrollView[This <: android.widget.ScrollView](val basis: This) extends TraitScrollView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ScrollView.html android.widget.ScrollView]]`. This contains several property accessors.
  */
-trait TraitScrollView[V <: android.widget.ScrollView] extends TraitFrameLayout[V] {
+trait TraitScrollView[This <: android.widget.ScrollView] extends TraitFrameLayout[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/ScrollView.html#isFillViewport() isFillViewport()]]`
@@ -7328,12 +7115,12 @@ object SScrollView {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/AdapterViewFlipper.html android.widget.AdapterViewFlipper]]`.
  */
-class RichAdapterViewFlipper[V <: android.widget.AdapterViewFlipper](val basis: V) extends TraitAdapterViewFlipper[V]
+class RichAdapterViewFlipper[This <: android.widget.AdapterViewFlipper](val basis: This) extends TraitAdapterViewFlipper[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/AdapterViewFlipper.html android.widget.AdapterViewFlipper]]`. This contains several property accessors.
  */
-trait TraitAdapterViewFlipper[V <: android.widget.AdapterViewFlipper] extends TraitAdapterViewAnimator[V] {
+trait TraitAdapterViewFlipper[This <: android.widget.AdapterViewFlipper] extends TraitAdapterViewAnimator[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/AdapterViewFlipper.html#isAutoStart() isAutoStart()]]`
@@ -7390,12 +7177,12 @@ object SAdapterViewFlipper {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/CursorTreeAdapter.html android.widget.CursorTreeAdapter]]`.
  */
-class RichCursorTreeAdapter[V <: android.widget.CursorTreeAdapter](val basis: V) extends TraitCursorTreeAdapter[V]
+class RichCursorTreeAdapter[This <: android.widget.CursorTreeAdapter](val basis: This) extends TraitCursorTreeAdapter[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/CursorTreeAdapter.html android.widget.CursorTreeAdapter]]`. This contains several property accessors.
  */
-trait TraitCursorTreeAdapter[V <: android.widget.CursorTreeAdapter] extends TraitBaseExpandableListAdapter[V] {
+trait TraitCursorTreeAdapter[This <: android.widget.CursorTreeAdapter] extends TraitBaseExpandableListAdapter[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/CursorTreeAdapter.html#getCursor() getCursor()]]`
@@ -7439,14 +7226,14 @@ trait TraitCursorTreeAdapter[V <: android.widget.CursorTreeAdapter] extends Trai
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/EdgeEffect.html android.widget.EdgeEffect]]`.
  */
-class RichEdgeEffect[V <: android.widget.EdgeEffect](val basis: V) extends TraitEdgeEffect[V]
+class RichEdgeEffect[This <: android.widget.EdgeEffect](val basis: This) extends TraitEdgeEffect[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/EdgeEffect.html android.widget.EdgeEffect]]`. This contains several property accessors.
  */
-trait TraitEdgeEffect[V <: android.widget.EdgeEffect] {
+trait TraitEdgeEffect[This <: android.widget.EdgeEffect] {
 
-  def basis: V
+  def basis: This
 
 }
 
@@ -7472,12 +7259,12 @@ object SEdgeEffect {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/SimpleCursorAdapter.html android.widget.SimpleCursorAdapter]]`.
  */
-class RichSimpleCursorAdapter[V <: android.widget.SimpleCursorAdapter](val basis: V) extends TraitSimpleCursorAdapter[V]
+class RichSimpleCursorAdapter[This <: android.widget.SimpleCursorAdapter](val basis: This) extends TraitSimpleCursorAdapter[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/SimpleCursorAdapter.html android.widget.SimpleCursorAdapter]]`. This contains several property accessors.
  */
-trait TraitSimpleCursorAdapter[V <: android.widget.SimpleCursorAdapter] extends TraitResourceCursorAdapter[V] {
+trait TraitSimpleCursorAdapter[This <: android.widget.SimpleCursorAdapter] extends TraitResourceCursorAdapter[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/SimpleCursorAdapter.html#getCursorToStringConverter() getCursorToStringConverter()]]`
@@ -7529,14 +7316,14 @@ trait TraitSimpleCursorAdapter[V <: android.widget.SimpleCursorAdapter] extends 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/BaseExpandableListAdapter.html android.widget.BaseExpandableListAdapter]]`.
  */
-class RichBaseExpandableListAdapter[V <: android.widget.BaseExpandableListAdapter](val basis: V) extends TraitBaseExpandableListAdapter[V]
+class RichBaseExpandableListAdapter[This <: android.widget.BaseExpandableListAdapter](val basis: This) extends TraitBaseExpandableListAdapter[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/BaseExpandableListAdapter.html android.widget.BaseExpandableListAdapter]]`. This contains several property accessors.
  */
-trait TraitBaseExpandableListAdapter[V <: android.widget.BaseExpandableListAdapter] {
+trait TraitBaseExpandableListAdapter[This <: android.widget.BaseExpandableListAdapter] {
 
-  def basis: V
+  def basis: This
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/BaseExpandableListAdapter.html#getChildTypeCount() getChildTypeCount()]]`
@@ -7558,12 +7345,12 @@ trait TraitBaseExpandableListAdapter[V <: android.widget.BaseExpandableListAdapt
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ViewSwitcher.html android.widget.ViewSwitcher]]`.
  */
-class RichViewSwitcher[V <: android.widget.ViewSwitcher](val basis: V) extends TraitViewSwitcher[V]
+class RichViewSwitcher[This <: android.widget.ViewSwitcher](val basis: This) extends TraitViewSwitcher[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ViewSwitcher.html android.widget.ViewSwitcher]]`. This contains several property accessors.
  */
-trait TraitViewSwitcher[V <: android.widget.ViewSwitcher] extends TraitViewAnimator[V] {
+trait TraitViewSwitcher[This <: android.widget.ViewSwitcher] extends TraitViewAnimator[This] {
 
   @inline def factory(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'factory'")
 
@@ -7607,12 +7394,12 @@ object SViewSwitcher {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ZoomButton.html android.widget.ZoomButton]]`.
  */
-class RichZoomButton[V <: android.widget.ZoomButton](val basis: V) extends TraitZoomButton[V]
+class RichZoomButton[This <: android.widget.ZoomButton](val basis: This) extends TraitZoomButton[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ZoomButton.html android.widget.ZoomButton]]`. This contains several property accessors.
  */
-trait TraitZoomButton[V <: android.widget.ZoomButton] extends TraitImageButton[V] {
+trait TraitZoomButton[This <: android.widget.ZoomButton] extends TraitImageButton[This] {
 
   @inline def zoomSpeed(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'zoomSpeed'")
 
@@ -7642,57 +7429,38 @@ class SZoomButton()(implicit context: android.content.Context, parentVGroup: Tra
     this.imageDrawable = imageResource
   }
 
-  def this(imageResource: android.graphics.drawable.Drawable, onClickListener: View => Unit)(implicit context: Context) = {
+  def this(imageResource: android.graphics.drawable.Drawable, ignore: Nothing)(implicit context: Context) = this() // Just for implicit conversion of ViewOnClickListener
+
+  def this(imageResource: android.graphics.drawable.Drawable, onClickListener: ViewOnClickListener, interval: Int)(implicit context: Context) = {
     this()
     this.imageDrawable = imageResource
-    this.setOnClickListener(onClickListener)
+    this.setOnClickListener(onClickListener.onClickListener)
+    if (interval >= 0) onPressAndHold(interval, onClickListener.func(this))
   }
 
-  def this(imageResource: android.graphics.drawable.Drawable, onClickListener: OnClickListener)(implicit context: Context) = {
-    this()
-    this.imageDrawable = imageResource
-    this.setOnClickListener(onClickListener)
-  }
+  def this(imageResource: android.graphics.drawable.Drawable, onClickListener: ViewOnClickListener)(implicit context: Context) = this(imageResource, onClickListener, -1)
 
 }
 
-object SZoomButton {
+object SZoomButton extends ImageViewCompanion[SZoomButton] {
   def apply[LP <: ViewGroupLayoutParams[_, SZoomButton]]()(implicit context: android.content.Context, defaultLayoutParam: SZoomButton => LP): SZoomButton = {
     val v = new SZoomButton
     v.<<.parent.+=(v)
     v
   }
 
-  def apply[LP <: ViewGroupLayoutParams[_, SZoomButton]](imageResource: android.graphics.drawable.Drawable)(implicit context: Context, defaultLayoutParam: (SZoomButton) => LP): SZoomButton = {
-    val v = new SZoomButton
-    v.imageDrawable = imageResource
-    v.<<.parent.+=(v)
-    v
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SZoomButton]](imageResource: android.graphics.drawable.Drawable, onClickListener: (View) => Unit)(implicit context: Context, defaultLayoutParam: (SZoomButton) => LP): SZoomButton = {
-    apply(imageResource, func2ViewOnClickListener(onClickListener))
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SZoomButton]](imageResource: android.graphics.drawable.Drawable, onClickListener: OnClickListener)(implicit context: Context, defaultLayoutParam: (SZoomButton) => LP): SZoomButton = {
-    val v = new SZoomButton
-    v.imageDrawable = imageResource
-    v.setOnClickListener(onClickListener)
-    v.<<.parent.+=(v)
-    v
-  }
-
+  def create[LP <: ViewGroupLayoutParams[_, SZoomButton]]()(implicit context: Context, defaultLayoutParam: SZoomButton => LP) = new SZoomButton()
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/Gallery.html android.widget.Gallery]]`.
  */
-@deprecated("", "") class RichGallery[V <: android.widget.Gallery](val basis: V) extends TraitGallery[V]
+@deprecated("", "") class RichGallery[This <: android.widget.Gallery](val basis: This) extends TraitGallery[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/Gallery.html android.widget.Gallery]]`. This contains several property accessors.
  */
-@deprecated("", "") trait TraitGallery[V <: android.widget.Gallery] extends TraitAbsSpinner[V] {
+@deprecated("", "") trait TraitGallery[This <: android.widget.Gallery] extends TraitAbsSpinner[This] {
 
   @inline def animationDuration(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'animationDuration'")
 
@@ -7779,28 +7547,28 @@ object SZoomButton {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/FilterQueryProvider.html android.widget.FilterQueryProvider]]`.
  */
-class RichFilterQueryProvider[V <: android.widget.FilterQueryProvider](val basis: V) extends TraitFilterQueryProvider[V]
+class RichFilterQueryProvider[This <: android.widget.FilterQueryProvider](val basis: This) extends TraitFilterQueryProvider[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/FilterQueryProvider.html android.widget.FilterQueryProvider]]`. This contains several property accessors.
  */
-trait TraitFilterQueryProvider[V <: android.widget.FilterQueryProvider] {
+trait TraitFilterQueryProvider[This <: android.widget.FilterQueryProvider] {
 
-  def basis: V
+  def basis: This
 
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/PopupMenu.html android.widget.PopupMenu]]`.
  */
-class RichPopupMenu[V <: android.widget.PopupMenu](val basis: V) extends TraitPopupMenu[V]
+class RichPopupMenu[This <: android.widget.PopupMenu](val basis: This) extends TraitPopupMenu[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/PopupMenu.html android.widget.PopupMenu]]`. This contains several property accessors.
  */
-trait TraitPopupMenu[V <: android.widget.PopupMenu] {
+trait TraitPopupMenu[This <: android.widget.PopupMenu] {
 
-  def basis: V
+  def basis: This
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/PopupMenu.html#getMenu() getMenu()]]`
@@ -7836,28 +7604,28 @@ trait TraitPopupMenu[V <: android.widget.PopupMenu] {
    */
   @inline def onMenuItemClickListener_=(p: android.widget.PopupMenu.OnMenuItemClickListener) = { basis.setOnMenuItemClickListener(p); basis }
 
-  @inline def onDismiss[U](f: android.widget.PopupMenu => U): V = {
+  @inline def onDismiss[U](f: android.widget.PopupMenu => U): This = {
     basis.setOnDismissListener(new android.widget.PopupMenu.OnDismissListener {
       def onDismiss(p: android.widget.PopupMenu): Unit = { f(p) }
     })
     basis
   }
 
-  @inline def onDismiss[U](f: => U): V = {
+  @inline def onDismiss[U](f: => U): This = {
     basis.setOnDismissListener(new android.widget.PopupMenu.OnDismissListener {
       def onDismiss(p: android.widget.PopupMenu): Unit = { f }
     })
     basis
   }
 
-  @inline def onMenuItemClick(f: android.view.MenuItem => Boolean): V = {
+  @inline def onMenuItemClick(f: android.view.MenuItem => Boolean): This = {
     basis.setOnMenuItemClickListener(new android.widget.PopupMenu.OnMenuItemClickListener {
       def onMenuItemClick(p: android.view.MenuItem): Boolean = { f(p) }
     })
     basis
   }
 
-  @inline def onMenuItemClick(f: => Boolean): V = {
+  @inline def onMenuItemClick(f: => Boolean): This = {
     basis.setOnMenuItemClickListener(new android.widget.PopupMenu.OnMenuItemClickListener {
       def onMenuItemClick(p: android.view.MenuItem): Boolean = { f }
     })
@@ -7869,12 +7637,12 @@ trait TraitPopupMenu[V <: android.widget.PopupMenu] {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/CompoundButton.html android.widget.CompoundButton]]`.
  */
-class RichCompoundButton[V <: android.widget.CompoundButton](val basis: V) extends TraitCompoundButton[V]
+class RichCompoundButton[This <: android.widget.CompoundButton](val basis: This) extends TraitCompoundButton[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/CompoundButton.html android.widget.CompoundButton]]`. This contains several property accessors.
  */
-trait TraitCompoundButton[V <: android.widget.CompoundButton] extends TraitButton[V] {
+trait TraitCompoundButton[This <: android.widget.CompoundButton] extends TraitButton[This] {
 
   @inline def buttonDrawable(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'buttonDrawable'")
 
@@ -7925,14 +7693,14 @@ trait TraitCompoundButton[V <: android.widget.CompoundButton] extends TraitButto
    */
   @inline def onCheckedChangeListener_=(p: android.widget.CompoundButton.OnCheckedChangeListener) = { basis.setOnCheckedChangeListener(p); basis }
 
-  @inline def onCheckedChanged[U](f: (android.widget.CompoundButton, Boolean) => U): V = {
+  @inline def onCheckedChanged[U](f: (android.widget.CompoundButton, Boolean) => U): This = {
     basis.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener {
       def onCheckedChanged(p1: android.widget.CompoundButton, p2: Boolean): Unit = { f(p1, p2) }
     })
     basis
   }
 
-  @inline def onCheckedChanged[U](f: => U): V = {
+  @inline def onCheckedChanged[U](f: => U): This = {
     basis.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener {
       def onCheckedChanged(p1: android.widget.CompoundButton, p2: Boolean): Unit = { f }
     })
@@ -7944,12 +7712,12 @@ trait TraitCompoundButton[V <: android.widget.CompoundButton] extends TraitButto
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/AdapterViewAnimator.html android.widget.AdapterViewAnimator]]`.
  */
-class RichAdapterViewAnimator[V <: android.widget.AdapterViewAnimator](val basis: V) extends TraitAdapterViewAnimator[V]
+class RichAdapterViewAnimator[This <: android.widget.AdapterViewAnimator](val basis: This) extends TraitAdapterViewAnimator[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/AdapterViewAnimator.html android.widget.AdapterViewAnimator]]`. This contains several property accessors.
  */
-trait TraitAdapterViewAnimator[V <: android.widget.AdapterViewAnimator] extends TraitAdapterView[V] {
+trait TraitAdapterViewAnimator[This <: android.widget.AdapterViewAnimator] extends TraitAdapterView[This] {
 
   @inline def animateFirstView(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'animateFirstView'")
 
@@ -8031,28 +7799,28 @@ trait TraitAdapterViewAnimator[V <: android.widget.AdapterViewAnimator] extends 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/Filter.html android.widget.Filter]]`.
  */
-class RichFilter[V <: android.widget.Filter](val basis: V) extends TraitFilter[V]
+class RichFilter[This <: android.widget.Filter](val basis: This) extends TraitFilter[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/Filter.html android.widget.Filter]]`. This contains several property accessors.
  */
-trait TraitFilter[V <: android.widget.Filter] {
+trait TraitFilter[This <: android.widget.Filter] {
 
-  def basis: V
+  def basis: This
 
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/WrapperListAdapter.html android.widget.WrapperListAdapter]]`.
  */
-class RichWrapperListAdapter[V <: android.widget.WrapperListAdapter](val basis: V) extends TraitWrapperListAdapter[V]
+class RichWrapperListAdapter[This <: android.widget.WrapperListAdapter](val basis: This) extends TraitWrapperListAdapter[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/WrapperListAdapter.html android.widget.WrapperListAdapter]]`. This contains several property accessors.
  */
-trait TraitWrapperListAdapter[V <: android.widget.WrapperListAdapter] {
+trait TraitWrapperListAdapter[This <: android.widget.WrapperListAdapter] {
 
-  def basis: V
+  def basis: This
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/WrapperListAdapter.html#getWrappedAdapter() getWrappedAdapter()]]`
@@ -8064,12 +7832,34 @@ trait TraitWrapperListAdapter[V <: android.widget.WrapperListAdapter] {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/FrameLayout.html android.widget.FrameLayout]]`.
  */
-class RichFrameLayout[V <: android.widget.FrameLayout](val basis: V) extends TraitFrameLayout[V]
+class RichFrameLayout[This <: android.widget.FrameLayout](val basis: This) extends TraitFrameLayout[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/FrameLayout.html android.widget.FrameLayout]]`. This contains several property accessors.
  */
-trait TraitFrameLayout[V <: android.widget.FrameLayout] extends TraitViewGroup[V] {
+trait TraitFrameLayout[This <: android.widget.FrameLayout] extends TraitViewGroup[This] {
+
+  implicit def defaultLayoutParams[V <: View](v: V): LayoutParams[V] = v.getLayoutParams() match {
+    case p: LayoutParams[V @unchecked] => p
+    case _ => new LayoutParams(v)
+  }
+
+  class LayoutParams[V <: View](v: V) extends FrameLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT) with ViewGroupMarginLayoutParams[LayoutParams[V], V] {
+
+    def basis = this
+
+    v.setLayoutParams(this)
+
+    def Gravity(g: Int) = {
+      gravity = g
+      this
+    }
+
+    def parent = TraitFrameLayout.this
+
+    def >> : V = v
+
+  }
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/FrameLayout.html#getConsiderGoneChildrenWhenMeasuring() getConsiderGoneChildrenWhenMeasuring()]]`
@@ -8131,27 +7921,7 @@ class SFrameLayout()(implicit context: android.content.Context, parentVGroup: Tr
 
   def basis = this
   override val parentViewGroup = parentVGroup
-  implicit def defaultLayoutParams[V <: View](v: V): LayoutParams[V] = v.getLayoutParams() match {
-    case p: LayoutParams[V @unchecked] => p
-    case _ => new LayoutParams(v)
-  }
 
-  class LayoutParams[V <: View](v: V) extends FrameLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT) with ViewGroupMarginLayoutParams[LayoutParams[V], V] {
-
-    def basis = this
-
-    v.setLayoutParams(this)
-
-    def Gravity(g: Int) = {
-      gravity = g
-      this
-    }
-
-    def parent = SFrameLayout.this
-
-    def >> : V = v
-
-  }
 }
 
 object SFrameLayout {
@@ -8166,14 +7936,14 @@ object SFrameLayout {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/Adapter.html android.widget.Adapter]]`.
  */
-class RichAdapter[V <: android.widget.Adapter](val basis: V) extends TraitAdapter[V]
+class RichAdapter[This <: android.widget.Adapter](val basis: This) extends TraitAdapter[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/Adapter.html android.widget.Adapter]]`. This contains several property accessors.
  */
-trait TraitAdapter[V <: android.widget.Adapter] {
+trait TraitAdapter[This <: android.widget.Adapter] {
 
-  def basis: V
+  def basis: This
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/Adapter.html#getCount() getCount()]]`
@@ -8190,12 +7960,12 @@ trait TraitAdapter[V <: android.widget.Adapter] {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/TextView.html android.widget.TextView]]`.
  */
-class RichTextView[V <: android.widget.TextView](val basis: V) extends TraitTextView[V]
+class RichTextView[This <: android.widget.TextView](val basis: This) extends TraitTextView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/TextView.html android.widget.TextView]]`. This contains several property accessors.
  */
-trait TraitTextView[V <: android.widget.TextView] extends TraitView[V] {
+trait TraitTextView[This <: android.widget.TextView] extends TraitView[This] {
 
   import android.graphics.drawable.Drawable
 
@@ -9163,7 +8933,7 @@ trait TraitTextView[V <: android.widget.TextView] extends TraitView[V] {
    */
   @inline def width_=(p: Int) = { basis.setWidth(p); basis }
 
-  @inline def afterTextChanged[U](f: android.text.Editable => U): V = {
+  @inline def afterTextChanged[U](f: android.text.Editable => U): This = {
     basis.addTextChangedListener(new android.text.TextWatcher {
       def afterTextChanged(p: android.text.Editable): Unit = { f(p) }
       def beforeTextChanged(p1: java.lang.CharSequence, p2: Int, p3: Int, p4: Int): Unit = {}
@@ -9172,7 +8942,7 @@ trait TraitTextView[V <: android.widget.TextView] extends TraitView[V] {
     basis
   }
 
-  @inline def afterTextChanged[U](f: => U): V = {
+  @inline def afterTextChanged[U](f: => U): This = {
     basis.addTextChangedListener(new android.text.TextWatcher {
       def afterTextChanged(p: android.text.Editable): Unit = { f }
       def beforeTextChanged(p1: java.lang.CharSequence, p2: Int, p3: Int, p4: Int): Unit = {}
@@ -9181,7 +8951,7 @@ trait TraitTextView[V <: android.widget.TextView] extends TraitView[V] {
     basis
   }
 
-  @inline def beforeTextChanged[U](f: (java.lang.CharSequence, Int, Int, Int) => U): V = {
+  @inline def beforeTextChanged[U](f: (java.lang.CharSequence, Int, Int, Int) => U): This = {
     basis.addTextChangedListener(new android.text.TextWatcher {
       def afterTextChanged(p: android.text.Editable): Unit = {}
       def beforeTextChanged(p1: java.lang.CharSequence, p2: Int, p3: Int, p4: Int): Unit = { f(p1, p2, p3, p4) }
@@ -9190,7 +8960,7 @@ trait TraitTextView[V <: android.widget.TextView] extends TraitView[V] {
     basis
   }
 
-  @inline def beforeTextChanged[U](f: => U): V = {
+  @inline def beforeTextChanged[U](f: => U): This = {
     basis.addTextChangedListener(new android.text.TextWatcher {
       def afterTextChanged(p: android.text.Editable): Unit = {}
       def beforeTextChanged(p1: java.lang.CharSequence, p2: Int, p3: Int, p4: Int): Unit = { f }
@@ -9199,21 +8969,21 @@ trait TraitTextView[V <: android.widget.TextView] extends TraitView[V] {
     basis
   }
 
-  @inline def onEditorAction(f: (android.widget.TextView, Int, android.view.KeyEvent) => Boolean): V = {
+  @inline def onEditorAction(f: (android.widget.TextView, Int, android.view.KeyEvent) => Boolean): This = {
     basis.setOnEditorActionListener(new android.widget.TextView.OnEditorActionListener {
       def onEditorAction(p1: android.widget.TextView, p2: Int, p3: android.view.KeyEvent): Boolean = { f(p1, p2, p3) }
     })
     basis
   }
 
-  @inline def onEditorAction(f: => Boolean): V = {
+  @inline def onEditorAction(f: => Boolean): This = {
     basis.setOnEditorActionListener(new android.widget.TextView.OnEditorActionListener {
       def onEditorAction(p1: android.widget.TextView, p2: Int, p3: android.view.KeyEvent): Boolean = { f }
     })
     basis
   }
 
-  @inline def onTextChanged[U](f: (java.lang.CharSequence, Int, Int, Int) => U): V = {
+  @inline def onTextChanged[U](f: (java.lang.CharSequence, Int, Int, Int) => U): This = {
     basis.addTextChangedListener(new android.text.TextWatcher {
       def afterTextChanged(p: android.text.Editable): Unit = {}
       def beforeTextChanged(p1: java.lang.CharSequence, p2: Int, p3: Int, p4: Int): Unit = {}
@@ -9222,7 +8992,7 @@ trait TraitTextView[V <: android.widget.TextView] extends TraitView[V] {
     basis
   }
 
-  @inline def onTextChanged[U](f: => U): V = {
+  @inline def onTextChanged[U](f: => U): This = {
     basis.addTextChangedListener(new android.text.TextWatcher {
       def afterTextChanged(p: android.text.Editable): Unit = {}
       def beforeTextChanged(p1: java.lang.CharSequence, p2: Int, p3: Int, p4: Int): Unit = {}
@@ -9247,59 +9017,40 @@ class STextView()(implicit context: android.content.Context, parentVGroup: Trait
     this.text = text
   }
 
-  def this(text: CharSequence, onClickListener: View => Unit)(implicit context: Context) = {
+  def this(text: CharSequence, ignore: Nothing)(implicit context: Context) = this() // Just for implicit conversion of ViewOnClickListener
+
+  def this(text: CharSequence, onClickListener: ViewOnClickListener, interval: Int)(implicit context: Context) = {
     this()
     this.text = text
-    this.setOnClickListener(onClickListener)
+    this.setOnClickListener(onClickListener.onClickListener)
+    if (interval >= 0) onPressAndHold(interval, onClickListener.func(this))
   }
 
-  def this(text: CharSequence, onClickListener: OnClickListener)(implicit context: Context) = {
-    this()
-    this.text = text
-    this.setOnClickListener(onClickListener)
-  }
+  def this(text: CharSequence, onClickListener: ViewOnClickListener)(implicit context: Context) = this(text, onClickListener, -1)
 
 }
 
-object STextView {
+object STextView extends TextViewCompanion[STextView] {
   def apply[LP <: ViewGroupLayoutParams[_, STextView]]()(implicit context: android.content.Context, defaultLayoutParam: STextView => LP): STextView = {
     val v = new STextView
     v.<<.parent.+=(v)
     v
   }
 
-  def apply[LP <: ViewGroupLayoutParams[_, STextView]](txt: CharSequence)(implicit context: Context, defaultLayoutParam: (STextView) => LP): STextView = {
-    val v = new STextView
-    v text txt
-    v.<<.parent.+=(v)
-    v
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, STextView]](text: CharSequence, onClickListener: (View) => Unit)(implicit context: Context, defaultLayoutParam: (STextView) => LP): STextView = {
-    apply(text, func2ViewOnClickListener(onClickListener))
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, STextView]](text: CharSequence, onClickListener: OnClickListener)(implicit context: Context, defaultLayoutParam: (STextView) => LP): STextView = {
-    val v = new STextView
-    v.text = text
-    v.setOnClickListener(onClickListener)
-    v.<<.parent.+=(v)
-    v
-  }
-
+  def create[LP <: ViewGroupLayoutParams[_, STextView]]()(implicit context: Context, defaultLayoutParam: STextView => LP) = new STextView()
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/OverScroller.html android.widget.OverScroller]]`.
  */
-class RichOverScroller[V <: android.widget.OverScroller](val basis: V) extends TraitOverScroller[V]
+class RichOverScroller[This <: android.widget.OverScroller](val basis: This) extends TraitOverScroller[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/OverScroller.html android.widget.OverScroller]]`. This contains several property accessors.
  */
-trait TraitOverScroller[V <: android.widget.OverScroller] {
+trait TraitOverScroller[This <: android.widget.OverScroller] {
 
-  def basis: V
+  def basis: This
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/OverScroller.html#getCurrVelocity() getCurrVelocity()]]`
@@ -9372,12 +9123,12 @@ object SOverScroller {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/ViewFlipper.html android.widget.ViewFlipper]]`.
  */
-class RichViewFlipper[V <: android.widget.ViewFlipper](val basis: V) extends TraitViewFlipper[V]
+class RichViewFlipper[This <: android.widget.ViewFlipper](val basis: This) extends TraitViewFlipper[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/ViewFlipper.html android.widget.ViewFlipper]]`. This contains several property accessors.
  */
-trait TraitViewFlipper[V <: android.widget.ViewFlipper] extends TraitViewAnimator[V] {
+trait TraitViewFlipper[This <: android.widget.ViewFlipper] extends TraitViewAnimator[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/ViewFlipper.html#isAutoStart() isAutoStart()]]`
@@ -9431,14 +9182,14 @@ object SViewFlipper {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/Scroller.html android.widget.Scroller]]`.
  */
-class RichScroller[V <: android.widget.Scroller](val basis: V) extends TraitScroller[V]
+class RichScroller[This <: android.widget.Scroller](val basis: This) extends TraitScroller[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/Scroller.html android.widget.Scroller]]`. This contains several property accessors.
  */
-trait TraitScroller[V <: android.widget.Scroller] {
+trait TraitScroller[This <: android.widget.Scroller] {
 
-  def basis: V
+  def basis: This
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/Scroller.html#getCurrVelocity() getCurrVelocity()]]`
@@ -9536,12 +9287,12 @@ object SScroller {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/SimpleAdapter.html android.widget.SimpleAdapter]]`.
  */
-class RichSimpleAdapter[V <: android.widget.SimpleAdapter](val basis: V) extends TraitSimpleAdapter[V]
+class RichSimpleAdapter[This <: android.widget.SimpleAdapter](val basis: This) extends TraitSimpleAdapter[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/SimpleAdapter.html android.widget.SimpleAdapter]]`. This contains several property accessors.
  */
-trait TraitSimpleAdapter[V <: android.widget.SimpleAdapter] extends TraitBaseAdapter[V] {
+trait TraitSimpleAdapter[This <: android.widget.SimpleAdapter] extends TraitBaseAdapter[This] {
 
   @inline def dropDownViewResource(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'dropDownViewResource'")
 
@@ -9580,12 +9331,12 @@ trait TraitSimpleAdapter[V <: android.widget.SimpleAdapter] extends TraitBaseAda
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/AutoCompleteTextView.html android.widget.AutoCompleteTextView]]`.
  */
-class RichAutoCompleteTextView[V <: android.widget.AutoCompleteTextView](val basis: V) extends TraitAutoCompleteTextView[V]
+class RichAutoCompleteTextView[This <: android.widget.AutoCompleteTextView](val basis: This) extends TraitAutoCompleteTextView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/AutoCompleteTextView.html android.widget.AutoCompleteTextView]]`. This contains several property accessors.
  */
-trait TraitAutoCompleteTextView[V <: android.widget.AutoCompleteTextView] extends TraitEditText[V] {
+trait TraitAutoCompleteTextView[This <: android.widget.AutoCompleteTextView] extends TraitEditText[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/AutoCompleteTextView.html#getAdapter() getAdapter()]]`
@@ -9806,21 +9557,21 @@ trait TraitAutoCompleteTextView[V <: android.widget.AutoCompleteTextView] extend
    */
   @inline def validator_=(p: android.widget.AutoCompleteTextView.Validator) = { basis.setValidator(p); basis }
 
-  @inline def onItemClick[U](f: (android.widget.AdapterView[_], android.view.View, Int, Long) => U): V = {
+  @inline def onItemClick[U](f: (android.widget.AdapterView[_], android.view.View, Int, Long) => U): This = {
     basis.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener {
       def onItemClick(p1: android.widget.AdapterView[_], p2: android.view.View, p3: Int, p4: Long): Unit = { f(p1, p2, p3, p4) }
     })
     basis
   }
 
-  @inline def onItemClick[U](f: => U): V = {
+  @inline def onItemClick[U](f: => U): This = {
     basis.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener {
       def onItemClick(p1: android.widget.AdapterView[_], p2: android.view.View, p3: Int, p4: Long): Unit = { f }
     })
     basis
   }
 
-  @inline def onItemSelected[U](f: (android.widget.AdapterView[_], android.view.View, Int, Long) => U): V = {
+  @inline def onItemSelected[U](f: (android.widget.AdapterView[_], android.view.View, Int, Long) => U): This = {
     basis.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener {
       def onItemSelected(p1: android.widget.AdapterView[_], p2: android.view.View, p3: Int, p4: Long): Unit = { f(p1, p2, p3, p4) }
       def onNothingSelected(p: android.widget.AdapterView[_]): Unit = {}
@@ -9828,7 +9579,7 @@ trait TraitAutoCompleteTextView[V <: android.widget.AutoCompleteTextView] extend
     basis
   }
 
-  @inline def onItemSelected[U](f: => U): V = {
+  @inline def onItemSelected[U](f: => U): This = {
     basis.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener {
       def onItemSelected(p1: android.widget.AdapterView[_], p2: android.view.View, p3: Int, p4: Long): Unit = { f }
       def onNothingSelected(p: android.widget.AdapterView[_]): Unit = {}
@@ -9836,7 +9587,7 @@ trait TraitAutoCompleteTextView[V <: android.widget.AutoCompleteTextView] extend
     basis
   }
 
-  @inline def onNothingSelected[U](f: android.widget.AdapterView[_] => U): V = {
+  @inline def onNothingSelected[U](f: android.widget.AdapterView[_] => U): This = {
     basis.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener {
       def onItemSelected(p1: android.widget.AdapterView[_], p2: android.view.View, p3: Int, p4: Long): Unit = {}
       def onNothingSelected(p: android.widget.AdapterView[_]): Unit = { f(p) }
@@ -9844,7 +9595,7 @@ trait TraitAutoCompleteTextView[V <: android.widget.AutoCompleteTextView] extend
     basis
   }
 
-  @inline def onNothingSelected[U](f: => U): V = {
+  @inline def onNothingSelected[U](f: => U): This = {
     basis.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener {
       def onItemSelected(p1: android.widget.AdapterView[_], p2: android.view.View, p3: Int, p4: Long): Unit = {}
       def onNothingSelected(p: android.widget.AdapterView[_]): Unit = { f }
@@ -9868,59 +9619,40 @@ class SAutoCompleteTextView()(implicit context: android.content.Context, parentV
     this.text = text
   }
 
-  def this(text: CharSequence, onClickListener: View => Unit)(implicit context: Context) = {
+  def this(text: CharSequence, ignore: Nothing)(implicit context: Context) = this() // Just for implicit conversion of ViewOnClickListener
+
+  def this(text: CharSequence, onClickListener: ViewOnClickListener, interval: Int)(implicit context: Context) = {
     this()
     this.text = text
-    this.setOnClickListener(onClickListener)
+    this.setOnClickListener(onClickListener.onClickListener)
+    if (interval >= 0) onPressAndHold(interval, onClickListener.func(this))
   }
 
-  def this(text: CharSequence, onClickListener: OnClickListener)(implicit context: Context) = {
-    this()
-    this.text = text
-    this.setOnClickListener(onClickListener)
-  }
+  def this(text: CharSequence, onClickListener: ViewOnClickListener)(implicit context: Context) = this(text, onClickListener, -1)
 
 }
 
-object SAutoCompleteTextView {
+object SAutoCompleteTextView extends TextViewCompanion[SAutoCompleteTextView] {
   def apply[LP <: ViewGroupLayoutParams[_, SAutoCompleteTextView]]()(implicit context: android.content.Context, defaultLayoutParam: SAutoCompleteTextView => LP): SAutoCompleteTextView = {
     val v = new SAutoCompleteTextView
     v.<<.parent.+=(v)
     v
   }
 
-  def apply[LP <: ViewGroupLayoutParams[_, SAutoCompleteTextView]](txt: CharSequence)(implicit context: Context, defaultLayoutParam: (SAutoCompleteTextView) => LP): SAutoCompleteTextView = {
-    val v = new SAutoCompleteTextView
-    v text txt
-    v.<<.parent.+=(v)
-    v
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SAutoCompleteTextView]](text: CharSequence, onClickListener: (View) => Unit)(implicit context: Context, defaultLayoutParam: (SAutoCompleteTextView) => LP): SAutoCompleteTextView = {
-    apply(text, func2ViewOnClickListener(onClickListener))
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SAutoCompleteTextView]](text: CharSequence, onClickListener: OnClickListener)(implicit context: Context, defaultLayoutParam: (SAutoCompleteTextView) => LP): SAutoCompleteTextView = {
-    val v = new SAutoCompleteTextView
-    v.text = text
-    v.setOnClickListener(onClickListener)
-    v.<<.parent.+=(v)
-    v
-  }
-
+  def create[LP <: ViewGroupLayoutParams[_, SAutoCompleteTextView]]()(implicit context: Context, defaultLayoutParam: SAutoCompleteTextView => LP) = new SAutoCompleteTextView()
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/RemoteViews.html android.widget.RemoteViews]]`.
  */
-class RichRemoteViews[V <: android.widget.RemoteViews](val basis: V) extends TraitRemoteViews[V]
+class RichRemoteViews[This <: android.widget.RemoteViews](val basis: This) extends TraitRemoteViews[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/RemoteViews.html android.widget.RemoteViews]]`. This contains several property accessors.
  */
-trait TraitRemoteViews[V <: android.widget.RemoteViews] {
+trait TraitRemoteViews[This <: android.widget.RemoteViews] {
 
-  def basis: V
+  def basis: This
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/RemoteViews.html#getLayoutId() getLayoutId()]]`
@@ -9937,12 +9669,12 @@ trait TraitRemoteViews[V <: android.widget.RemoteViews] {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/Switch.html android.widget.Switch]]`.
  */
-class RichSwitch[V <: android.widget.Switch](val basis: V) extends TraitSwitch[V]
+class RichSwitch[This <: android.widget.Switch](val basis: This) extends TraitSwitch[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/Switch.html android.widget.Switch]]`. This contains several property accessors.
  */
-trait TraitSwitch[V <: android.widget.Switch] extends TraitCompoundButton[V] {
+trait TraitSwitch[This <: android.widget.Switch] extends TraitCompoundButton[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/Switch.html#getSwitchMinWidth() getSwitchMinWidth()]]`
@@ -10101,59 +9833,40 @@ class SSwitch()(implicit context: android.content.Context, parentVGroup: TraitVi
     this.text = text
   }
 
-  def this(text: CharSequence, onClickListener: View => Unit)(implicit context: Context) = {
+  def this(text: CharSequence, ignore: Nothing)(implicit context: Context) = this() // Just for implicit conversion of ViewOnClickListener
+
+  def this(text: CharSequence, onClickListener: ViewOnClickListener, interval: Int)(implicit context: Context) = {
     this()
     this.text = text
-    this.setOnClickListener(onClickListener)
+    this.setOnClickListener(onClickListener.onClickListener)
+    if (interval >= 0) onPressAndHold(interval, onClickListener.func(this))
   }
 
-  def this(text: CharSequence, onClickListener: OnClickListener)(implicit context: Context) = {
-    this()
-    this.text = text
-    this.setOnClickListener(onClickListener)
-  }
+  def this(text: CharSequence, onClickListener: ViewOnClickListener)(implicit context: Context) = this(text, onClickListener, -1)
 
 }
 
-object SSwitch {
+object SSwitch extends TextViewCompanion[SSwitch] {
   def apply[LP <: ViewGroupLayoutParams[_, SSwitch]]()(implicit context: android.content.Context, defaultLayoutParam: SSwitch => LP): SSwitch = {
     val v = new SSwitch
     v.<<.parent.+=(v)
     v
   }
 
-  def apply[LP <: ViewGroupLayoutParams[_, SSwitch]](txt: CharSequence)(implicit context: Context, defaultLayoutParam: (SSwitch) => LP): SSwitch = {
-    val v = new SSwitch
-    v text txt
-    v.<<.parent.+=(v)
-    v
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SSwitch]](text: CharSequence, onClickListener: (View) => Unit)(implicit context: Context, defaultLayoutParam: (SSwitch) => LP): SSwitch = {
-    apply(text, func2ViewOnClickListener(onClickListener))
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SSwitch]](text: CharSequence, onClickListener: OnClickListener)(implicit context: Context, defaultLayoutParam: (SSwitch) => LP): SSwitch = {
-    val v = new SSwitch
-    v.text = text
-    v.setOnClickListener(onClickListener)
-    v.<<.parent.+=(v)
-    v
-  }
-
+  def create[LP <: ViewGroupLayoutParams[_, SSwitch]]()(implicit context: Context, defaultLayoutParam: SSwitch => LP) = new SSwitch()
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/widget/BaseAdapter.html android.widget.BaseAdapter]]`.
  */
-class RichBaseAdapter[V <: android.widget.BaseAdapter](val basis: V) extends TraitBaseAdapter[V]
+class RichBaseAdapter[This <: android.widget.BaseAdapter](val basis: This) extends TraitBaseAdapter[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/widget/BaseAdapter.html android.widget.BaseAdapter]]`. This contains several property accessors.
  */
-trait TraitBaseAdapter[V <: android.widget.BaseAdapter] {
+trait TraitBaseAdapter[This <: android.widget.BaseAdapter] {
 
-  def basis: V
+  def basis: This
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/widget/BaseAdapter.html#getCount() getCount()]]`
@@ -10180,15 +9893,72 @@ object SVerticalLayout {
   }
 }
 
+abstract class TextViewCompanion[T <: TextView: ClassTag] {
+  def create[LP <: ViewGroupLayoutParams[_, T]]()(implicit context: Context, defaultLayoutParam: T => LP): T
+
+  def apply[LP <: ViewGroupLayoutParams[_, T]](txt: CharSequence)(implicit context: Context, defaultLayoutParam: T => LP): T = {
+    val v = create()
+    v text txt
+    v.<<.parent.+=(v)
+    v
+  }
+
+  def apply(text: CharSequence, ignore: Nothing) = ??? // Just for implicit conversion of ViewOnClickListener
+  /**
+   * interval: If it is larger than 0, the button enables press-and-hold action with given interval in milliseconds.
+   */
+  def apply[LP <: ViewGroupLayoutParams[_, T]](text: CharSequence, onClickListener: ViewOnClickListener, interval: Int = -1)(implicit context: Context, defaultLayoutParam: T => LP): T = {
+    val v = apply(text, onClickListener.onClickListener)
+    if (interval >= 0) v.onPressAndHold(interval, onClickListener.func(v)) else v
+  }
+
+  private def apply[LP <: ViewGroupLayoutParams[_, T]](text: CharSequence, onClickListener: View.OnClickListener)(implicit context: Context, defaultLayoutParam: T => LP): T = {
+    val v = create()
+    v.text = text
+    v.setOnClickListener(onClickListener)
+    v.<<.parent.+=(v)
+    v
+  }
+}
+
+abstract class ImageViewCompanion[T <: ImageView: ClassTag] {
+  def create[LP <: ViewGroupLayoutParams[_, T]]()(implicit context: Context, defaultLayoutParam: T => LP): T
+
+  def apply[LP <: ViewGroupLayoutParams[_, T]](imageResource: android.graphics.drawable.Drawable)(implicit context: Context, defaultLayoutParam: T => LP): T = {
+    val v = create()
+    v.imageDrawable = imageResource
+    v.<<.parent.+=(v)
+    v
+  }
+
+  def apply(image: android.graphics.drawable.Drawable, ignore: Nothing) = ??? // Just for implicit conversion of ViewOnClickListener
+
+  /**
+   * interval: If it is larger than 0, the button enables press-and-hold action with given interval in milliseconds.
+   */
+  def apply[LP <: ViewGroupLayoutParams[_, T]](imageResource: android.graphics.drawable.Drawable, onClickListener: ViewOnClickListener, interval: Int = -1)(implicit context: Context, defaultLayoutParam: T => LP): T = {
+    val v = apply(imageResource, onClickListener.onClickListener)
+    if (interval >= 0) v.onPressAndHold(interval, onClickListener.func(v)) else v
+  }
+
+  private def apply[LP <: ViewGroupLayoutParams[_, T]](imageResource: android.graphics.drawable.Drawable, onClickListener: View.OnClickListener)(implicit context: Context, defaultLayoutParam: T => LP): T = {
+    val v = create()
+    v.imageDrawable = imageResource
+    v.setOnClickListener(onClickListener)
+    v.<<.parent.+=(v)
+    v
+  }
+}
+
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/inputmethodservice/ExtractEditText.html android.inputmethodservice.ExtractEditText]]`.
  */
-class RichExtractEditText[V <: android.inputmethodservice.ExtractEditText](val basis: V) extends TraitExtractEditText[V]
+class RichExtractEditText[This <: android.inputmethodservice.ExtractEditText](val basis: This) extends TraitExtractEditText[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/inputmethodservice/ExtractEditText.html android.inputmethodservice.ExtractEditText]]`. This contains several property accessors.
  */
-trait TraitExtractEditText[V <: android.inputmethodservice.ExtractEditText] extends TraitEditText[V] {
+trait TraitExtractEditText[This <: android.inputmethodservice.ExtractEditText] extends TraitEditText[This] {
 
 }
 
@@ -10206,57 +9976,38 @@ class SExtractEditText()(implicit context: android.content.Context, parentVGroup
     this.text = text
   }
 
-  def this(text: CharSequence, onClickListener: View => Unit)(implicit context: Context) = {
+  def this(text: CharSequence, ignore: Nothing)(implicit context: Context) = this() // Just for implicit conversion of ViewOnClickListener
+
+  def this(text: CharSequence, onClickListener: ViewOnClickListener, interval: Int)(implicit context: Context) = {
     this()
     this.text = text
-    this.setOnClickListener(onClickListener)
+    this.setOnClickListener(onClickListener.onClickListener)
+    if (interval >= 0) onPressAndHold(interval, onClickListener.func(this))
   }
 
-  def this(text: CharSequence, onClickListener: OnClickListener)(implicit context: Context) = {
-    this()
-    this.text = text
-    this.setOnClickListener(onClickListener)
-  }
+  def this(text: CharSequence, onClickListener: ViewOnClickListener)(implicit context: Context) = this(text, onClickListener, -1)
 
 }
 
-object SExtractEditText {
+object SExtractEditText extends TextViewCompanion[SExtractEditText] {
   def apply[LP <: ViewGroupLayoutParams[_, SExtractEditText]]()(implicit context: android.content.Context, defaultLayoutParam: SExtractEditText => LP): SExtractEditText = {
     val v = new SExtractEditText
     v.<<.parent.+=(v)
     v
   }
 
-  def apply[LP <: ViewGroupLayoutParams[_, SExtractEditText]](txt: CharSequence)(implicit context: Context, defaultLayoutParam: (SExtractEditText) => LP): SExtractEditText = {
-    val v = new SExtractEditText
-    v text txt
-    v.<<.parent.+=(v)
-    v
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SExtractEditText]](text: CharSequence, onClickListener: (View) => Unit)(implicit context: Context, defaultLayoutParam: (SExtractEditText) => LP): SExtractEditText = {
-    apply(text, func2ViewOnClickListener(onClickListener))
-  }
-
-  def apply[LP <: ViewGroupLayoutParams[_, SExtractEditText]](text: CharSequence, onClickListener: OnClickListener)(implicit context: Context, defaultLayoutParam: (SExtractEditText) => LP): SExtractEditText = {
-    val v = new SExtractEditText
-    v.text = text
-    v.setOnClickListener(onClickListener)
-    v.<<.parent.+=(v)
-    v
-  }
-
+  def create[LP <: ViewGroupLayoutParams[_, SExtractEditText]]()(implicit context: Context, defaultLayoutParam: SExtractEditText => LP) = new SExtractEditText()
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/inputmethodservice/KeyboardView.html android.inputmethodservice.KeyboardView]]`.
  */
-class RichKeyboardView[V <: android.inputmethodservice.KeyboardView](val basis: V) extends TraitKeyboardView[V]
+class RichKeyboardView[This <: android.inputmethodservice.KeyboardView](val basis: This) extends TraitKeyboardView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/inputmethodservice/KeyboardView.html android.inputmethodservice.KeyboardView]]`. This contains several property accessors.
  */
-trait TraitKeyboardView[V <: android.inputmethodservice.KeyboardView] extends TraitView[V] {
+trait TraitKeyboardView[This <: android.inputmethodservice.KeyboardView] extends TraitView[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/inputmethodservice/KeyboardView.html#getKeyboard() getKeyboard()]]`
@@ -10360,7 +10111,7 @@ trait TraitKeyboardView[V <: android.inputmethodservice.KeyboardView] extends Tr
    */
   @inline def verticalCorrection_=(p: Int) = { basis.setVerticalCorrection(p); basis }
 
-  @inline def onKey[U](f: (Int, Array[Int]) => U): V = {
+  @inline def onKey[U](f: (Int, Array[Int]) => U): This = {
     basis.setOnKeyboardActionListener(new android.inputmethodservice.KeyboardView.OnKeyboardActionListener {
       def onKey(p1: Int, p2: Array[Int]): Unit = { f(p1, p2) }
       def onPress(p: Int): Unit = {}
@@ -10374,7 +10125,7 @@ trait TraitKeyboardView[V <: android.inputmethodservice.KeyboardView] extends Tr
     basis
   }
 
-  @inline def onKey[U](f: => U): V = {
+  @inline def onKey[U](f: => U): This = {
     basis.setOnKeyboardActionListener(new android.inputmethodservice.KeyboardView.OnKeyboardActionListener {
       def onKey(p1: Int, p2: Array[Int]): Unit = { f }
       def onPress(p: Int): Unit = {}
@@ -10388,7 +10139,7 @@ trait TraitKeyboardView[V <: android.inputmethodservice.KeyboardView] extends Tr
     basis
   }
 
-  @inline def onPress[U](f: Int => U): V = {
+  @inline def onPress[U](f: Int => U): This = {
     basis.setOnKeyboardActionListener(new android.inputmethodservice.KeyboardView.OnKeyboardActionListener {
       def onKey(p1: Int, p2: Array[Int]): Unit = {}
       def onPress(p: Int): Unit = { f(p) }
@@ -10402,7 +10153,7 @@ trait TraitKeyboardView[V <: android.inputmethodservice.KeyboardView] extends Tr
     basis
   }
 
-  @inline def onPress[U](f: => U): V = {
+  @inline def onPress[U](f: => U): This = {
     basis.setOnKeyboardActionListener(new android.inputmethodservice.KeyboardView.OnKeyboardActionListener {
       def onKey(p1: Int, p2: Array[Int]): Unit = {}
       def onPress(p: Int): Unit = { f }
@@ -10416,7 +10167,7 @@ trait TraitKeyboardView[V <: android.inputmethodservice.KeyboardView] extends Tr
     basis
   }
 
-  @inline def onRelease[U](f: Int => U): V = {
+  @inline def onRelease[U](f: Int => U): This = {
     basis.setOnKeyboardActionListener(new android.inputmethodservice.KeyboardView.OnKeyboardActionListener {
       def onKey(p1: Int, p2: Array[Int]): Unit = {}
       def onPress(p: Int): Unit = {}
@@ -10430,7 +10181,7 @@ trait TraitKeyboardView[V <: android.inputmethodservice.KeyboardView] extends Tr
     basis
   }
 
-  @inline def onRelease[U](f: => U): V = {
+  @inline def onRelease[U](f: => U): This = {
     basis.setOnKeyboardActionListener(new android.inputmethodservice.KeyboardView.OnKeyboardActionListener {
       def onKey(p1: Int, p2: Array[Int]): Unit = {}
       def onPress(p: Int): Unit = {}
@@ -10444,7 +10195,7 @@ trait TraitKeyboardView[V <: android.inputmethodservice.KeyboardView] extends Tr
     basis
   }
 
-  @inline def onText[U](f: java.lang.CharSequence => U): V = {
+  @inline def onText[U](f: java.lang.CharSequence => U): This = {
     basis.setOnKeyboardActionListener(new android.inputmethodservice.KeyboardView.OnKeyboardActionListener {
       def onKey(p1: Int, p2: Array[Int]): Unit = {}
       def onPress(p: Int): Unit = {}
@@ -10458,7 +10209,7 @@ trait TraitKeyboardView[V <: android.inputmethodservice.KeyboardView] extends Tr
     basis
   }
 
-  @inline def onText[U](f: => U): V = {
+  @inline def onText[U](f: => U): This = {
     basis.setOnKeyboardActionListener(new android.inputmethodservice.KeyboardView.OnKeyboardActionListener {
       def onKey(p1: Int, p2: Array[Int]): Unit = {}
       def onPress(p: Int): Unit = {}
@@ -10472,7 +10223,7 @@ trait TraitKeyboardView[V <: android.inputmethodservice.KeyboardView] extends Tr
     basis
   }
 
-  @inline def swipeDown[U](f: => U): V = {
+  @inline def swipeDown[U](f: => U): This = {
     basis.setOnKeyboardActionListener(new android.inputmethodservice.KeyboardView.OnKeyboardActionListener {
       def onKey(p1: Int, p2: Array[Int]): Unit = {}
       def onPress(p: Int): Unit = {}
@@ -10486,7 +10237,7 @@ trait TraitKeyboardView[V <: android.inputmethodservice.KeyboardView] extends Tr
     basis
   }
 
-  @inline def swipeLeft[U](f: => U): V = {
+  @inline def swipeLeft[U](f: => U): This = {
     basis.setOnKeyboardActionListener(new android.inputmethodservice.KeyboardView.OnKeyboardActionListener {
       def onKey(p1: Int, p2: Array[Int]): Unit = {}
       def onPress(p: Int): Unit = {}
@@ -10500,7 +10251,7 @@ trait TraitKeyboardView[V <: android.inputmethodservice.KeyboardView] extends Tr
     basis
   }
 
-  @inline def swipeRight[U](f: => U): V = {
+  @inline def swipeRight[U](f: => U): This = {
     basis.setOnKeyboardActionListener(new android.inputmethodservice.KeyboardView.OnKeyboardActionListener {
       def onKey(p1: Int, p2: Array[Int]): Unit = {}
       def onPress(p: Int): Unit = {}
@@ -10514,7 +10265,7 @@ trait TraitKeyboardView[V <: android.inputmethodservice.KeyboardView] extends Tr
     basis
   }
 
-  @inline def swipeUp[U](f: => U): V = {
+  @inline def swipeUp[U](f: => U): This = {
     basis.setOnKeyboardActionListener(new android.inputmethodservice.KeyboardView.OnKeyboardActionListener {
       def onKey(p1: Int, p2: Array[Int]): Unit = {}
       def onPress(p: Int): Unit = {}
@@ -10533,12 +10284,12 @@ trait TraitKeyboardView[V <: android.inputmethodservice.KeyboardView] extends Tr
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/opengl/GLSurfaceView.html android.opengl.GLSurfaceView]]`.
  */
-class RichGLSurfaceView[V <: android.opengl.GLSurfaceView](val basis: V) extends TraitGLSurfaceView[V]
+class RichGLSurfaceView[This <: android.opengl.GLSurfaceView](val basis: This) extends TraitGLSurfaceView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/opengl/GLSurfaceView.html android.opengl.GLSurfaceView]]`. This contains several property accessors.
  */
-trait TraitGLSurfaceView[V <: android.opengl.GLSurfaceView] extends TraitSurfaceView[V] {
+trait TraitGLSurfaceView[This <: android.opengl.GLSurfaceView] extends TraitSurfaceView[This] {
 
   @inline def EGLConfigChooser(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'EGLConfigChooser'")
 
@@ -10692,12 +10443,12 @@ object SGLSurfaceView {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/appwidget/AppWidgetHostView.html android.appwidget.AppWidgetHostView]]`.
  */
-class RichAppWidgetHostView[V <: android.appwidget.AppWidgetHostView](val basis: V) extends TraitAppWidgetHostView[V]
+class RichAppWidgetHostView[This <: android.appwidget.AppWidgetHostView](val basis: This) extends TraitAppWidgetHostView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/appwidget/AppWidgetHostView.html android.appwidget.AppWidgetHostView]]`. This contains several property accessors.
  */
-trait TraitAppWidgetHostView[V <: android.appwidget.AppWidgetHostView] extends TraitFrameLayout[V] {
+trait TraitAppWidgetHostView[This <: android.appwidget.AppWidgetHostView] extends TraitFrameLayout[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/appwidget/AppWidgetHostView.html#getAppWidgetId() getAppWidgetId()]]`
@@ -10734,12 +10485,12 @@ object SAppWidgetHostView {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/gesture/GestureOverlayView.html android.gesture.GestureOverlayView]]`.
  */
-class RichGestureOverlayView[V <: android.gesture.GestureOverlayView](val basis: V) extends TraitGestureOverlayView[V]
+class RichGestureOverlayView[This <: android.gesture.GestureOverlayView](val basis: This) extends TraitGestureOverlayView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/gesture/GestureOverlayView.html android.gesture.GestureOverlayView]]`. This contains several property accessors.
  */
-trait TraitGestureOverlayView[V <: android.gesture.GestureOverlayView] extends TraitFrameLayout[V] {
+trait TraitGestureOverlayView[This <: android.gesture.GestureOverlayView] extends TraitFrameLayout[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/gesture/GestureOverlayView.html#getCurrentStroke() getCurrentStroke()]]`
@@ -10952,7 +10703,7 @@ trait TraitGestureOverlayView[V <: android.gesture.GestureOverlayView] extends T
    */
   @inline def uncertainGestureColor_=(p: Int) = { basis.setUncertainGestureColor(p); basis }
 
-  @inline def onGesture[U](f: (android.gesture.GestureOverlayView, android.view.MotionEvent) => U): V = {
+  @inline def onGesture[U](f: (android.gesture.GestureOverlayView, android.view.MotionEvent) => U): This = {
     basis.addOnGestureListener(new android.gesture.GestureOverlayView.OnGestureListener {
       def onGesture(p1: android.gesture.GestureOverlayView, p2: android.view.MotionEvent): Unit = { f(p1, p2) }
       def onGestureCancelled(p1: android.gesture.GestureOverlayView, p2: android.view.MotionEvent): Unit = {}
@@ -10962,7 +10713,7 @@ trait TraitGestureOverlayView[V <: android.gesture.GestureOverlayView] extends T
     basis
   }
 
-  @inline def onGesture[U](f: => U): V = {
+  @inline def onGesture[U](f: => U): This = {
     basis.addOnGestureListener(new android.gesture.GestureOverlayView.OnGestureListener {
       def onGesture(p1: android.gesture.GestureOverlayView, p2: android.view.MotionEvent): Unit = { f }
       def onGestureCancelled(p1: android.gesture.GestureOverlayView, p2: android.view.MotionEvent): Unit = {}
@@ -10972,7 +10723,7 @@ trait TraitGestureOverlayView[V <: android.gesture.GestureOverlayView] extends T
     basis
   }
 
-  @inline def onGestureCancelled[U](f: (android.gesture.GestureOverlayView, android.view.MotionEvent) => U): V = {
+  @inline def onGestureCancelled[U](f: (android.gesture.GestureOverlayView, android.view.MotionEvent) => U): This = {
     basis.addOnGestureListener(new android.gesture.GestureOverlayView.OnGestureListener {
       def onGesture(p1: android.gesture.GestureOverlayView, p2: android.view.MotionEvent): Unit = {}
       def onGestureCancelled(p1: android.gesture.GestureOverlayView, p2: android.view.MotionEvent): Unit = { f(p1, p2) }
@@ -10982,7 +10733,7 @@ trait TraitGestureOverlayView[V <: android.gesture.GestureOverlayView] extends T
     basis
   }
 
-  @inline def onGestureCancelled[U](f: => U): V = {
+  @inline def onGestureCancelled[U](f: => U): This = {
     basis.addOnGestureListener(new android.gesture.GestureOverlayView.OnGestureListener {
       def onGesture(p1: android.gesture.GestureOverlayView, p2: android.view.MotionEvent): Unit = {}
       def onGestureCancelled(p1: android.gesture.GestureOverlayView, p2: android.view.MotionEvent): Unit = { f }
@@ -10992,7 +10743,7 @@ trait TraitGestureOverlayView[V <: android.gesture.GestureOverlayView] extends T
     basis
   }
 
-  @inline def onGestureEnded[U](f: (android.gesture.GestureOverlayView, android.view.MotionEvent) => U): V = {
+  @inline def onGestureEnded[U](f: (android.gesture.GestureOverlayView, android.view.MotionEvent) => U): This = {
     basis.addOnGestureListener(new android.gesture.GestureOverlayView.OnGestureListener {
       def onGesture(p1: android.gesture.GestureOverlayView, p2: android.view.MotionEvent): Unit = {}
       def onGestureCancelled(p1: android.gesture.GestureOverlayView, p2: android.view.MotionEvent): Unit = {}
@@ -11002,7 +10753,7 @@ trait TraitGestureOverlayView[V <: android.gesture.GestureOverlayView] extends T
     basis
   }
 
-  @inline def onGestureEnded[U](f: => U): V = {
+  @inline def onGestureEnded[U](f: => U): This = {
     basis.addOnGestureListener(new android.gesture.GestureOverlayView.OnGestureListener {
       def onGesture(p1: android.gesture.GestureOverlayView, p2: android.view.MotionEvent): Unit = {}
       def onGestureCancelled(p1: android.gesture.GestureOverlayView, p2: android.view.MotionEvent): Unit = {}
@@ -11012,21 +10763,21 @@ trait TraitGestureOverlayView[V <: android.gesture.GestureOverlayView] extends T
     basis
   }
 
-  @inline def onGesturePerformed[U](f: (android.gesture.GestureOverlayView, android.gesture.Gesture) => U): V = {
+  @inline def onGesturePerformed[U](f: (android.gesture.GestureOverlayView, android.gesture.Gesture) => U): This = {
     basis.addOnGesturePerformedListener(new android.gesture.GestureOverlayView.OnGesturePerformedListener {
       def onGesturePerformed(p1: android.gesture.GestureOverlayView, p2: android.gesture.Gesture): Unit = { f(p1, p2) }
     })
     basis
   }
 
-  @inline def onGesturePerformed[U](f: => U): V = {
+  @inline def onGesturePerformed[U](f: => U): This = {
     basis.addOnGesturePerformedListener(new android.gesture.GestureOverlayView.OnGesturePerformedListener {
       def onGesturePerformed(p1: android.gesture.GestureOverlayView, p2: android.gesture.Gesture): Unit = { f }
     })
     basis
   }
 
-  @inline def onGestureStarted[U](f: (android.gesture.GestureOverlayView, android.view.MotionEvent) => U): V = {
+  @inline def onGestureStarted[U](f: (android.gesture.GestureOverlayView, android.view.MotionEvent) => U): This = {
     basis.addOnGestureListener(new android.gesture.GestureOverlayView.OnGestureListener {
       def onGesture(p1: android.gesture.GestureOverlayView, p2: android.view.MotionEvent): Unit = {}
       def onGestureCancelled(p1: android.gesture.GestureOverlayView, p2: android.view.MotionEvent): Unit = {}
@@ -11036,7 +10787,7 @@ trait TraitGestureOverlayView[V <: android.gesture.GestureOverlayView] extends T
     basis
   }
 
-  @inline def onGestureStarted[U](f: => U): V = {
+  @inline def onGestureStarted[U](f: => U): This = {
     basis.addOnGestureListener(new android.gesture.GestureOverlayView.OnGestureListener {
       def onGesture(p1: android.gesture.GestureOverlayView, p2: android.view.MotionEvent): Unit = {}
       def onGestureCancelled(p1: android.gesture.GestureOverlayView, p2: android.view.MotionEvent): Unit = {}
@@ -11046,7 +10797,7 @@ trait TraitGestureOverlayView[V <: android.gesture.GestureOverlayView] extends T
     basis
   }
 
-  @inline def onGesturingEnded[U](f: android.gesture.GestureOverlayView => U): V = {
+  @inline def onGesturingEnded[U](f: android.gesture.GestureOverlayView => U): This = {
     basis.addOnGesturingListener(new android.gesture.GestureOverlayView.OnGesturingListener {
       def onGesturingEnded(p: android.gesture.GestureOverlayView): Unit = { f(p) }
       def onGesturingStarted(p: android.gesture.GestureOverlayView): Unit = {}
@@ -11054,7 +10805,7 @@ trait TraitGestureOverlayView[V <: android.gesture.GestureOverlayView] extends T
     basis
   }
 
-  @inline def onGesturingEnded[U](f: => U): V = {
+  @inline def onGesturingEnded[U](f: => U): This = {
     basis.addOnGesturingListener(new android.gesture.GestureOverlayView.OnGesturingListener {
       def onGesturingEnded(p: android.gesture.GestureOverlayView): Unit = { f }
       def onGesturingStarted(p: android.gesture.GestureOverlayView): Unit = {}
@@ -11062,7 +10813,7 @@ trait TraitGestureOverlayView[V <: android.gesture.GestureOverlayView] extends T
     basis
   }
 
-  @inline def onGesturingStarted[U](f: android.gesture.GestureOverlayView => U): V = {
+  @inline def onGesturingStarted[U](f: android.gesture.GestureOverlayView => U): This = {
     basis.addOnGesturingListener(new android.gesture.GestureOverlayView.OnGesturingListener {
       def onGesturingEnded(p: android.gesture.GestureOverlayView): Unit = {}
       def onGesturingStarted(p: android.gesture.GestureOverlayView): Unit = { f(p) }
@@ -11070,7 +10821,7 @@ trait TraitGestureOverlayView[V <: android.gesture.GestureOverlayView] extends T
     basis
   }
 
-  @inline def onGesturingStarted[U](f: => U): V = {
+  @inline def onGesturingStarted[U](f: => U): This = {
     basis.addOnGesturingListener(new android.gesture.GestureOverlayView.OnGesturingListener {
       def onGesturingEnded(p: android.gesture.GestureOverlayView): Unit = {}
       def onGesturingStarted(p: android.gesture.GestureOverlayView): Unit = { f }
@@ -11103,26 +10854,26 @@ object SGestureOverlayView {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/database/DataSetObserver.html android.database.DataSetObserver]]`.
  */
-class RichDataSetObserver[V <: android.database.DataSetObserver](val basis: V) extends TraitDataSetObserver[V]
+class RichDataSetObserver[This <: android.database.DataSetObserver](val basis: This) extends TraitDataSetObserver[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/database/DataSetObserver.html android.database.DataSetObserver]]`. This contains several property accessors.
  */
-trait TraitDataSetObserver[V <: android.database.DataSetObserver] {
+trait TraitDataSetObserver[This <: android.database.DataSetObserver] {
 
-  def basis: V
+  def basis: This
 
 }
 
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/webkit/WebView.html android.webkit.WebView]]`.
  */
-class RichWebView[V <: android.webkit.WebView](val basis: V) extends TraitWebView[V]
+class RichWebView[This <: android.webkit.WebView](val basis: This) extends TraitWebView[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/webkit/WebView.html android.webkit.WebView]]`. This contains several property accessors.
  */
-trait TraitWebView[V <: android.webkit.WebView] extends TraitAbsoluteLayout[V] {
+trait TraitWebView[This <: android.webkit.WebView] extends TraitAbsoluteLayout[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/webkit/WebView.html#getCertificate() getCertificate()]]`
@@ -11309,42 +11060,42 @@ trait TraitWebView[V <: android.webkit.WebView] extends TraitAbsoluteLayout[V] {
    */
   @inline def webViewClient_=(p: android.webkit.WebViewClient) = { basis.setWebViewClient(p); basis }
 
-  @inline def onDownloadStart[U](f: (java.lang.String, java.lang.String, java.lang.String, java.lang.String, Long) => U): V = {
+  @inline def onDownloadStart[U](f: (java.lang.String, java.lang.String, java.lang.String, java.lang.String, Long) => U): This = {
     basis.setDownloadListener(new android.webkit.DownloadListener {
       def onDownloadStart(p1: java.lang.String, p2: java.lang.String, p3: java.lang.String, p4: java.lang.String, p5: Long): Unit = { f(p1, p2, p3, p4, p5) }
     })
     basis
   }
 
-  @inline def onDownloadStart[U](f: => U): V = {
+  @inline def onDownloadStart[U](f: => U): This = {
     basis.setDownloadListener(new android.webkit.DownloadListener {
       def onDownloadStart(p1: java.lang.String, p2: java.lang.String, p3: java.lang.String, p4: java.lang.String, p5: Long): Unit = { f }
     })
     basis
   }
 
-  @inline def onFindResultReceived[U](f: (Int, Int, Boolean) => U): V = {
+  @inline def onFindResultReceived[U](f: (Int, Int, Boolean) => U): This = {
     basis.setFindListener(new android.webkit.WebView.FindListener {
       def onFindResultReceived(p1: Int, p2: Int, p3: Boolean): Unit = { f(p1, p2, p3) }
     })
     basis
   }
 
-  @inline def onFindResultReceived[U](f: => U): V = {
+  @inline def onFindResultReceived[U](f: => U): This = {
     basis.setFindListener(new android.webkit.WebView.FindListener {
       def onFindResultReceived(p1: Int, p2: Int, p3: Boolean): Unit = { f }
     })
     basis
   }
 
-  @deprecated("", "") @inline def onNewPicture[U](f: (android.webkit.WebView, android.graphics.Picture) => U): V = {
+  @deprecated("", "") @inline def onNewPicture[U](f: (android.webkit.WebView, android.graphics.Picture) => U): This = {
     basis.setPictureListener(new android.webkit.WebView.PictureListener {
       def onNewPicture(p1: android.webkit.WebView, p2: android.graphics.Picture): Unit = { f(p1, p2) }
     })
     basis
   }
 
-  @deprecated("", "") @inline def onNewPicture[U](f: => U): V = {
+  @deprecated("", "") @inline def onNewPicture[U](f: => U): This = {
     basis.setPictureListener(new android.webkit.WebView.PictureListener {
       def onNewPicture(p1: android.webkit.WebView, p2: android.graphics.Picture): Unit = { f }
     })
@@ -11376,14 +11127,14 @@ object SWebView {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/graphics/Paint.html android.graphics.Paint]]`.
  */
-class RichPaint[V <: android.graphics.Paint](val basis: V) extends TraitPaint[V]
+class RichPaint[This <: android.graphics.Paint](val basis: This) extends TraitPaint[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/graphics/Paint.html android.graphics.Paint]]`. This contains several property accessors.
  */
-trait TraitPaint[V <: android.graphics.Paint] {
+trait TraitPaint[This <: android.graphics.Paint] {
 
-  def basis: V
+  def basis: This
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/graphics/Paint.html#getAlpha() getAlpha()]]`

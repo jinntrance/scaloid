@@ -1,4 +1,4 @@
-View_mixin() ::= "ConstantsSupport with PressAndHoldable[V]"
+View_mixin() ::= "ConstantsSupport with PressAndHoldable[This]"
 
 View_traitBody() ::= <<
 @inline def find[V <: View](id: Int): V = basis.findViewById(id).asInstanceOf[V]
@@ -9,41 +9,76 @@ View_traitBody() ::= <<
   }
   basis.getId
 }
+/**
+ * Place the widget into a ViewGroup.
+ * {{{
+ * lazy val blueText = new STextView("Blue")
+ * contentView = new SVerticalLayout {
+ *   blueText.here textColor Color.BLUE
+ * }
+ * }}}
+ */
+@inline def here[LP <: ViewGroupLayoutParams[_, _]]
+                    (implicit defaultLayoutParam: This => LP) = {
+  val parent = parentViewGroupIfExists
+  if(parent != null) parent += basis
+  basis
+}
+
+/**
+ * Place the widget into a ViewGroup, without applying styles.
+ * {{{
+ * lazy val blueText = new STextView("Blue") textColor Color.BLUE
+ * contentView = new SVerticalLayout {
+ *   style {
+ *     case t: STextView => t textColor Color.RED
+ *   }
+ *   blueText.hereWithoutStyle
+ * }
+ * }}}
+ */
+@inline def hereWithoutStyle[LP <: ViewGroupLayoutParams[_, _]]
+                    (implicit defaultLayoutParam: This => LP) = {
+  val parent = parentViewGroupIfExists
+  if(parent != null) (parent.basis.asInstanceOf[ViewGroup]).addView(basis) // TODO remove asInstanceOf
+  basis
+}
 
 @deprecated("", "") val FILL_PARENT = ViewGroup.LayoutParams.FILL_PARENT
 val MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT
 val WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT
 
-@inline def fill[LP <: ViewGroupLayoutParams[_,_]](implicit defaultLayoutParam: (V) => LP) = {
+@inline def fill[LP <: ViewGroupLayoutParams[_,_]](implicit defaultLayoutParam: This => LP) = {
   <<.fill
   basis
 }
 
-@inline def wrap[LP <: ViewGroupLayoutParams[_,_]](implicit defaultLayoutParam: (V) => LP) = {
+@inline def wrap[LP <: ViewGroupLayoutParams[_,_]](implicit defaultLayoutParam: This => LP) = {
   <<.wrap
   basis
 }
 
-@inline def wf[LP <: ViewGroupLayoutParams[_,_]](implicit defaultLayoutParam: (V) => LP) = {
+@inline def wf[LP <: ViewGroupLayoutParams[_,_]](implicit defaultLayoutParam: This => LP) = {
   <<.wf
   basis
 }
 
-@inline def fw[LP <: ViewGroupLayoutParams[_,_]](implicit defaultLayoutParam: (V) => LP) = {
+@inline def fw[LP <: ViewGroupLayoutParams[_,_]](implicit defaultLayoutParam: This => LP) = {
   <<.fw
   basis
 }
 
-def <<[LP <: ViewGroupLayoutParams[_,_]](implicit defaultLayoutParam: (V) => LP): LP =
+def <<[LP <: ViewGroupLayoutParams[_,_]](implicit defaultLayoutParam: This => LP): LP =
   defaultLayoutParam(basis)
 
+// TODO: Make the return type as Option[TraitViewGroup[_]]
 protected def parentViewGroupIfExists[LP <: ViewGroupLayoutParams[_,_]]
-    (implicit defaultLayoutParam: (V) => LP = (v:V)=> null): TraitViewGroup[_] = {
+    (implicit defaultLayoutParam: This => LP = (v: This)=> null): TraitViewGroup[_] = {
   val lp = defaultLayoutParam(basis)
-  if(lp==null) null else lp.parent
+  if(lp == null) null else lp.parent
 }
 
-def <<[LP <: ViewGroupLayoutParams[_,_]](width:Int, height:Int)(implicit defaultLayoutParam: (V) => LP): LP = {
+def <<[LP <: ViewGroupLayoutParams[_,_]](width:Int, height:Int)(implicit defaultLayoutParam: This => LP): LP = {
   val lp = defaultLayoutParam(basis)
   lp.height = height
   lp.width = width
@@ -65,6 +100,17 @@ val parentViewGroup: TraitViewGroup[_] = null
   basis.setPadding(p1, p2, p3, p4)
   basis
 }
+
+/**
+ * Shortcut for `[[https://developer.android.com/reference/android/view/View.html#setBackground(android.graphics.drawable.Drawable) setBackground(android.graphics.drawable.Drawable)]]`
+ */
+@inline def background(p: android.graphics.drawable.Drawable) = background_=(p)
+
+/**
+ * Shortcut for `[[https://developer.android.com/reference/android/view/View.html#setBackground(android.graphics.drawable.Drawable) setBackground(android.graphics.drawable.Drawable)]]`
+ */
+@inline def background_=(p: android.graphics.drawable.Drawable) = { basis.setBackgroundDrawable(p); basis } // to avoid compatibility issue on API Level < 16, calls setBackgroundDrawable() although it is deprecated.
+
 >>
 
 

@@ -167,7 +167,7 @@ class LocalServiceConnection[S <: LocalService](bindFlag: Int = Context.BIND_AUT
   }
 
   /**
-   * Execute some function with the connected service. If the service is not connected yet, the function
+   * Execute given function with the connected service. If the service is not connected yet, the function
    * is enqueued and be called when the service is connected.
    * For example:
    * val service = new LocalServiceConnection[MyService]
@@ -177,12 +177,24 @@ class LocalServiceConnection[S <: LocalService](bindFlag: Int = Context.BIND_AUT
   def apply[T](f: S => Unit): Unit = service.fold(onConnected(f))(f)
 
   /**
+   * Execute given function with the connected service. If the service is not connected yet,
+   * this returns ifEmpty value
    * for example:
    * val service = new LocalServiceConnection[MyService]
    * //...
    * val foo = service(_.foo, defaultVal)
    */
   def apply[T](f: S => T, ifEmpty: => T): T = service.fold(ifEmpty)(f)
+
+  /**
+   * Execute given function with the connected service. If the service is not connected yet,
+   * this does nothing
+   * for example:
+   * val service = new LocalServiceConnection[MyService]
+   * //...
+   * val foo = service.ifAvailable(_.foo)
+   */
+  def ifAvailable[T](f: S => T): Unit = if(service.nonEmpty) f(service.get)
 
   /**
    * for example:
@@ -225,5 +237,6 @@ class LocalServiceConnection[S <: LocalService](bindFlag: Int = Context.BIND_AUT
 
   reg.onUnregister {
     ctx.unbindService(this)
+    onConnected.clear() // not to be called at the next binding
   }
 }

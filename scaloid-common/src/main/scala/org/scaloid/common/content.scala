@@ -3,7 +3,7 @@
  *
  *
  *
- * Less painful Android development with Scala
+ * Scaloid: Simpler Android
  *
  * http://scaloid.org
  *
@@ -12,9 +12,9 @@
  *
  *
  *
- * Copyright 2013 Sung-Ho Lee and Scaloid team
+ * Copyright 2013 Sung-Ho Lee and Scaloid contributors
  *
- * Sung-Ho Lee and Scaloid team licenses this file to you under the Apache License,
+ * Sung-Ho Lee and Scaloid contributors licenses this file to you under the Apache License,
  * version 2.0 (the "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at:
  *
@@ -99,14 +99,14 @@ trait Registerable {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/content/Context.html android.content.Context]]`.
  */
-class RichContext[V <: android.content.Context](val basis: V) extends TraitContext[V]
+class RichContext[This <: android.content.Context](val basis: This) extends TraitContext[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/content/Context.html android.content.Context]]`. This contains several property accessors.
  */
-trait TraitContext[V <: android.content.Context] {
+trait TraitContext[This <: android.content.Context] {
 
-  def basis: V
+  def basis: This
 
   implicit val ctx = basis
 
@@ -275,12 +275,12 @@ trait SContext extends Context with TraitContext[SContext] with TagUtil {
 /**
  * Automatically generated enriching class of `[[https://developer.android.com/reference/android/content/ContextWrapper.html android.content.ContextWrapper]]`.
  */
-class RichContextWrapper[V <: android.content.ContextWrapper](val basis: V) extends TraitContextWrapper[V]
+class RichContextWrapper[This <: android.content.ContextWrapper](val basis: This) extends TraitContextWrapper[This]
 
 /**
  * Automatically generated helper trait of `[[https://developer.android.com/reference/android/content/ContextWrapper.html android.content.ContextWrapper]]`. This contains several property accessors.
  */
-trait TraitContextWrapper[V <: android.content.ContextWrapper] extends TraitContext[V] {
+trait TraitContextWrapper[This <: android.content.ContextWrapper] extends TraitContext[This] {
 
   /**
    * Shortcut for `[[https://developer.android.com/reference/android/content/ContextWrapper.html#getBaseContext() getBaseContext()]]`
@@ -394,7 +394,7 @@ class LocalServiceConnection[S <: LocalService](bindFlag: Int = Context.BIND_AUT
   }
 
   /**
-   * Execute some function with the connected service. If the service is not connected yet, the function
+   * Execute given function with the connected service. If the service is not connected yet, the function
    * is enqueued and be called when the service is connected.
    * For example:
    * val service = new LocalServiceConnection[MyService]
@@ -404,12 +404,24 @@ class LocalServiceConnection[S <: LocalService](bindFlag: Int = Context.BIND_AUT
   def apply[T](f: S => Unit): Unit = service.fold(onConnected(f))(f)
 
   /**
+   * Execute given function with the connected service. If the service is not connected yet,
+   * this returns ifEmpty value
    * for example:
    * val service = new LocalServiceConnection[MyService]
    * //...
    * val foo = service(_.foo, defaultVal)
    */
   def apply[T](f: S => T, ifEmpty: => T): T = service.fold(ifEmpty)(f)
+
+  /**
+   * Execute given function with the connected service. If the service is not connected yet,
+   * this does nothing
+   * for example:
+   * val service = new LocalServiceConnection[MyService]
+   * //...
+   * val foo = service.ifAvailable(_.foo)
+   */
+  def ifAvailable[T](f: S => T): Unit = if (service.nonEmpty) f(service.get)
 
   /**
    * for example:
@@ -452,5 +464,6 @@ class LocalServiceConnection[S <: LocalService](bindFlag: Int = Context.BIND_AUT
 
   reg.onUnregister {
     ctx.unbindService(this)
+    onConnected.clear() // not to be called at the next binding
   }
 }

@@ -29,6 +29,69 @@ object SVerticalLayout {
   }
 }
 
+abstract class TextViewCompanion[T <: TextView : ClassTag] {
+  def create[LP <: ViewGroupLayoutParams[_, T]]()(implicit context: Context, defaultLayoutParam: T => LP): T
+
+  def apply[LP <: ViewGroupLayoutParams[_, T]](txt: CharSequence)
+                                              (implicit context: Context, defaultLayoutParam: T => LP): T = {
+    val v = create()
+    v text txt
+    v.<<.parent.+=(v)
+    v
+  }
+
+  def apply(text: CharSequence, ignore: Nothing) = ??? // Just for implicit conversion of ViewOnClickListener
+  /**
+   * interval: If it is larger than 0, the button enables press-and-hold action with given interval in milliseconds.
+   */
+  def apply[LP <: ViewGroupLayoutParams[_, T]](text: CharSequence, onClickListener: ViewOnClickListener, interval: Int = -1)
+                                                 (implicit context: Context, defaultLayoutParam: T => LP): T = {
+    val v = apply(text, onClickListener.onClickListener)
+    if (interval >= 0) v.onPressAndHold(interval, onClickListener.func(v)) else v
+  }
+
+  private def apply[LP <: ViewGroupLayoutParams[_, T]](text: CharSequence, onClickListener: View.OnClickListener)
+                                                      (implicit context: Context, defaultLayoutParam: T => LP): T = {
+    val v = create()
+    v.text = text
+    v.setOnClickListener(onClickListener)
+    v.<<.parent.+=(v)
+    v
+  }
+}
+
+abstract class ImageViewCompanion[T <: ImageView : ClassTag] {
+  def create[LP <: ViewGroupLayoutParams[_, T]]()(implicit context: Context, defaultLayoutParam: T => LP): T
+
+  def apply[LP <: ViewGroupLayoutParams[_, T]](imageResource: android.graphics.drawable.Drawable)
+      (implicit context: Context, defaultLayoutParam: T => LP): T = {
+    val v = create()
+    v.imageDrawable = imageResource
+    v.<<.parent.+=(v)
+    v
+  }
+
+  def apply(image: android.graphics.drawable.Drawable, ignore: Nothing) = ???  // Just for implicit conversion of ViewOnClickListener
+
+  /**
+    * interval: If it is larger than 0, the button enables press-and-hold action with given interval in milliseconds.
+    */
+  def apply[LP <: ViewGroupLayoutParams[_, T]](imageResource: android.graphics.drawable.Drawable, onClickListener: ViewOnClickListener, interval: Int = -1)
+      (implicit context: Context, defaultLayoutParam: T => LP): T = {
+    val v = apply(imageResource, onClickListener.onClickListener)
+    if(interval >= 0) v.onPressAndHold(interval, onClickListener.func(v)) else v
+  }
+
+  private def apply[LP <: ViewGroupLayoutParams[_, T]](imageResource: android.graphics.drawable.Drawable, onClickListener: View.OnClickListener)
+      (implicit context: Context, defaultLayoutParam: T => LP): T = {
+    val v = create()
+    v.imageDrawable = imageResource
+    v.setOnClickListener(onClickListener)
+    v.<<.parent.+=(v)
+    v
+  }
+}
+
 $android.inputmethodservice.ExtractEditText; format="whole"$
 $android.inputmethodservice.KeyboardView; format="rich"$
 $android.opengl.GLSurfaceView; format="whole"$

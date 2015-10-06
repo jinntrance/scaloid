@@ -12,8 +12,8 @@ import scala.language.implicitConversions
 import ViewImplicits._
 
 
-trait PressAndHoldable[V <: View] {
-  def basis: V
+trait PressAndHoldable[+This <: View] {
+  def basis: This
 
   class PressAndHoldListener(interval: Int, onPressed: () => Unit) extends View.OnTouchListener with View.OnLongClickListener {
     var autoIncrementing: Boolean = false
@@ -28,7 +28,10 @@ trait PressAndHoldable[V <: View] {
 
     override def onLongClick(p1: View): Boolean = {
       autoIncrementing = true
-      repeatUpdateHandler.post(new RptUpdater)
+      if(interval == 0)
+        onPressed()
+      else
+        repeatUpdateHandler.post(new RptUpdater)
       false
     }
 
@@ -42,20 +45,25 @@ trait PressAndHoldable[V <: View] {
     }
   }
 
-  def onPressAndHold(interval: Int, onPressed: => Unit): V = {
+  def onPressAndHold(interval: Int, onPressed: => Unit): This = {
     val listener = new PressAndHoldListener(interval, () => onPressed)
     basis.onTouchListener(listener)
     basis.onLongClickListener(listener)
   }
 }
 
+trait ViewOnClickListener {
+  def func: View => Unit
+
+  def onClickListener: View.OnClickListener
+}
 
 $android.view.View; format="whole"$
 
 $android.view.ViewGroup; format="whole"$
 
-trait ViewGroupLayoutParams[LP <: ViewGroupLayoutParams[_,_], V <: View] extends ViewGroup.LayoutParams {
-  def basis: LP
+trait ViewGroupLayoutParams[+This <: ViewGroupLayoutParams[_,_], V <: View] extends ViewGroup.LayoutParams {
+  def basis: This
 
   /**
    * A shorthand for <<(MATCH_PARENT, MATCH_PARENT)
@@ -95,7 +103,7 @@ trait ViewGroupLayoutParams[LP <: ViewGroupLayoutParams[_,_], V <: View] extends
   def >> : V
 }
 
-trait ViewGroupMarginLayoutParams[LP <: ViewGroupMarginLayoutParams[_,_], V <: View] extends ViewGroup.MarginLayoutParams with ViewGroupLayoutParams[LP, V] {
+trait ViewGroupMarginLayoutParams[+This <: ViewGroupMarginLayoutParams[_,_], V <: View] extends ViewGroup.MarginLayoutParams with ViewGroupLayoutParams[This, V] {
 
   def marginBottom(size: Int) = {
     bottomMargin = size

@@ -2,13 +2,14 @@ $license()$
 
 package org.scaloid.common
 
+import _root_.android.graphics.PorterDuff.Mode
 import android.content._
 import android.database.Cursor
 import android.graphics.Movie
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view._
-import org.scaloid.common.RichIntent
+import org.scaloid.common.{ViewOnClickListener, RichIntent}
 import language.implicitConversions
 
 private[scaloid] class UnitConversion(val ext: Double)(implicit context: Context) {
@@ -26,11 +27,18 @@ private[scaloid] class ResourceConversion(val id: Int)(implicit context: Context
   @inline def r2StringArray  : Array[String]       = context.getResources.getStringArray(id)
   @inline def r2Drawable     : Drawable            = context.getResources.getDrawable(id)
   @inline def r2Movie        : Movie               = context.getResources.getMovie(id)
+  @inline def r2Boolean      : Boolean             = context.getResources.getBoolean(id)
   @inline def r2Color        : Int                 = context.getResources.getColor(id)
   @inline def r2Dimension    : Float               = context.getResources.getDimension(id)
   @inline def r2Integer      : Int                 = context.getResources.getInteger(id)
   @inline def r2IntArray     : Array[Int]          = context.getResources.getIntArray(id)
   @inline def r2RawResource  : java.io.InputStream = context.getResources.openRawResource(id)
+
+  @inline def r2Drawable(color: Int, mode: Mode = Mode.MULTIPLY): Drawable = {
+    val drawable = context.getResources.getDrawable(id).mutate
+    drawable.setColorFilter(color, mode)
+    drawable
+  }
 }
 
 private[scaloid] class StringConversion(val str: String)(implicit context: Context) {
@@ -59,6 +67,18 @@ trait ConversionImplicits {
 object ConversionImplicits extends ConversionImplicits
 
 trait InterfaceImplicits {
+  implicit def func2ScaloidViewOnClickListener[F](f: (View) => F): ViewOnClickListener =
+    new ViewOnClickListener() {
+      def func = { v => f(v): Unit }
+      def onClickListener = func2ViewOnClickListener(f)
+    }
+
+  implicit def lazy2ScaloidViewOnClickListener[F](f: => F): ViewOnClickListener =
+    new ViewOnClickListener() {
+      def func = { v => f: Unit }
+      def onClickListener = lazy2ViewOnClickListener(f)
+    }
+
   implicit def func2ViewOnClickListener[F](f: (View) => F): View.OnClickListener =
     new View.OnClickListener() {
       def onClick(view: View) {

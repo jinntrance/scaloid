@@ -3,15 +3,15 @@
  *
  *
  *
+ * Scaloid: Simpler Android
  *
- * Less painful Android development with Scala
  * http://scaloid.org
  *
  *
  *
  *
  *
- * Copyright 2013 Sung-Ho Lee and Scaloid team
+ * Copyright 2013 Sung-Ho Lee and Scaloid contributors
  *
  * Sung-Ho Lee licenses this file to you under the Apache License,
  * version 2.0 (the "License"); you may not use this file except in compliance
@@ -28,7 +28,7 @@
 -->
 <p align="center"><img src="http://o-n2.com/scaloid_logo.png"></p>
 
-# Less painful Android development with Scala
+# Simpler Android
 
 Scaloid is a library that simplifies your Android code. It makes your code easy to understand and maintain by [leveraging Scala language](https://github.com/pocorall/scaloid/wiki/Appendix#wiki-faqs-about-scaloid).
 
@@ -54,18 +54,18 @@ SButton("Greet", toast("Hello!"))
 
 ### Benefits
  * **Write elegant Android software**<br/>
-   Scaloid provides a concise and type-safe way of writing Android application.
- * **Simple to use**<br/>
+   Simplicity is number one principle, keeps programmability and type-safety.
+ * **Easy to use**<br/>
    Check the [quick start guide](https://github.com/pocorall/scaloid/wiki/Installation#wiki-quick-start)
  * **Compatible with your legacy code**<br/>
    You can [use both Scaloid and plain-old Java Android API](https://github.com/pocorall/scaloid/wiki/Appendix#wiki-i-cant-use-scaloid-because-it-does-not-provide-a-functionality-x). You can gradually improve your legacy code.
- * **Maintained actively**<br/>
-   Scaloid is a [dogfooding](http://en.wikipedia.org/wiki/Eating_your_own_dog_food) software. This is originally created to be used for [my own](https://play.google.com/store/apps/details?id=com.soundcorset.client.android) [Android apps](https://play.google.com/store/apps/details?id=com.tocplus.client.android).
+ * **Production quality**<br/>
+   Not a toy project. The creator of Scaloid uses it to build [a millionth downloaded app](https://play.google.com/store/apps/details?id=com.soundcorset.client.android).
 
 ### Demos
 
 Fork one of this to start a new project:
- * [<b>Hello world of Scaloid for sbt</b>](https://github.com/pocorall/hello-scaloid-sbt) (recommended)
+ * [<b>Hello world of Scaloid for sbt</b>](https://github.com/pocorall/hello-scaloid-sbt) (recommended, it builds faster)
  * [<b>Hello world of Scaloid for maven</b>](https://github.com/pocorall/hello-scaloid-maven)
  * [<b>Hello world of Scaloid for gradle</b>](https://github.com/pocorall/hello-scaloid-gradle)
 
@@ -75,8 +75,9 @@ Learn how Scaloid can be used in action:
  * [<b>Tutorial by Gaston Hillar</b>](http://www.drdobbs.com/mobile/developing-android-apps-with-scala-and-s/240161584) - [part 1](http://www.drdobbs.com/mobile/developing-android-apps-with-scala-and-s/240161584) and [part 2](http://www.drdobbs.com/mobile/developing-android-apps-with-scala-and-s/240162204)
 
 
-## Features
+## Contents
 
+ * [Core design principle](#core-design-principle)
  * [UI Layout without XML](#ui-layout-without-xml)
    * [Layout context](#layout-context)
    * [Styles for programmers](#styles-for-programmers)
@@ -104,6 +105,10 @@ Learn how Scaloid can be used in action:
      * [FAQs about Scala on Android](https://github.com/pocorall/scaloid/wiki/Appendix#wiki-faqs-about-scala-on-android)
  * [<b>Inside Scaloid</b>](https://github.com/pocorall/scaloid/wiki/Inside-Scaloid)
  * [<b>We are hiring!</b>](#we-are-hiring)
+
+## Core design principle
+
+"Being practically simple" is number one principle of Scaloid. Most frequently used things should be written shorter, like [Huffman coding](https://en.wikipedia.org/wiki/Huffman_coding). To do this, I first observed Android programs I wrote, and thought that which part of the code is more fundamental than others. For example, what is the most essential part of buttons? Buttons should have some visible things on it, such as title or image, so the buttons are created like this: `SButton("Hello")`. The second essential part is doing something when it is pressed: `SImageButton(R.drawable.hello, toast("World!"))`. What should be the third one? The answer might not the same for every people, but I think that repetition frequency of press-and-hold action is nice: `SButton("Add", n += 1, 500)` increases `n` for every 500 milliseconds when the user holds the button.
 
 ## UI Layout without XML
 <p align="center"><img src="http://o-n2.com/verboseSimple.png"></p>
@@ -144,34 +149,34 @@ is reduced to:
 
 ```scala
 new SVerticalLayout {
-  STextView("Sign in").textSize(24.5 sp).<<.marginBottom(25 dip).>>
+  STextView("Sign in").textSize(24.5.sp).<<.marginBottom(25.dip).>>
   STextView("ID")
   SEditText()
   STextView("Password")
   SEditText() inputType TEXT_PASSWORD
   SButton("Sign in")
-  this += new SLinearLayout {
+  new SLinearLayout {
     SButton("Help")
     SButton("Sign up")
-  }.wrap
-}.padding(20 dip)
+  }.wrap.here
+}.padding(20.dip)
 ```
 
 The layout description shown above is highly programmable. You can easily wire your logic into the layout:
 
 ```scala
 new SVerticalLayout {
-  STextView("Sign in").textSize(24.5 sp).<<.marginBottom(25 dip).>>
+  STextView("Sign in").textSize(24.5.sp).<<.marginBottom(25.dip).>>
   STextView("ID")
   val userId = SEditText()
   STextView("Password")
   val pass = SEditText() inputType TEXT_PASSWORD
   SButton("Sign in", signin(userId.text, pass.text))
-  this += new SLinearLayout {
+  new SLinearLayout {
     SButton("Help", openUri("http://help.url"))
     SButton("Sign up", openUri("http://signup.uri"))
-  }.wrap
-}.padding(20 dip)
+  }.wrap.here
+}.padding(20.dip)
 ```
 
 Because a Scaloid layout description is plain Scala code, it is type-safe.
@@ -204,11 +209,11 @@ import org.scaloid.util.Configuration._
 
 if(long) SButton("This button is shown only for a long screen "
   + "dimension ("+ width + ", " + height + ")")
-if(landscape) this += new SLinearLayout {
+if(landscape) new SLinearLayout {
   SButton("Buttons for")
   SButton("landscape layout")
   if(dpi <= HDPI) SButton("You have a high resolution display!")
-}
+}.here
 ```
 
 Please refer to this blog post for more detail:
@@ -478,12 +483,6 @@ new Intent().put(valueA, valueB, valueC)
 ##### Toast
 
 ```scala
-Toast.makeText(context, "hi, there!", Toast.LENGTH_SHORT).show()
-```
-
-is reduced to:
-
-```scala
 toast("hi, there!")
 ```
 
@@ -528,38 +527,6 @@ is reduced to:
 ```scala
 pendingActivity[MyActivity]
 pendingService[MyService]
-```
-
-##### DefaultSharedPreferences
-
-```scala
-PreferenceManager.getDefaultSharedPreferences(context)
-```
-
-is reduced to:
-
-```scala
-defaultSharedPreferences
-```
-
-##### Play ringtones
-
-Just play the default notification ringtone:
-
-```scala
-play()
-```
-
-specify ringtone resources as a `String`:
-
-```scala
-play("content://media/internal/audio/media/50")
-```
-
-or specify a resource `Uri`:
-
-```scala
-play(alarmSound)
 ```
 
 ##### Open URIs
@@ -700,7 +667,7 @@ Compared with XML layout description, Scaloid layout is simple and type-safe.
 The method `<<` is overloaded with parameters `<<(width:Int, height:Int)` which assigns the size of the view component. For example:
 
 ```scala
-SButton("Click").<<(40 dip, WRAP_CONTENT)
+SButton("Click").<<(40.dip, WRAP_CONTENT)
 ```
 
 #### Operator `new` and method `apply`
@@ -708,14 +675,11 @@ SButton("Click").<<(40 dip, WRAP_CONTENT)
 Usually, `View` components are referenced multiple times in an `Activity`. For example:
 
 ```scala
-var button: SButton = null
-override def onCreate(savedInstanceState: Bundle) {
-  // ...
-  new SLinearLayout {
-    button = new SButton() text "Click"
-    this += button
+lazy val button = new SButton() text "Click"
+onCreate {
+  contentView = new SLinearLayout {
+    button.here
   }
-  // ...
 }
 // ... uses the button somewhere in other methods (e.g. changing text or adding listeners)
 ```
@@ -725,7 +689,7 @@ Therefore, the code block from the above example:
 
 ```scala
 button = new SButton() text "Click"
-this += button
+button.here
 ```
 
 is equivalent to:
@@ -763,9 +727,9 @@ When the layout context is nested, inner-most layout's context is applied:
 
 ```scala
 val layout = new SFrameLayout {
-  this += new SLinearLayout {
+  new SLinearLayout {
     SButton("Click").<<.Weight(1.0f).>>   // in context of SLinearLayout
-  }
+  }.here
 }
 ```
 
@@ -837,13 +801,13 @@ Scaloid omits unnecessary `="true"` for the attribute `centerHorizontal`. Equiva
 For layout methods named with four directions (e.g. `...Top`, `...Right`, `...Bottom` and `...Left`), Scaloid provides additional methods that specifies all properties at once. For example, Because Android XML layout defines `margin...` properties(`marginTop(v:Int)`, `marginRight(v:Int)`, `marginBottom(v:Int)` and `marginLeft(v:Int)`), Scaloid provides additional `margin(top:Int, right:Int, bottom:Int, left:Int)` and `margin(amount:Int)` methods that can be used as:
 
 ```scala
-STextView("hello").<<.margin(5 dip, 10 dip, 5 dip, 10 dip)
+STextView("hello").<<.margin(5.dip, 10.dip, 5.dip, 10.dip)
 ```
 
 or
 
 ```scala
-STextView("hello").<<.margin(10 sp)  // assigns the same value for all directions
+STextView("hello").<<.margin(10.sp)  // assigns the same value for all directions
 ```
 
 
@@ -856,16 +820,16 @@ To apply styles in Scaloid, you do not need to learn any syntax or API library, 
 Suppose the following code that repeats some properties:
 
 ```scala
-SButton("first").textSize(20 dip).<<.margin(5 dip).>>
-SButton("prev").textSize(20 dip).<<.margin(5 dip).>>
-SButton("next").textSize(20 dip).<<.margin(5 dip).>>
-SButton("last").textSize(20 dip).<<.margin(5 dip).>>
+SButton("first").textSize(20.dip).<<.margin(5.dip).>>
+SButton("prev").textSize(20.dip).<<.margin(5.dip).>>
+SButton("next").textSize(20.dip).<<.margin(5.dip).>>
+SButton("last").textSize(20.dip).<<.margin(5.dip).>>
 ```
 
 Then we can define a function that applies these properties:
 
 ```scala
-def myStyle = (_: SButton).textSize(20 dip).<<.margin(5 dip).>>
+def myStyle = (_: SButton).textSize(20.dip).<<.margin(5.dip).>>
 myStyle(SButton("first"))
 myStyle(SButton("prev"))
 myStyle(SButton("next"))
@@ -875,7 +839,7 @@ myStyle(SButton("last"))
 Still not satisfying? Here we have a shorter one:
 
 ```scala
-def myStyle = (_: SButton).textSize(20 dip).<<.margin(5 dip).>>
+def myStyle = (_: SButton).textSize(20.dip).<<.margin(5.dip).>>
 List("first", "prev", "next", "last").foreach(title => myStyle(SButton(title)))
 ```
 
@@ -887,7 +851,7 @@ Then the example in the previous subsection becomes:
 
 ```scala
 style {
-  case b: SButton => b.textSize(20 dip).<<.margin(5 dip).>>
+  case b: SButton => b.textSize(20.dip).<<.margin(5.dip).>>
 }
 
 SButton("first")
@@ -901,13 +865,13 @@ Note that individually applying `myStyle` is reduced. Let us see another example
 ```scala
 style {
   case b: SButton => b.textColor(Color.RED).onClick(toast("Bang!"))
-  case t: STextView => t.textSize(10 dip)
+  case t: STextView => t.textSize(10.dip)
   case v => v.backgroundColor(Color.YELLOW)
 }
 
-STextView("I am 10 dip tall")
+STextView("I am 10.dip tall")
 STextView("Me too")
-STextView("I am taller than you").textSize(15 dip) // overriding
+STextView("I am taller than you").textSize(15.dip) // overriding
 SEditText("Yellow input field")
 SButton("Red alert!")
 ```
@@ -1142,7 +1106,7 @@ Then the plain-old Android code is consisted of a chunk of XML and its wiring:
     android:id="@+id/spinner_textview"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-	android:textSize="25 dip" />
+	android:textSize="25.dip" />
 ```
 ```scala
 val adapter = new ArrayAdapter(context, android.R.layout.simple_spinner_item, Array("One", "Two", "Three"))
@@ -1152,7 +1116,7 @@ adapter.setDropDownViewResource(R.layout.spinner_dropdown)
 In Scaloid, a directly equivalent code is:
 
 ```scala
-SArrayAdapter("One", "Two", "Three").dropDownStyle(_.textSize(25 dip))
+SArrayAdapter("One", "Two", "Three").dropDownStyle(_.textSize(25.dip))
 ```
 
 If you want to let the text color in the spinner be blue, use the `style` method:
@@ -1188,30 +1152,17 @@ class Activity extends SActivity {
 
 ### Class `Preferences`
 
-Instead of accesing SharedPreference directly:
+SharedPreference can be accessed in this way:
 
 ```scala
-val ec = pref.getInt("executionCount", 0)
-val editor = pref.edit()
-editor.putInt("executionCount", ec + 1)
-editor.commit()
-```
-
-You can rewrite it as shown below:
-
-```scala
-val ec = pref.executionCount(0)
-pref.executionCount = ec + 1
-```
-
-If you are confortable with `Option`, access like this:
-
-```scala
-val ec:Option[Int] = pref.Int.executionCount
+val executionCount = preferenceVar(0) // default value 0
+val ec = executionCount() // read
+executionCount() = ec + 1 // write
+executionCount.remove() // remove
 ```
 
 **Further reading:**
- - [In-depth look at Scaloid Preferences](http://blog.scaloid.org/2013/03/dynamicly-accessing-sharedpreferences.html)
+ - [Type-safe SharedPreference](http://blog.scaloid.org/2015/07/type-safe-sharedpreference.html)
  - [A simple example: Prompt user to rate your app](http://blog.scaloid.org/2013/03/prompt-user-to-rate-your-android-app.html)
 
 ## Extending View class

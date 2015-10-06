@@ -3,7 +3,7 @@
  *
  *
  *
- * Less painful Android development with Scala
+ * Scaloid: Simpler Android
  *
  * http://scaloid.org
  *
@@ -12,9 +12,9 @@
  *
  *
  *
- * Copyright 2013 Sung-Ho Lee and Scaloid team
+ * Copyright 2013 Sung-Ho Lee and Scaloid contributors
  *
- * Sung-Ho Lee and Scaloid team licenses this file to you under the Apache License,
+ * Sung-Ho Lee and Scaloid contributors licenses this file to you under the Apache License,
  * version 2.0 (the "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at:
  *
@@ -168,16 +168,94 @@ trait MediaHelpers {
 
 object MediaHelpers extends MediaHelpers
 
+abstract class PreferenceVar[T](val key: String, val defaultValue: T) {
+  def apply(value: T)(implicit pref: SharedPreferences): T
+
+  def apply()(implicit pref: SharedPreferences): T = apply(defaultValue)
+
+  def update(value: T)(implicit pref: SharedPreferences): this.type = {
+    val editor = pref.edit()
+    put(value, editor)
+    editor.commit()
+    this
+  }
+
+  protected def put(value: T, editor: SharedPreferences.Editor): Unit
+
+  def remove()(implicit pref: SharedPreferences): this.type = {
+    pref.edit().remove(key).commit()
+    this
+  }
+}
+
 trait PreferenceHelpers {
   /**
    * Returns DefaultSharedPreferences object for given implicit context.
    */
-  @inline def defaultSharedPreferences(implicit context: Context): SharedPreferences =
+  @inline implicit def defaultSharedPreferences(implicit context: Context): SharedPreferences =
     PreferenceManager.getDefaultSharedPreferences(context)
+
+  @inline def preferenceVar[T](key: String, defaultVal: T): PreferenceVar[T] = defaultVal match {
+    case v: String => new PreferenceVar[String](key, v) {
+      override def apply(value: String)(implicit pref: SharedPreferences): String = pref.getString(key, value)
+
+      def put(value: String, editor: SharedPreferences.Editor): Unit = editor.putString(key, value)
+    }.asInstanceOf[PreferenceVar[T]]
+    case v: Set[String] => new PreferenceVar[Set[String]](key, v) {
+      import scala.collection.JavaConversions._
+      import scala.collection.JavaConverters._
+      override def apply(value: Set[String])(implicit pref: SharedPreferences): Set[String] = pref.getStringSet(key, value).asScala.toSet
+
+      def put(value: Set[String], editor: SharedPreferences.Editor): Unit = editor.putStringSet(key, value)
+    }.asInstanceOf[PreferenceVar[T]]
+    case v: Int => new PreferenceVar[Int](key, v) {
+      override def apply(value: Int)(implicit pref: SharedPreferences): Int = pref.getInt(key, value)
+
+      def put(value: Int, editor: SharedPreferences.Editor): Unit = editor.putInt(key, value)
+    }.asInstanceOf[PreferenceVar[T]]
+    case v: Long => new PreferenceVar[Long](key, v) {
+      override def apply(value: Long)(implicit pref: SharedPreferences): Long = pref.getLong(key, value)
+
+      def put(value: Long, editor: SharedPreferences.Editor): Unit = editor.putLong(key, value)
+    }.asInstanceOf[PreferenceVar[T]]
+    case v: Float => new PreferenceVar[Float](key, v) {
+      override def apply(value: Float)(implicit pref: SharedPreferences): Float = pref.getFloat(key, value)
+
+      def put(value: Float, editor: SharedPreferences.Editor): Unit = editor.putFloat(key, value)
+    }.asInstanceOf[PreferenceVar[T]]
+    case v: Boolean => new PreferenceVar[Boolean](key, v) {
+      override def apply(value: Boolean)(implicit pref: SharedPreferences): Boolean = pref.getBoolean(key, value)
+
+      def put(value: Boolean, editor: SharedPreferences.Editor): Unit = editor.putBoolean(key, value)
+    }.asInstanceOf[PreferenceVar[T]]
+    case _ => throw new Exception("Invalid type for SharedPreferences")
+  }
+
+  import scala.language.experimental.macros
+
+  def preferenceVar[T](defaultVal: T): PreferenceVar[T] = macro PreferenceHelpers.preferenceVarImpl[T]
 
 }
 
-object PreferenceHelpers extends PreferenceHelpers
+object PreferenceHelpers extends PreferenceHelpers {
+  import scala.language.experimental.macros
+  import scala.reflect.macros.blackbox.Context
+
+  private def getShortName(str: String) = {
+    val pos = str.lastIndexOf(".")
+    if (pos < 0) str else str.substring(pos + 1)
+  }
+
+  def preferenceVarImpl[T](c: Context)(defaultVal: c.Expr[T]): c.Expr[PreferenceVar[T]] = {
+    import c.universe._
+
+    val enclosingName = getShortName(c.internal.enclosingOwner.fullName)
+    val name = c.Expr[String](Literal(Constant(enclosingName)))
+    reify {
+      preferenceVar(name.splice, defaultVal.splice)
+    }
+  }
+}
 
 /**
  * Contains helper methods that displaying some UI elements.
